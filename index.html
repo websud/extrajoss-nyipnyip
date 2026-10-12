@@ -176,14 +176,18 @@
               <span>Ori (Ais Kosong)</span>
               <span class="text-[10px] text-zinc-500">+RM0.00</span>
             </button>
-            <button type="button" onclick="selectMix('Fizzy (Sprite/Soda)', 1.50)" class="mix-btn p-2.5 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-300 text-left font-bold text-xs transition-all flex justify-between items-center">
-  <span>Sprite / Soda</span>
-  <span class="text-[10px] text-zinc-500">+RM1.50</span>
-</button>
-            <button type="button" onclick="selectMix('Josu + Lemon', 1.00)" class="mix-btn p-2.5 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-300 text-left font-bold text-xs transition-all flex justify-between items-center">
-  <span>Josu + Lemon</span>
-  <span class="text-[10px] text-zinc-500">+RM1.00</span>
-</button>
+            
+            <!-- Disabled Sprite / Soda Option -->
+            <button type="button" disabled class="p-2.5 rounded-xl border border-zinc-900 bg-zinc-950 text-zinc-600 text-left font-bold text-xs opacity-50 cursor-not-allowed flex justify-between items-center">
+              <span>Sprite / Soda</span>
+              <span class="text-[10px] text-red-500 font-extrabold">HABIS</span>
+            </button>
+
+            <!-- Disabled Lemon Option -->
+            <button type="button" disabled class="p-2.5 rounded-xl border border-zinc-900 bg-zinc-950 text-zinc-600 text-left font-bold text-xs opacity-50 cursor-not-allowed flex justify-between items-center">
+              <span>Josu + Lemon</span>
+              <span class="text-[10px] text-red-500 font-extrabold">HABIS</span>
+            </button>
           </div>
         </div>
 
@@ -528,8 +532,8 @@
         badge: "POPULAR 🔥",
         flavors: ["Active (Kuning)", "Anggur (Grape)"],
         isExtraJoss: true,
-        stockStatus: "available",
-        stockQty: 99,
+        stockStatus: "out",
+        stockQty: 0,
         image: ""
       },
       {
@@ -541,8 +545,8 @@
         badge: "SPECIAL",
         flavors: ["Active (Kuning)", "Anggur (Grape)"],
         isExtraJoss: true,
-        stockStatus: "available",
-        stockQty: 99,
+        stockStatus: "out",
+        stockQty: 0,
         image: ""
       },
       {
@@ -919,10 +923,10 @@
       let itemsText = "";
       cart.forEach((item, idx) => {
         itemsText += `${idx + 1}. *${item.name}* (${item.qty}x)\n`;
-        itemsText += `   - Perisa: ${item.flavor}\n`;
-        if (item.mix !== 'Tiada') itemsText += `   - Gaya: ${item.mix}\n`;
-        itemsText += `   - Tahap Ais: ${item.ice}\n`;
-        itemsText += `   - Harga: RM ${item.totalPrice.toFixed(2)}\n\n`;
+        itemsText += `    - Perisa: ${item.flavor}\n`;
+        if (item.mix !== 'Tiada') itemsText += `    - Gaya: ${item.mix}\n`;
+        itemsText += `    - Tahap Ais: ${item.ice}\n`;
+        itemsText += `    - Harga: RM ${item.totalPrice.toFixed(2)}\n\n`;
       });
 
       let msg = `⚡ *PESANAN BARU - ${storeSettings.name.toUpperCase()}* ⚡\n\n`;
