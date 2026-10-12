@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kedai Extra Joss & Drinks KK</title>
+  <title>Kedai Extra Joss & Drinks Nyip-Nyip</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -42,12 +42,6 @@
     body {
       background-color: #0A0A0A;
       color: #F3F4F6;
-    }
-    .glow-yellow {
-      box-shadow: 0 0 20px rgba(255, 223, 0, 0.25);
-    }
-    .glow-neon {
-      box-shadow: 0 0 15px rgba(204, 255, 0, 0.3);
     }
     .custom-scrollbar::-webkit-scrollbar {
       width: 6px;
@@ -109,7 +103,7 @@
           Sejuk, Padu & Terus Hantar Ke Bilik Anda!
         </h2>
         <p class="text-xs text-zinc-400 mt-1">
-          Pilih menu kegemaran anda, buat bayaran QR atau COD & hantar resit di WhatsApp.
+          Pilih menu kegemaran anda, buat bayaran QR & hantar resit di WhatsApp.
         </p>
       </div>
     </div>
@@ -180,7 +174,7 @@
 
         <!-- Mixing Option (For Extra Joss) -->
         <div id="mix-section">
-          <label class="block text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-2">Custom / Mix</label>
+          <label class="block text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-2">Gaya Bancuhan / Mix</label>
           <div class="grid grid-cols-2 gap-2" id="mix-options">
             <button type="button" onclick="selectMix('Josu (Tambah Susu)', 0.50)" class="mix-btn active p-2.5 rounded-xl border border-joss-yellow bg-joss-yellow/10 text-joss-yellow text-left font-bold text-xs transition-all flex justify-between items-center">
               <span>Josu (Susu Kaw)</span>
@@ -268,11 +262,11 @@
         <div class="border-t border-zinc-800 pt-4 space-y-3">
           <h4 class="text-xs font-extrabold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
             <i class="fa-solid fa-user-graduate text-joss-yellow"></i>
-            Maklumat Pelajar & Bilik
+            Detail Order
           </h4>
 
           <div>
-            <label class="block text-[11px] font-bold text-zinc-400 mb-1">Nama  *</label>
+            <label class="block text-[11px] font-bold text-zinc-400 mb-1">Nama*</label>
             <input type="text" id="cust-name" placeholder="Contoh: Shafiq / Danial" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-joss-yellow transition-all">
           </div>
 
@@ -291,7 +285,7 @@
             <label class="block text-[11px] font-bold text-zinc-400 mb-1">Lokasi Serahan *</label>
             <select id="cust-delivery-type" onchange="calculateCartTotals()" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-joss-yellow transition-all">
               <option value="room">Hantar Terus Ke Bilik (+RM0.50 Charge)</option>
-              <option value="lobby">Jumpa Di Lobby / Guard KK (FREE)</option>
+              <option value="lobby">Pickup (BUMITA A-7-2) (FREE)</option>
             </select>
           </div>
 
@@ -393,7 +387,7 @@
       <div class="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-sliders text-joss-yellow"></i>
-          <h3 class="font-extrabold text-white text-sm">Tetapan Kedai Seller (Cloud)</h3>
+          <h3 class="font-extrabold text-white text-sm">Tetapan Kedai & Stok (Cloud)</h3>
         </div>
         <button onclick="closeAdminPanelModal()" class="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:text-white flex items-center justify-center">
           <i class="fa-solid fa-xmark"></i>
@@ -401,31 +395,44 @@
       </div>
 
       <!-- Panel Form Body -->
-      <div class="p-5 overflow-y-auto custom-scrollbar space-y-4 text-xs flex-1">
+      <div class="p-5 overflow-y-auto custom-scrollbar space-y-5 text-xs flex-1">
         
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">Status Kedai (Open / Close)</label>
-          <select id="admin-store-status" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
-            <option value="open">🟢 Buka (Menerima Pesanan)</option>
-            <option value="closed">🔴 Tutup (Tutup Sementara)</option>
-          </select>
+        <div class="space-y-3 pb-3 border-b border-zinc-800">
+          <div>
+            <label class="block font-bold text-zinc-300 mb-1">Status Kedai (Open / Close)</label>
+            <select id="admin-store-status" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
+              <option value="open">🟢 Buka (Menerima Pesanan)</option>
+              <option value="closed">🔴 Tutup (Tutup Sementara)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold text-zinc-300 mb-1">Nombor WhatsApp Seller *</label>
+            <input type="text" id="admin-whatsapp-num" placeholder="601139550544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
+            <p class="text-[10px] text-zinc-500 mt-1">Format: 601139550544 (Tanpa simbol + atau sempang)</p>
+          </div>
+
+          <div>
+            <label class="block font-bold text-zinc-300 mb-1">ID No. DuitNow</label>
+            <input type="text" id="admin-duitnow-id" placeholder="011-3955 0544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
+          </div>
+
+          <div>
+            <label class="block font-bold text-zinc-300 mb-1">Muat Naik Gambar DuitNow QR Baru (Optional)</label>
+            <input type="file" id="admin-qr-file-input" accept="image/*" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2 text-zinc-400 text-xs">
+          </div>
         </div>
 
+        <!-- PENGURUSAN STOK REAL-TIME -->
         <div>
-          <label class="block font-bold text-zinc-300 mb-1">Nombor WhatsApp Seller *</label>
-          <input type="text" id="admin-whatsapp-num" placeholder="601139550544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
-          <p class="text-[10px] text-zinc-500 mt-1">Format: 601139550544 (Tanpa simbol + atau sempang)</p>
-        </div>
+          <h4 class="font-extrabold text-joss-yellow uppercase tracking-wider mb-3 flex items-center gap-1.5 text-xs">
+            <i class="fa-solid fa-boxes-stacked"></i>
+            Pengurusan Stok Menu (Real-Time Cloud)
+          </h4>
 
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">ID No. DuitNow</label>
-          <input type="text" id="admin-duitnow-id" placeholder="011-3955 0544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
-        </div>
-
-        <div>
-          <label class="block font-bold text-zinc-300 mb-1">Muat Naik Gambar DuitNow QR Baru (Optional)</label>
-          <input type="file" id="admin-qr-file-input" accept="image/*" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2 text-zinc-400 text-xs">
-          <p class="text-[10px] text-zinc-500 mt-1">Pilih gambar dari peranti anda untuk mengemas kini QR default.</p>
+          <div id="admin-stock-list" class="space-y-3">
+            <!-- Stock items controls generated via JS -->
+          </div>
         </div>
 
       </div>
@@ -451,7 +458,6 @@
   <script>
     // 1. EMBEDDED DEFAULT DUITNOW QR (BASE64)
     const DEFAULT_EMBEDDED_QR = "data:image/png;base64,iVBORw0KGgoAAAANSU5EQVR42u2dQW4TMRBF324yA0fIAbLAnSByBSByAs4A12B3LFiw4A7cgX8a33it/p3uqm43U1CqSCo17k531/v9e23/sO/379++fX1+/fHp/vS8/11/7fH0fHr4eX98ev/899M/P//9uP/66fnPnz8+X5/2f/vfb4/X28O3j29///3H49///v3u4fHp+/Pvj//3x7f/2sfXp5fH3+X3f/r593r++uO3+9/fXt5er6///vxz+/uX9f727f7n8ftv/+yXj+v398fj+/3992+Px2/39/df11/v99vHx8f9fvt///3+eLx///jx/X1//fr96+v19fb+/fHx8f7+/vf/++O/P3+/vb3/vf77+/3+/eX/fX3/fn37f/3268///fvtff1f/fX//3/3f//v18/19f3+8vfvL9///vb++/Xt7/3+6/vt8/v92+vX9/f/++3n1/f31+vb1++////7y/33+9vX/39//vr++fH+/evl9/v///3/+/Xj7e3+/u/7f/3//+//2////x+f/v/v39/+/fvx4/v79ev7x7evf/7+9v3n29v33+//fnv7/vP//fHx8f7++/v7+///+/v//3///fvn1+///vvfvv1++vXt/fPt+/3+9f3x+/f/v3//33777///v3z/8/vr//8vv3+/vb////f7++/v//fv3+/v33/+///39+/vx+ff//f16/vX//eP///97++/fv94/vv/7+vf397f3///vvv3//vf1+/vfv///7/f/+/fv/8/v/+8///39+/v/+/f9+/v99+f//+//v/+//3+//v35/fvx8evn/8ffv8//v//48/Pn79+f///v/z7/fP98+vv////3//v//398+Pv///v3/vv7+////f39/fvz//f/39+///vv/7+/v///f7+/v7x8e3x6+P35+///f//9/vH///+/v3++/r++v/9+/v//9/f3+8ffn7////r/78///v/+////v17+fPv/f////3/++/f/+/v///9/v//v19+ff/3/3////+///f//9+vv//+/v/++ff3///v/fvv///9/fv///3/+fv/+f3///v9/+/vv98+Pv////39/++/fvv337+/vvv///9+///v/3//fvx8///f37+/v7x9+/vx+////v/+//+/v/+8///f/+/v/+///9///7++/vvv/7+/+/v/f7//vvv/7+/////3/+////f/v/++/f3///f9+/v3++/f////3/v9+/v////f/9+vX2+/vnx/v3+/+/+/fv9/f//f/7+//v9/vv98f/7+/v9///v//f//9+//7/f/+/f3++v3/v/+//f/+/v/fvv98e///9+///+v39/fX////3+//fvv////v/99fvr4/v3+/v7+/f39/v7+/v7+//f//f//f7+/v79/v/f//f/9+vX2+/fvx8f3+vvv7+/v/f//f//f7+//vv18eP/09/f////7+//+/fv9/f39/f39///+//f/9+vX2+fX/f3+/v/f//7+/v///vv7+/v//f/+///v/39/v/++/v9/v/v18/v/v7+/v7////9+/v9/f/9+///9/f//+/3++/v9+/vx+f3////v/+//+/f//f//f7+/v9+f3////f/v/9+/Xz+/f////9+f/f7/3/v3//v/++/f/fvx9+/x9f3///v7+//9/f//+/v3///7+//f3/++/f//v38ePn6////9+///f/9+/f7+/v///f/+ff/v18///f///v7+/f//f//fvx////f/+///9+/9+/fx4+fr////37///9/f//+/3+/v////3/7///fvx/f3x9/v//f/v///9/f//7/f/v3//7/f///f///3///9+/f79///9+//+/f79/v3/v3+/+//9+//3/7/37+/f/7+/v3//v7+/v/v//9+/X////37///9/++/f7///9//3//f///37//fvh/vv9/f/+v/3////3///f/9+/f7///f7+v/09+/1////f/+///f/79/f/f79+//3/f/+ff////9/v/+vvz+//7/++/v/f3///+f////1///ff79/vv98/vvv/9+/ff///3//f/9+///7+/vvx9/v/f/+/f/+//9///3///f////9///7+/33++/vv////v7//3+/////9/v/+vvz+///7+/vv/3////3///v3//ff77/fP9+//33/7///f/+f///3///f/+v37+///3///ff7+/f////ff79/vv3///39/vv3/f3///379/++/vv9////f/+///f////7//f//9/vv/f7/f/v7//f////ff3///+f///3/7/ff/9+///v/v7+/3/////f//v3/+f///v/v///+/79/vv1+/v99+/vvv///9/f337+f/v5///9//+/3//vv/vvv9////f7+/f/3////v7//3/f3///ff/+///+f///3/7/3++/v/3///f////1/v//39+/f/5///3/v/3/v9+f//ff////39/v3++///f/+ff39///9//ff/+f37+f/9//9+f7//+f/9/v/v7///+/v9///ff/+///+n/3/9+ff39+/n//ff///f/v/ff//1/v//3/+ff/v/7//9/7//v";
-    let currentDuitNowQR = DEFAULT_EMBEDDED_QR;
 
     // 2. FIREBASE INITIALIZATION
     const firebaseConfig = {
@@ -471,14 +477,14 @@
       console.warn("Firebase fallback mode", e);
     }
 
-    // 3. INITIAL APP STATE (NOMBOR WHATSAPP & DUITNOW DAH DI-SETKAN SINI)
+    // 3. INITIAL APP STATE & DEFAULT PRODUCTS
     let storeSettings = {
       name: "Extra Joss KK",
       status: "open",
       whatsapp: "601139550544",
       duitnowId: "011-3955 0544",
       qrImage: DEFAULT_EMBEDDED_QR,
-      adminPasscode: "1234"
+      adminPasscode: "1518"
     };
 
     let products = [
@@ -490,7 +496,9 @@
         desc: "Bancuhan padu Extra Joss + Susu Pekat Manis + Ais Sejuk Segar.",
         badge: "BESTSELLER ⚡",
         flavors: ["Active (Kuning)", "Anggur (Grape)", "Mangga (Mango)"],
-        isExtraJoss: true
+        isExtraJoss: true,
+        stockStatus: "available", // 'available', 'limited', 'out'
+        stockQty: 99
       },
       {
         id: "ej-2",
@@ -500,7 +508,9 @@
         desc: "Rasa asli Extra Joss tanpa susu. Segar & memberikan tenaga maksima.",
         badge: "FRESH",
         flavors: ["Active (Kuning)", "Anggur (Grape)", "Mangga (Mango)"],
-        isExtraJoss: true
+        isExtraJoss: true,
+        stockStatus: "available",
+        stockQty: 99
       },
       {
         id: "ej-3",
@@ -510,7 +520,9 @@
         desc: "Kombinasi bergas Extra Joss + Sprite + Ais. Sangat 'kick'!",
         badge: "POPULAR 🔥",
         flavors: ["Active (Kuning)", "Anggur (Grape)"],
-        isExtraJoss: true
+        isExtraJoss: true,
+        stockStatus: "available",
+        stockQty: 99
       },
       {
         id: "ej-4",
@@ -520,7 +532,9 @@
         desc: "Extra Joss Susu ditambahi perahan lemon segar.",
         badge: "SPECIAL",
         flavors: ["Active (Kuning)", "Anggur (Grape)"],
-        isExtraJoss: true
+        isExtraJoss: true,
+        stockStatus: "available",
+        stockQty: 99
       },
       {
         id: "dr-1",
@@ -530,7 +544,9 @@
         desc: "Teh ais pekat lekat melekat, manis manis buah penenang minda.",
         badge: "BARU 🥤",
         flavors: ["Teh Ais Original", "Teh C Ais", "Teh O Ais Lemon"],
-        isExtraJoss: false
+        isExtraJoss: false,
+        stockStatus: "available",
+        stockQty: 99
       }
     ];
 
@@ -541,33 +557,42 @@
     let selectedMixPrice = 0.50;
     let selectedIce = "Ais Normal";
     let customQty = 1;
+    let currentFilterCategory = "all";
 
     // 4. LISTEN TO REALTIME CLOUD FIRESTORE
     function initRealtimeSync() {
       if (!db) {
-        renderProducts('all');
+        renderProducts(currentFilterCategory);
         updateHeaderAndQRDisplay();
         return;
       }
 
+      // Listen Store Config & Stock Real-time
       db.collection("settings").doc("store_config").onSnapshot((doc) => {
         if (doc.exists) {
           const data = doc.data();
-          // Gunakan data dari cloud jika ada, jika tidak guna default nombor di atas
           storeSettings.status = data.status || storeSettings.status;
           storeSettings.whatsapp = data.whatsapp || "601139550544";
           storeSettings.duitnowId = data.duitnowId || "011-3955 0544";
-          if (data.qrImage) {
-            storeSettings.qrImage = data.qrImage;
+          if (data.qrImage) storeSettings.qrImage = data.qrImage;
+
+          // Merge Cloud Stock Data
+          if (data.stockData) {
+            products.forEach(p => {
+              if (data.stockData[p.id]) {
+                p.stockStatus = data.stockData[p.id].stockStatus || 'available';
+                p.stockQty = data.stockData[p.id].stockQty ?? 99;
+              }
+            });
           }
         }
         updateHeaderAndQRDisplay();
+        renderProducts(currentFilterCategory);
       }, (err) => {
         console.log("Firestore note:", err);
         updateHeaderAndQRDisplay();
+        renderProducts(currentFilterCategory);
       });
-
-      renderProducts('all');
     }
 
     function updateHeaderAndQRDisplay() {
@@ -590,8 +615,9 @@
       document.getElementById('duitnow-qr-img').src = storeSettings.qrImage || DEFAULT_EMBEDDED_QR;
     }
 
-    // 5. RENDER PRODUCTS
+    // 5. RENDER PRODUCTS (DENGAN REKABENTUK STOK REALTIME)
     function renderProducts(filterCategoryName = 'all') {
+      currentFilterCategory = filterCategoryName;
       const grid = document.getElementById('product-grid');
       grid.innerHTML = '';
 
@@ -601,23 +627,37 @@
 
       filtered.forEach(p => {
         const card = document.createElement('div');
-        card.className = "bg-zinc-900/90 border border-zinc-800/80 rounded-2xl p-4 flex flex-col justify-between hover:border-zinc-700 transition-all group";
+        const isOutOfStock = p.stockStatus === 'out' || (p.stockStatus === 'limited' && p.stockQty <= 0);
+
+        card.className = `bg-zinc-900/90 border ${isOutOfStock ? 'border-red-900/50 opacity-75' : 'border-zinc-800/80'} rounded-2xl p-4 flex flex-col justify-between hover:border-zinc-700 transition-all group`;
         
+        let stockBadgeHtml = '';
+        if (p.stockStatus === 'out' || (p.stockStatus === 'limited' && p.stockQty <= 0)) {
+          stockBadgeHtml = `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-red-500/20 text-red-400 border border-red-500/30">OUT OF STOCK</span>`;
+        } else if (p.stockStatus === 'limited') {
+          stockBadgeHtml = `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30">Baki ${p.stockQty} Unit</span>`;
+        } else {
+          stockBadgeHtml = `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">ADA STOK</span>`;
+        }
+
         card.innerHTML = `
           <div>
-            <div class="flex items-center justify-between mb-1.5">
+            <div class="flex items-center justify-between mb-1.5 gap-1 flex-wrap">
               <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-joss-yellow/10 text-joss-yellow border border-joss-yellow/20">
                 ${p.badge}
               </span>
-              <span class="text-xs font-black text-white">RM ${p.price.toFixed(2)}</span>
+              ${stockBadgeHtml}
             </div>
-            <h3 class="font-extrabold text-white text-sm group-hover:text-joss-yellow transition-colors">${p.name}</h3>
+            <div class="flex justify-between items-baseline mt-1">
+              <h3 class="font-extrabold text-white text-sm group-hover:text-joss-yellow transition-colors">${p.name}</h3>
+              <span class="text-xs font-black text-white ml-2">RM ${p.price.toFixed(2)}</span>
+            </div>
             <p class="text-[11px] text-zinc-400 mt-1 leading-snug">${p.desc}</p>
           </div>
 
-          <button onclick="openCustomizeModal('${p.id}')" class="mt-4 w-full bg-zinc-800 hover:bg-joss-yellow hover:text-black text-white font-bold py-2 px-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 border border-zinc-700">
-            <i class="fa-solid fa-plus text-[10px]"></i>
-            <span>Pilih & Order</span>
+          <button onclick="openCustomizeModal('${p.id}')" ${isOutOfStock ? 'disabled' : ''} class="mt-4 w-full ${isOutOfStock ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed border-zinc-800' : 'bg-zinc-800 hover:bg-joss-yellow hover:text-black text-white border-zinc-700'} font-bold py-2 px-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 border">
+            <i class="fa-solid ${isOutOfStock ? 'fa-ban' : 'fa-plus'} text-[10px]"></i>
+            <span>${isOutOfStock ? 'Kehabisan Stok' : 'Pilih & Order'}</span>
           </button>
         `;
         grid.appendChild(card);
@@ -644,6 +684,11 @@
 
       currentCustomizingItem = products.find(p => p.id === productId);
       if (!currentCustomizingItem) return;
+
+      if (currentCustomizingItem.stockStatus === 'out' || (currentCustomizingItem.stockStatus === 'limited' && currentCustomizingItem.stockQty <= 0)) {
+        showToast('Maaf, item ini kehabisan stok!');
+        return;
+      }
 
       document.getElementById('custom-item-name').innerText = currentCustomizingItem.name;
       document.getElementById('custom-item-base-price').innerText = `Asas: RM ${currentCustomizingItem.price.toFixed(2)}`;
@@ -709,7 +754,8 @@
     }
 
     function adjustCustomQty(delta) {
-      customQty = Math.max(1, customQty + delta);
+      const maxLimit = (currentCustomizingItem.stockStatus === 'limited') ? currentCustomizingItem.stockQty : 99;
+      customQty = Math.max(1, Math.min(maxLimit, customQty + delta));
       document.getElementById('custom-qty-display').innerText = customQty;
       updateCustomizeModalTotal();
     }
@@ -836,7 +882,7 @@
       }
 
       const totals = calculateCartTotals();
-      const deliveryLabel = deliveryType === 'room' ? 'Hantar Ke Bilik (+RM0.50)' : 'Lobby / Guard KK (FREE)';
+      const deliveryLabel = deliveryType === 'room' ? 'Hantar Ke Bilik (+RM1.00)' : 'Lobby / Guard KK (FREE)';
 
       let itemsText = "";
       cart.forEach((item, idx) => {
@@ -849,7 +895,7 @@
 
       // Construct WhatsApp message with reminder
       let msg = `⚡ *PESANAN BARU EXTRA JOSS KK* ⚡\n\n`;
-      msg += `👤 *DETAILS ORDER*\n`;
+      msg += `👤 *MAKLUMAT PELAJAR*\n`;
       msg += `• Nama: ${name}\n`;
       msg += `• Kolej Kediaman: ${kk}\n`;
       msg += `• Blok & Bilik: ${room}\n`;
@@ -867,14 +913,13 @@
       msg += `⚠️ *PERINGATAN:* Sila attach/hantar resit pembayaran DuitNow anda di WhatsApp ini selepas tekan hantar! Terima kasih!`;
 
       const encodedMsg = encodeURIComponent(msg);
-      // DIRECT TERUS KE NOMBOR WHATSAPP ANDA
       const targetPhone = "601139550544";
       const waUrl = `https://wa.me/${targetPhone}?text=${encodedMsg}`;
 
       window.open(waUrl, '_blank');
     }
 
-    // 9. ADMIN PANEL & AUTH LOGIC
+    // 9. ADMIN PANEL & AUTH LOGIC (WITH STOCK CONTROLS)
     function openAdminAuthModal() {
       document.getElementById('admin-passcode-input').value = '';
       document.getElementById('admin-auth-modal').classList.remove('hidden');
@@ -901,7 +946,53 @@
       document.getElementById('admin-whatsapp-num').value = storeSettings.whatsapp || '601139550544';
       document.getElementById('admin-duitnow-id').value = storeSettings.duitnowId || '011-3955 0544';
       
+      // Render Stock Controls
+      renderAdminStockList();
+
       document.getElementById('admin-panel-modal').classList.remove('hidden');
+    }
+
+    function renderAdminStockList() {
+      const container = document.getElementById('admin-stock-list');
+      container.innerHTML = '';
+
+      products.forEach(p => {
+        const div = document.createElement('div');
+        div.className = "bg-zinc-950 border border-zinc-800 p-3 rounded-xl space-y-2";
+        div.innerHTML = `
+          <div class="flex justify-between items-center font-bold text-white text-xs">
+            <span>${p.name}</span>
+            <span class="text-zinc-500 font-normal">ID: ${p.id}</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[10px] text-zinc-400 mb-0.5">Status Stok</label>
+              <select id="stock-status-${p.id}" onchange="toggleQtyInput('${p.id}')" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-white text-xs">
+                <option value="available" ${p.stockStatus === 'available' ? 'selected' : ''}>🟢 Ada Stok</option>
+                <option value="limited" ${p.stockStatus === 'limited' ? 'selected' : ''}>🟠 Stok Terhad (Qty)</option>
+                <option value="out" ${p.stockStatus === 'out' ? 'selected' : ''}>🔴 Kehabisan Stok</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[10px] text-zinc-400 mb-0.5">Kuantiti Baki</label>
+              <input type="number" id="stock-qty-${p.id}" value="${p.stockQty ?? 99}" min="0" ${p.stockStatus !== 'limited' ? 'disabled' : ''} class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-white text-xs disabled:opacity-40">
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function toggleQtyInput(productId) {
+      const statusVal = document.getElementById(`stock-status-${productId}`).value;
+      const qtyInput = document.getElementById(`stock-qty-${productId}`);
+      if (statusVal === 'limited') {
+        qtyInput.disabled = false;
+      } else {
+        qtyInput.disabled = true;
+      }
     }
 
     function closeAdminPanelModal() {
@@ -914,7 +1005,23 @@
       const duitnowId = document.getElementById('admin-duitnow-id').value.trim() || "011-3955 0544";
       const fileInput = document.getElementById('admin-qr-file-input');
 
-      const updateData = { status, whatsapp, duitnowId };
+      // Collect Stock Object
+      const stockData = {};
+      products.forEach(p => {
+        const statusVal = document.getElementById(`stock-status-${p.id}`).value;
+        const qtyVal = parseInt(document.getElementById(`stock-qty-${p.id}`).value) || 0;
+        
+        stockData[p.id] = {
+          stockStatus: statusVal,
+          stockQty: qtyVal
+        };
+
+        // Local update
+        p.stockStatus = statusVal;
+        p.stockQty = qtyVal;
+      });
+
+      const updateData = { status, whatsapp, duitnowId, stockData };
 
       if (fileInput.files && fileInput.files[0]) {
         const reader = new FileReader();
@@ -932,8 +1039,9 @@
       if (db) {
         db.collection("settings").doc("store_config").set(data, { merge: true })
           .then(() => {
-            showToast('Tetapan dikemaskini ke Cloud!');
+            showToast('Tetapan & stok dikemaskini ke Cloud!');
             closeAdminPanelModal();
+            renderProducts(currentFilterCategory);
           })
           .catch((err) => {
             console.error("Firestore Save Error:", err);
@@ -942,6 +1050,7 @@
       } else {
         storeSettings = { ...storeSettings, ...data };
         updateHeaderAndQRDisplay();
+        renderProducts(currentFilterCategory);
         closeAdminPanelModal();
         showToast('Tetapan disimpan secara tempatan.');
       }
