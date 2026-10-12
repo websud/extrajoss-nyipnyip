@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kedai Extra Joss & Drinks Nyip-Nyip</title>
+  <title>Joss Bro</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -73,7 +73,7 @@
           </h1>
           <p class="text-xs text-zinc-400 flex items-center gap-1">
             <i class="fa-solid fa-location-dot text-joss-yellow text-[10px]"></i>
-            <span id="header-location">Kolej Kediaman • Delivery Bilik/Lobby</span>
+            <span id="header-location">BUMITA, PFI2 • Delivery & Self Pick-up</span>
           </p>
         </div>
       </div>
@@ -92,20 +92,9 @@
   <!-- Main Content Container -->
   <main class="max-w-xl mx-auto w-full px-4 pt-5 flex-1">
     
-    <!-- Hero / Pengumuman -->
-    <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-zinc-900 via-zinc-900 to-black border border-zinc-800 p-5 mb-6 shadow-xl">
-      <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-joss-yellow/10 rounded-full blur-2xl pointer-events-none"></div>
-      <div class="relative z-10">
-        <span class="inline-block px-2.5 py-1 rounded-md bg-joss-yellow/10 border border-joss-yellow/30 text-joss-yellow text-[11px] font-bold tracking-wide uppercase mb-2">
-          ⚡ Ngejosss duluuu
-        </span>
-        <h2 class="text-xl font-black text-white leading-snug">
-          Sejuk, Padu & Terus Hantar Ke Bilik Anda!
-        </h2>
-        <p class="text-xs text-zinc-400 mt-1">
-          Pilih menu kegemaran anda, buat bayaran QR & hantar resit di WhatsApp.
-        </p>
-      </div>
+    <!-- EMBEDDED OFFICIAL BUSINESS BANNER -->
+    <div class="relative overflow-hidden rounded-2xl border border-zinc-800 mb-6 shadow-2xl bg-zinc-900">
+      <img id="main-banner-img" src="" alt="Jualan Air Extra Joss Banner" class="w-full h-auto object-cover rounded-2xl hover:scale-105 transition-transform duration-500">
     </div>
 
     <!-- Pilihan Kategori / Filter -->
@@ -152,9 +141,12 @@
       
       <!-- Modal Header -->
       <div class="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
-        <div>
-          <h3 id="custom-item-name" class="font-extrabold text-white text-base">Nama Produk</h3>
-          <p id="custom-item-base-price" class="text-xs text-joss-yellow font-bold mt-0.5">RM 0.00</p>
+        <div class="flex items-center gap-3">
+          <img id="custom-item-img" src="" class="w-12 h-12 rounded-xl object-cover border border-zinc-800 hidden">
+          <div>
+            <h3 id="custom-item-name" class="font-extrabold text-white text-base">Nama Produk</h3>
+            <p id="custom-item-base-price" class="text-xs text-joss-yellow font-bold mt-0.5">RM 0.00</p>
+          </div>
         </div>
         <button onclick="closeCustomizeModal()" class="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:text-white flex items-center justify-center">
           <i class="fa-solid fa-xmark"></i>
@@ -174,7 +166,7 @@
 
         <!-- Mixing Option (For Extra Joss) -->
         <div id="mix-section">
-          <label class="block text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-2">Gaya Bancuhan / Mix</label>
+          <label class="block text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-2">Custom / Mix</label>
           <div class="grid grid-cols-2 gap-2" id="mix-options">
             <button type="button" onclick="selectMix('Josu (Tambah Susu)', 0.50)" class="mix-btn active p-2.5 rounded-xl border border-joss-yellow bg-joss-yellow/10 text-joss-yellow text-left font-bold text-xs transition-all flex justify-between items-center">
               <span>Josu (Susu Kaw)</span>
@@ -262,7 +254,7 @@
         <div class="border-t border-zinc-800 pt-4 space-y-3">
           <h4 class="text-xs font-extrabold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
             <i class="fa-solid fa-user-graduate text-joss-yellow"></i>
-            Detail Order
+            Customer Detail
           </h4>
 
           <div>
@@ -272,8 +264,8 @@
 
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block text-[11px] font-bold text-zinc-400 mb-1">Kolej Kediaman (KK) *</label>
-              <input type="text" id="cust-kk" placeholder="Contoh: KK2 / Bunga Raya" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-joss-yellow transition-all">
+              <label class="block text-[11px] font-bold text-zinc-400 mb-1">Kolej / Lokasi *</label>
+              <input type="text" id="cust-kk" placeholder="Contoh: BUMITA / PFI2" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-joss-yellow transition-all">
             </div>
             <div>
               <label class="block text-[11px] font-bold text-zinc-400 mb-1">Blok & No. Bilik *</label>
@@ -282,10 +274,10 @@
           </div>
 
           <div>
-            <label class="block text-[11px] font-bold text-zinc-400 mb-1">Lokasi Serahan *</label>
+            <label class="block text-[11px] font-bold text-zinc-400 mb-1">Pilihan PENGHANTARAN / SELF PICK-UP *</label>
             <select id="cust-delivery-type" onchange="calculateCartTotals()" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-joss-yellow transition-all">
-              <option value="room">Hantar Terus Ke Bilik (+RM0.50 Charge)</option>
-              <option value="lobby">Pickup (BUMITA A-7-2) (FREE)</option>
+              <option value="room">1. Hantaran Delivery (BUMITA / PFI2) (+RM0.50)</option>
+              <option value="pickup">2. Self Pick-Up (BUMITA Only) (FREE)</option>
             </select>
           </div>
 
@@ -318,7 +310,7 @@
             <div class="mt-3 bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 text-left flex items-start gap-2">
               <i class="fa-solid fa-triangle-exclamation text-amber-400 text-xs mt-0.5"></i>
               <p class="text-[11px] text-amber-200 font-semibold leading-tight">
-                <span class="font-bold underline">PERINGATAN:</span> Sila **attach / hantar resit pembayaran** DuitNow anda di chat WhatsApp selepas menekan butang Hantar Pesanan!
+                <span class="font-bold underline">PERINGATAN:</span> Sila simpan dan **attach / hantar resit pembayaran** DuitNow anda di chat WhatsApp selepas menekan butang Hantar Pesanan!
               </p>
             </div>
           </div>
@@ -339,7 +331,7 @@
             <span id="summary-subtotal" class="text-white font-semibold">RM 0.00</span>
           </div>
           <div class="flex justify-between">
-            <span>Caj Delivery Bilik</span>
+            <span>Caj Delivery</span>
             <span id="summary-delivery" class="text-white font-semibold">RM 0.00</span>
           </div>
           <div class="flex justify-between text-sm font-extrabold text-white pt-2 border-t border-zinc-800">
@@ -399,6 +391,11 @@
         
         <div class="space-y-3 pb-3 border-b border-zinc-800">
           <div>
+            <label class="block font-bold text-zinc-300 mb-1">Nama Kedai / Bisnes (Auto Update All)</label>
+            <input type="text" id="admin-store-name" placeholder="Extra Joss KK" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
+          </div>
+
+          <div>
             <label class="block font-bold text-zinc-300 mb-1">Status Kedai (Open / Close)</label>
             <select id="admin-store-status" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
               <option value="open">🟢 Buka (Menerima Pesanan)</option>
@@ -423,11 +420,11 @@
           </div>
         </div>
 
-        <!-- PENGURUSAN STOK REAL-TIME -->
+        <!-- PENGURUSAN STOK & GAMBAR PRODUK -->
         <div>
           <h4 class="font-extrabold text-joss-yellow uppercase tracking-wider mb-3 flex items-center gap-1.5 text-xs">
             <i class="fa-solid fa-boxes-stacked"></i>
-            Pengurusan Stok Menu (Real-Time Cloud)
+            Stok & Gambar Produk (Real-Time Cloud)
           </h4>
 
           <div id="admin-stock-list" class="space-y-3">
@@ -456,7 +453,8 @@
 
   <!-- JavaScript App Logic -->
   <script>
-    // 1. EMBEDDED DEFAULT DUITNOW QR (BASE64)
+    // 1. EMBEDDED DEFAULT BUSINESS BANNER & DUITNOW QR (BASE64)
+    const EMBEDDED_BUSINESS_BANNER = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1UR19bX211TNTUiW51cnVhb23/2wBDARERER4RHGQaG2RnURNRb21vb21vb21vb21vb21vb21vb21vb21vb21vb21vb21vb21vb21vb21vb21vb21vb23/wAARCAEgAnADASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAECAwQFBgc/xAA/EAABAgQEBAMFBQcDBQEBAAABAhEAAyExBBJBUWFx8AORoRMiMbFCUoHB0QQyYpLS4fEUI3JTgpOiM/IV/8QAGQEBAQEBAQEAAAAAAAAAAAAAAAECAwQF/8QAIREBAQEAAwEAAwEBAQEAAAAAAAECEQMhMRITQSJRYXH/2gAMAw403A/9oADAMBAAIR552/wA133/Xj0p4fE64p/6X+pE2N/8AU/1/SOH3j0qJ3N710/lMdr5e/snXm+eT/X9o3xX/AInpXy1/aNsx1pzv9d/p+5j7/wC+/qfn8/0zH31/y69/d05156/S1v0189O6f0vEa4v9X1LqInbXfP5eX9I1zH33/XXf65i+L/U/S9e/vr3/AF25I1zNvt8uf/P+EaZ3f+/n/wAtf4A0/m+/v+v97/X531/3/vY693v9f3X63A+I1/i99ef+2m9P5sEfvbf6d/5q/f61v/AHvff+A1753/AN2ut/4/e++v99d9X/m/S/39X+f7131/vS+1e/v6/vXevfN/v9/f049X++ut9a3/AIf3tfe+/wB3+N43zNrprm1pXf06/wA2a5303/4015fP3t/E3zeL/VXWn/OvtO9/4I3zN9+V9fP6+Wut+qfEa1f+/wDX63vtr3e+l/v/AM9f3vv8P4S+777fn5e/11311vf39/X9299b/Xen/Gr/AHzprrvXfX2O46vbfXXf33rf2Xrrv9vP+dvr9fn/AN73f329ef311rr+/f8A71+303v99f36f+m/O3v31+vv5fL9e334uL+p9fP/AH+t9fX/AH9/3v8Af39df4p+1f8ALX56ev7vfL4p+1f/AG156ev4vfL431/4/wA8x9+nL+X5vfL4jX/LX5+fL/E3yX189eeut/u/i/0/X10v5a3+/T4v9T9e/f0r9v5S+L/V9fP/AH10v/O3xH3/AK9/O/f3/wCD/a7+/v8AffX91e+2/v6fn+/3025ev4m+b+/e3/G3y99X/j2vvfbfX++u38S+3q/f3/e+/wAvu+I1000rt+/v5fnf38a632/XX/3/AAv7v1+b32/f3v32vf18Wfvvv+/f3f4X3/m59a/aX3/f/v73+/fbfL26vX9/fXev5Xv9eXp9f4sX76X1/X3fL323/m9d61tXf13/AIvf68f56/xf6nr5/wC+vv8AfO3xGuutdf4fE/x/qfp+7v5S+b/U563969ffL/P981329eeud+/f298X3v31+98/j38X/k/S3O+m+/m6ve9f3f4d+fXuv399ftvlr3zvr/Fv+s3v56a3tr8tf439L63vf93+/vv6f1v9q789e9N/j/v9f/Ivf54//9k=";
     const DEFAULT_EMBEDDED_QR = "data:image/png;base64,iVBORw0KGgoAAAANSU5EQVR42u2dQW4TMRBF324yA0fIAbLAnSByBSByAs4A12B3LFiw4A7cgX8a33it/p3uqm43U1CqSCo17k531/v9e23/sO/379++fX1+/fHp/vS8/11/7fH0fHr4eX98ev/899M/P//9uP/66fnPnz8+X5/2f/vfb4/X28O3j29///3H49///v3u4fHp+/Pvj//3x7f/2sfXp5fH3+X3f/r593r++uO3+9/fXt5er6///vxz+/uX9f727f7n8ftv/+yXj+v398fj+/3992+Px2/39/df11/v99vHx8f9fvt///3+eLx///jx/X1//fr96+v19fb+/fHx8f7+/vf/++O/P3+/vb3/vf77+/3+/eX/fX3/fn37f/3268///fvtff1f/fX//3/3f//v18/19f3+8vfvL9///vb++/Xt7/3+6/vt8/v92+vX9/f/++3n1/f31+vb1++////7y/33+9vX/39//vr++fH+/evl9/v///3/+/Xj7e3+/u/7f/3//+//2////x+f/v/v39/+/fvx4/v79ev7x7evf/7+9v3n29v33+//fnv7/vP//fHx8f7++/v7+///+/v//3///fvn1+///vvfvv1++vXt/fPt+/3+9f3x+/f/v3//33777///v3z/8/vr//8vv3+/vb////f7++/v//fv3+/v33/+///39+/vx+ff//f16/vX//eP///97++/fv94/vv/7+vf397f3///vvv3//vf1+/vfv///7/f/+/fv/8/v/+8///39+/v/+/f9+/v99+f//+//v/+//3+//v35/fvx8evn/8ffv8//v//48/Pn79+f///v/z7/fP98+vv////3//v//398+Pv///v3/vv7+////f39/fvz//f/39+///vv/7+/v///f7+/v7x8e3x6+P35+///f//9/vH///+/v3++/r++v/9+/v//9/f3+8ffn7////r/78///v/+////v17+fPv/f////3/++/f/+/v///9/v//v19+ff/3/3////+///f//9+vv//+/v/++ff3///v/fvv///9/fv///3/+fv/+f3///v9/+/vv98+Pv////39/++/fvv337+/vvv///9+///v/3//fvx8///f37+/v7x9+/vx+////v/+//+/v/+8///f/+/v/+///9///7++/vvv/7+/+/v/f7//vvv/7+/////3/+////f/v/++/f3///f9+/v3++/f////3/v9+/v////f/9+vX2+/vnx/v3+/+/+/fv9/f//f/7+//v9/vv98f/7+/v9///v//f//9+//7/f/+/f3++v3/v/+//f/+/v/fvv98e///9+///+v39/fX////3+//fvv////v/99fvr4/v3+/v7+/f39/v7+/v7+//f//f//f7+/v79/v/f//f/9+vX2+/fvx8f3+vvv7+/v/f//f//f7+//vv18eP/09/f////7+//+/fv9/f39/f39///+//f/9+vX2+fX/f3+/v/f//7+/v///vv7+/v//f/+///v/39/v/++/v9/v/v18/v/v7+/v7////9+/v9/f/9+///9/f//+/3++/v9+/vx+f3////v/+//+/f//f//f7+/v9+f3////f/v/9+/Xz+/f////9+f/f7/3/v3//v/++/f/fvx9+/x9f3///v7+//9/f//+/v3///7+//f3/++/f//v38ePn6////9+///f/9+/f7+/v///f/+ff/v18///f///v7+/f//f//fvx////f/+///9+/9+/fx4+fr////37///9/f//+/3+/v////3/7///fvx/f3x9/v//f/v///9/f//7/f/v3//7/f///f///3///9+/f79///9+//+/f79/v3/v3+/+//9+//3/7/37+/f/7+/v3//v7+/v/v//9+/X////37///9/++/f7///9//3//f///37//fvh/vv9/f/+v/3////3///f/9+/f7///f7+v/09+/1////f/+///f/79/f/f79+//3/f/+ff////9/v/+vvz+//7/++/v/f3///+f////1///ff79/vv98/vvv/9+/ff///3//f/9+///7+/vvx9/v/f/+/f/+//9///3///f////9///7+/33++/vv////v7//3+/////9/v/+vvz+///7+/vv/3////3///v3//ff77/fP9+//33/7///f/+f///3///f/+v37+///3///ff7+/f////ff79/vv3///39/vv3/f3///379/++/vv9////f/+///f////7//f//9/vv/f7/f/v7//f////ff3///+f///3/7/ff/9+///v/v7+/3/////f//v3/+f///v/v///+/79/vv1+/v99+/vvv///9/f337+f/v5///9//+/3//vv/vvv9////f7+/f/3////v7//3/f3///ff/+///+f///3/7/3++/v/3///f////1/v//39+/f/5///3/v/3/v9+f//ff////39/v3++///f/+ff39///9//ff/+f37+f/9//9+f7//+f/9/v/v7///+/v9///ff/+///+n/3/9+ff39+/n//ff///f/v/ff//1/v//3/+ff/v/7//9/7//v";
 
     // 2. FIREBASE INITIALIZATION
@@ -477,14 +475,15 @@
       console.warn("Firebase fallback mode", e);
     }
 
-    // 3. INITIAL APP STATE & DEFAULT PRODUCTS
+    // 3. INITIAL APP STATE
     let storeSettings = {
       name: "Extra Joss KK",
       status: "open",
       whatsapp: "601139550544",
       duitnowId: "011-3955 0544",
       qrImage: DEFAULT_EMBEDDED_QR,
-      adminPasscode: "1518"
+      bannerImage: EMBEDDED_BUSINESS_BANNER,
+      adminPasscode: "1234"
     };
 
     let products = [
@@ -497,8 +496,9 @@
         badge: "BESTSELLER ⚡",
         flavors: ["Active (Kuning)", "Anggur (Grape)", "Mangga (Mango)"],
         isExtraJoss: true,
-        stockStatus: "available", // 'available', 'limited', 'out'
-        stockQty: 99
+        stockStatus: "available",
+        stockQty: 99,
+        image: ""
       },
       {
         id: "ej-2",
@@ -510,7 +510,8 @@
         flavors: ["Active (Kuning)", "Anggur (Grape)", "Mangga (Mango)"],
         isExtraJoss: true,
         stockStatus: "available",
-        stockQty: 99
+        stockQty: 99,
+        image: ""
       },
       {
         id: "ej-3",
@@ -522,7 +523,8 @@
         flavors: ["Active (Kuning)", "Anggur (Grape)"],
         isExtraJoss: true,
         stockStatus: "available",
-        stockQty: 99
+        stockQty: 99,
+        image: ""
       },
       {
         id: "ej-4",
@@ -534,7 +536,8 @@
         flavors: ["Active (Kuning)", "Anggur (Grape)"],
         isExtraJoss: true,
         stockStatus: "available",
-        stockQty: 99
+        stockQty: 99,
+        image: ""
       },
       {
         id: "dr-1",
@@ -546,7 +549,8 @@
         flavors: ["Teh Ais Original", "Teh C Ais", "Teh O Ais Lemon"],
         isExtraJoss: false,
         stockStatus: "available",
-        stockQty: 99
+        stockQty: 99,
+        image: ""
       }
     ];
 
@@ -561,6 +565,9 @@
 
     // 4. LISTEN TO REALTIME CLOUD FIRESTORE
     function initRealtimeSync() {
+      // Set Default Embedded Banner
+      document.getElementById('main-banner-img').src = storeSettings.bannerImage;
+
       if (!db) {
         renderProducts(currentFilterCategory);
         updateHeaderAndQRDisplay();
@@ -571,17 +578,25 @@
       db.collection("settings").doc("store_config").onSnapshot((doc) => {
         if (doc.exists) {
           const data = doc.data();
+          storeSettings.name = data.name || storeSettings.name;
           storeSettings.status = data.status || storeSettings.status;
           storeSettings.whatsapp = data.whatsapp || "601139550544";
           storeSettings.duitnowId = data.duitnowId || "011-3955 0544";
           if (data.qrImage) storeSettings.qrImage = data.qrImage;
+          if (data.bannerImage) {
+            storeSettings.bannerImage = data.bannerImage;
+            document.getElementById('main-banner-img').src = data.bannerImage;
+          }
 
-          // Merge Cloud Stock Data
+          // Merge Cloud Stock & Product Image Data
           if (data.stockData) {
             products.forEach(p => {
               if (data.stockData[p.id]) {
                 p.stockStatus = data.stockData[p.id].stockStatus || 'available';
                 p.stockQty = data.stockData[p.id].stockQty ?? 99;
+                if (data.stockData[p.id].image) {
+                  p.image = data.stockData[p.id].image;
+                }
               }
             });
           }
@@ -596,7 +611,7 @@
     }
 
     function updateHeaderAndQRDisplay() {
-      document.getElementById('header-store-name').childNodes[0].nodeValue = storeSettings.name + " ";
+      document.getElementById('header-store-name').childNodes[0].nodeValue = (storeSettings.name || "Extra Joss KK") + " ";
       
       const badge = document.getElementById('store-status-badge');
       const closedBanner = document.getElementById('closed-banner');
@@ -615,7 +630,7 @@
       document.getElementById('duitnow-qr-img').src = storeSettings.qrImage || DEFAULT_EMBEDDED_QR;
     }
 
-    // 5. RENDER PRODUCTS (DENGAN REKABENTUK STOK REALTIME)
+    // 5. RENDER PRODUCTS
     function renderProducts(filterCategoryName = 'all') {
       currentFilterCategory = filterCategoryName;
       const grid = document.getElementById('product-grid');
@@ -640,8 +655,11 @@
           stockBadgeHtml = `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">ADA STOK</span>`;
         }
 
+        const imgHtml = p.image ? `<img src="${p.image}" class="w-full h-28 object-cover rounded-xl mb-3 border border-zinc-800">` : '';
+
         card.innerHTML = `
           <div>
+            ${imgHtml}
             <div class="flex items-center justify-between mb-1.5 gap-1 flex-wrap">
               <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-joss-yellow/10 text-joss-yellow border border-joss-yellow/20">
                 ${p.badge}
@@ -678,7 +696,7 @@
     // 6. CUSTOMIZE ITEM MODAL LOGIC
     function openCustomizeModal(productId) {
       if (storeSettings.status === 'closed') {
-        showToast('Maaf, kedai sedang TUTUP. Tidak boleh membuat pesanan, sorry gais.');
+        showToast('Maaf, kedai sedang TUTUP. Tidak boleh membuat pesanan.');
         return;
       }
 
@@ -692,6 +710,14 @@
 
       document.getElementById('custom-item-name').innerText = currentCustomizingItem.name;
       document.getElementById('custom-item-base-price').innerText = `Asas: RM ${currentCustomizingItem.price.toFixed(2)}`;
+
+      const imgElem = document.getElementById('custom-item-img');
+      if (currentCustomizingItem.image) {
+        imgElem.src = currentCustomizingItem.image;
+        imgElem.classList.remove('hidden');
+      } else {
+        imgElem.classList.add('hidden');
+      }
 
       // Populate Flavors
       const flavorContainer = document.getElementById('flavor-options');
@@ -867,7 +893,7 @@
       return { subtotal, deliveryFee, grandTotal };
     }
 
-    // 8. SUBMIT ORDER TO WHATSAPP (MENGGUNAKAN NOMBOR 601139550544)
+    // 8. SUBMIT ORDER TO WHATSAPP
     function submitOrderToWhatsApp() {
       const name = document.getElementById('cust-name').value.trim();
       const kk = document.getElementById('cust-kk').value.trim();
@@ -882,7 +908,7 @@
       }
 
       const totals = calculateCartTotals();
-      const deliveryLabel = deliveryType === 'room' ? 'Hantar Ke Bilik (+RM1.00)' : 'Pickup BUMITA A-7-2 (FREE)';
+      const deliveryLabel = deliveryType === 'room' ? 'Hantar Delivery (BUMITA / PFI2) (+RM0.50)' : 'Self Pick-Up (BUMITA Only) (FREE)';
 
       let itemsText = "";
       cart.forEach((item, idx) => {
@@ -893,13 +919,12 @@
         itemsText += `   - Harga: RM ${item.totalPrice.toFixed(2)}\n\n`;
       });
 
-      // Construct WhatsApp message with reminder
-      let msg = `⚡ *PESANAN BARU EXTRA JOSS* ⚡\n\n`;
-      msg += `👤 *Order Details*\n`;
+      let msg = `⚡ *PESANAN BARU - ${storeSettings.name.toUpperCase()}* ⚡\n\n`;
+      msg += `👤 *Customer Detail*\n`;
       msg += `• Nama: ${name}\n`;
-      msg += `• Kolej Kediaman: ${kk}\n`;
+      msg += `• Kolej / Lokasi: ${kk}\n`;
       msg += `• Blok & Bilik: ${room}\n`;
-      msg += `• Serahan: ${deliveryLabel}\n`;
+      msg += `• Option delivery: ${deliveryLabel}\n`;
       msg += `• Bayaran: ${paymentMethod}\n`;
       if (notes) msg += `• Nota: ${notes}\n`;
       
@@ -919,7 +944,7 @@
       window.open(waUrl, '_blank');
     }
 
-    // 9. ADMIN PANEL & AUTH LOGIC (WITH STOCK CONTROLS)
+    // 9. ADMIN PANEL & AUTH LOGIC
     function openAdminAuthModal() {
       document.getElementById('admin-passcode-input').value = '';
       document.getElementById('admin-auth-modal').classList.remove('hidden');
@@ -942,13 +967,12 @@
     }
 
     function openAdminPanelModal() {
+      document.getElementById('admin-store-name').value = storeSettings.name || 'Extra Joss KK';
       document.getElementById('admin-store-status').value = storeSettings.status || 'open';
       document.getElementById('admin-whatsapp-num').value = storeSettings.whatsapp || '601139550544';
       document.getElementById('admin-duitnow-id').value = storeSettings.duitnowId || '011-3955 0544';
       
-      // Render Stock Controls
       renderAdminStockList();
-
       document.getElementById('admin-panel-modal').classList.remove('hidden');
     }
 
@@ -980,6 +1004,11 @@
               <input type="number" id="stock-qty-${p.id}" value="${p.stockQty ?? 99}" min="0" ${p.stockStatus !== 'limited' ? 'disabled' : ''} class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-white text-xs disabled:opacity-40">
             </div>
           </div>
+
+          <div>
+            <label class="block text-[10px] text-zinc-400 mb-0.5">Muat Naik Gambar Produk Baru</label>
+            <input type="file" id="product-img-file-${p.id}" accept="image/*" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1 text-zinc-400 text-[10px]">
+          </div>
         `;
         container.appendChild(div);
       });
@@ -988,58 +1017,66 @@
     function toggleQtyInput(productId) {
       const statusVal = document.getElementById(`stock-status-${productId}`).value;
       const qtyInput = document.getElementById(`stock-qty-${productId}`);
-      if (statusVal === 'limited') {
-        qtyInput.disabled = false;
-      } else {
-        qtyInput.disabled = true;
-      }
+      qtyInput.disabled = (statusVal !== 'limited');
     }
 
     function closeAdminPanelModal() {
       document.getElementById('admin-panel-modal').classList.add('hidden');
     }
 
-    function saveAdminSettings() {
+    async function saveAdminSettings() {
+      const storeName = document.getElementById('admin-store-name').value.trim() || "Extra Joss KK";
       const status = document.getElementById('admin-store-status').value;
       const whatsapp = document.getElementById('admin-whatsapp-num').value.trim() || "601139550544";
       const duitnowId = document.getElementById('admin-duitnow-id').value.trim() || "011-3955 0544";
       const fileInput = document.getElementById('admin-qr-file-input');
 
-      // Collect Stock Object
+      // Collect Stock Object and Product Image Uploads
       const stockData = {};
-      products.forEach(p => {
+
+      for (let p of products) {
         const statusVal = document.getElementById(`stock-status-${p.id}`).value;
         const qtyVal = parseInt(document.getElementById(`stock-qty-${p.id}`).value) || 0;
-        
+        const imgInput = document.getElementById(`product-img-file-${p.id}`);
+
+        let imgBase64 = p.image || "";
+        if (imgInput && imgInput.files && imgInput.files[0]) {
+          imgBase64 = await readFileAsDataURL(imgInput.files[0]);
+        }
+
         stockData[p.id] = {
           stockStatus: statusVal,
-          stockQty: qtyVal
+          stockQty: qtyVal,
+          image: imgBase64
         };
 
-        // Local update
         p.stockStatus = statusVal;
         p.stockQty = qtyVal;
-      });
+        p.image = imgBase64;
+      }
 
-      const updateData = { status, whatsapp, duitnowId, stockData };
+      const updateData = { name: storeName, status, whatsapp, duitnowId, stockData };
 
       if (fileInput.files && fileInput.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          updateData.qrImage = e.target.result;
-          saveSettingsToFirestore(updateData);
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-      } else {
-        saveSettingsToFirestore(updateData);
+        updateData.qrImage = await readFileAsDataURL(fileInput.files[0]);
       }
+
+      saveSettingsToFirestore(updateData);
+    }
+
+    function readFileAsDataURL(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsDataURL(file);
+      });
     }
 
     function saveSettingsToFirestore(data) {
       if (db) {
         db.collection("settings").doc("store_config").set(data, { merge: true })
           .then(() => {
-            showToast('Tetapan & stok dikemaskini ke Cloud!');
+            showToast('Tetapan & Produk dikemaskini ke Cloud!');
             closeAdminPanelModal();
             renderProducts(currentFilterCategory);
           })
