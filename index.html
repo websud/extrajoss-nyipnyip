@@ -97,7 +97,7 @@
       <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-joss-yellow/10 rounded-full blur-2xl pointer-events-none"></div>
       <div class="relative z-10">
         <span class="inline-block px-2.5 py-1 rounded-md bg-joss-yellow/10 border border-joss-yellow/30 text-joss-yellow text-[11px] font-bold tracking-wide uppercase mb-2">
-          ⚡ Penambah Tenaga KK
+          ⚡ Ngejosss duluuu
         </span>
         <h2 class="text-xl font-black text-white leading-snug">
           Sejuk, Padu & Terus Hantar Ke Bilik Anda!
@@ -678,7 +678,7 @@
     // 6. CUSTOMIZE ITEM MODAL LOGIC
     function openCustomizeModal(productId) {
       if (storeSettings.status === 'closed') {
-        showToast('Maaf, kedai sedang TUTUP. Tidak boleh membuat pesanan.');
+        showToast('Maaf, kedai sedang TUTUP. Tidak boleh membuat pesanan, sorry gais.');
         return;
       }
 
@@ -882,7 +882,7 @@
       }
 
       const totals = calculateCartTotals();
-      const deliveryLabel = deliveryType === 'room' ? 'Hantar Ke Bilik (+RM1.00)' : 'Lobby / Guard KK (FREE)';
+      const deliveryLabel = deliveryType === 'room' ? 'Hantar Ke Bilik (+RM1.00)' : 'Pickup BUMITA A-7-2 (FREE)';
 
       let itemsText = "";
       cart.forEach((item, idx) => {
@@ -894,8 +894,8 @@
       });
 
       // Construct WhatsApp message with reminder
-      let msg = `⚡ *PESANAN BARU EXTRA JOSS KK* ⚡\n\n`;
-      msg += `👤 *MAKLUMAT PELAJAR*\n`;
+      let msg = `⚡ *PESANAN BARU EXTRA JOSS* ⚡\n\n`;
+      msg += `👤 *Order Details*\n`;
       msg += `• Nama: ${name}\n`;
       msg += `• Kolej Kediaman: ${kk}\n`;
       msg += `• Blok & Bilik: ${room}\n`;
