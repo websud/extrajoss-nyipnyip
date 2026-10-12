@@ -521,7 +521,7 @@
                 <!-- No DuitNow Phone -->
                 <div>
                     <label class="block font-bold text-slate-300 mb-1">Nombor Telefon DuitNow Vendor</label>
-                    <input type="text" id="cfgDuitNowId" placeholder="012-345 6789" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:ring-1 focus:ring-amber-400">
+                    <input type="text" id="cfgDuitNowId" placeholder="0166257902" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:ring-1 focus:ring-amber-400">
                 </div>
 
                 <!-- Upload QR Code Gambar Dari Peranti -->
@@ -596,7 +596,7 @@
                 authDomain: "demo-app.firebaseapp.com",
                 projectId: "demo-app-id",
                 storageBucket: "demo-app.appspot.com",
-                messagingSenderId: "1234567890",
+                messagingSenderId: "0166257902",
                 appId: "1:1234567890:web:demo123456"
               };
 
@@ -667,7 +667,7 @@
         // Global Window State Object
         window.state = {
             merchant: {
-                phone: '60123456789',
+                phone: '60166257902',
                 duitNowId: '012-345 6789',
                 deliveryFee: 1.00,
                 isOpen: true,
@@ -1174,14 +1174,14 @@
                 msg += `_(Resit bayaran disertakan dalam sembang WhatsApp ini)_`;
             }
 
-            const vendorPhone = window.state.merchant.phone || '60123456789';
+            const vendorPhone = window.state.merchant.phone || '60166257902';
             const encodedMsg = encodeURIComponent(msg);
             window.open(`https://wa.me/${vendorPhone}?text=${encodedMsg}`, '_blank');
             showToast('Membuka WhatsApp...');
         }
 
         function copyDuitNowId() {
-            const idText = window.state.merchant.duitNowId || '012-345 6789';
+            const idText = window.state.merchant.duitNowId || '0166257902';
             const tempInput = document.createElement('input');
             tempInput.value = idText;
             document.body.appendChild(tempInput);
