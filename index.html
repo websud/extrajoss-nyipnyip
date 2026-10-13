@@ -213,52 +213,26 @@
 
         <!-- Ice Level -->
         <div>
-          <label class="block text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-2">Tahap Ais</label>
-          <div class="grid grid-cols-3 gap-2" id="ice-options">
-            <button type="button" onclick="selectIce('Ais Normal')" class="ice-btn active p-2 rounded-xl border border-joss-yellow bg-joss-yellow/10 text-joss-yellow font-bold text-xs text-center">Ais Normal</button>
-            <button type="button" onclick="selectIce('Extra Ais')" class="ice-btn p-2 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-400 font-semibold text-xs text-center">Extra Ais</button>
-            <button type="button" onclick="selectIce('Kurang Ais')" class="ice-btn p-2 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-400 font-semibold text-xs text-center">Kurang Ais</button>
-          </div>
-        </div>
-
-        <!-- Quantity Control -->
-        <div class="pt-2 border-t border-zinc-800 flex items-center justify-between">
-          <span class="font-extrabold text-zinc-300 text-xs uppercase tracking-wider">Kuantiti Unit</span>
-          <div class="flex items-center gap-3 bg-zinc-950 p-1 rounded-xl border border-zinc-800">
-            <button onclick="adjustCustomQty(-1)" class="w-8 h-8 rounded-lg bg-zinc-800 text-white font-bold flex items-center justify-center hover:bg-zinc-700">-</button>
-            <span id="custom-qty-display" class="font-extrabold text-white w-6 text-center text-sm">1</span>
-            <button onclick="adjustCustomQty(1)" class="w-8 h-8 rounded-lg bg-joss-yellow text-black font-bold flex items-center justify-center hover:bg-yellow-400">+</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="p-4 border-t border-zinc-800 bg-zinc-950 flex items-center justify-between gap-3">
-        <div>
-          <span class="text-[10px] text-zinc-500 uppercase font-bold block">Jumlah Harga</span>
-          <span id="custom-modal-total" class="text-base font-black text-joss-yellow">RM 0.00</span>
-        </div>
-        <button onclick="confirmAddToCart()" class="flex-1 bg-joss-yellow text-black font-extrabold py-3 px-4 rounded-xl text-xs tracking-wide uppercase hover:bg-yellow-400 transition-all flex items-center justify-center gap-2 shadow-lg shadow-joss-yellow/10">
-          <i class="fa-solid fa-cart-plus"></i>
-          <span>Tambah Ke Troli</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
+  <!-- MODAL 2: Troli & Checkout Modal -->
   <div id="cart-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
       
+      <!-- Cart Header with Step Indicator -->
       <div class="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-shopping-bag text-joss-yellow"></i>
-          <h3 class="font-extrabold text-white text-base">Troli Pesanan Anda</h3>
+          <div>
+            <h3 class="font-extrabold text-white text-base">Troli Pesanan Anda</h3>
+            <span id="cart-step-indicator" class="text-[10px] text-joss-yellow font-bold block">Langkah 1 daripada 2: Maklumat Pesanan</span>
+          </div>
         </div>
         <button onclick="closeCartModal()" class="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:text-white flex items-center justify-center">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <div class="p-5 overflow-y-auto custom-scrollbar space-y-6 text-sm flex-1">
+      <!-- STEP 1: Customer Details & Items -->
+      <div id="cart-step-1" class="p-5 overflow-y-auto custom-scrollbar space-y-5 text-sm flex-1">
         <div>
           <h4 class="text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-3">Item Dipilih</h4>
           <div id="cart-items-container" class="space-y-2.5">
@@ -282,7 +256,7 @@
             <p>• <strong>BUMITA:</strong> Penghantaran Segera (+- 15 minit)</p>
           </div>
 
-          <!-- Cutoff Error Banner (Hidden by default) -->
+          <!-- Cutoff Error Banner -->
           <div id="cutoff-error-banner" class="hidden bg-red-600/20 border-2 border-red-500 p-3 rounded-xl text-center text-red-300 font-extrabold text-xs animate-bounce">
             ⚠️ Order untuk PF1/PF2 tidak dapat diproses kerana lebih waktu (selepas 12:00am)!
           </div>
@@ -321,8 +295,39 @@
           </div>
         </div>
 
+        <div class="border-t border-zinc-800 pt-3 space-y-1.5 text-xs text-zinc-400">
+          <div class="flex justify-between">
+            <span>Jumlah Minuman</span>
+            <span id="summary-subtotal" class="text-white font-semibold">RM 0.00</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Caj Delivery</span>
+            <span id="summary-delivery" class="text-white font-semibold">RM 0.00</span>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button onclick="goToCartStep2()" class="w-full bg-joss-yellow hover:bg-yellow-400 text-black font-extrabold py-3.5 px-4 rounded-xl text-xs tracking-wide uppercase transition-all flex items-center justify-center gap-2 shadow-lg shadow-joss-yellow/20">
+            <span>Teruskan Ke Pembayaran</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: DuitNow QR & Payment Methods -->
+      <div id="cart-step-2" class="p-5 overflow-y-auto custom-scrollbar space-y-5 text-sm flex-1 hidden">
+        
+        <!-- Summary Preview Box -->
+        <div class="bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs space-y-1 text-zinc-300">
+          <p class="font-extrabold text-joss-yellow flex justify-between items-center">
+            <span>Maklumat Pelanggan</span>
+            <button onclick="goToCartStep1()" class="text-[10px] text-zinc-400 underline hover:text-white">Ubah</button>
+          </p>
+          <p id="step2-cust-summary" class="text-[11px] text-zinc-400">Loading...</p>
+        </div>
+
         <!-- DuitNow QR Section -->
-        <div class="border-t border-zinc-800 pt-4 space-y-3">
+        <div class="space-y-3">
           <h4 class="text-xs font-extrabold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
             <i class="fa-solid fa-qrcode text-joss-yellow"></i>
             Pembayaran DuitNow QR / Cash
@@ -358,27 +363,23 @@
 
         <!-- Summary Totals -->
         <div class="border-t border-zinc-800 pt-3 space-y-1.5 text-xs text-zinc-400">
-          <div class="flex justify-between">
-            <span>Jumlah Minuman</span>
-            <span id="summary-subtotal" class="text-white font-semibold">RM 0.00</span>
-          </div>
-          <div class="flex justify-between">
-            <span>Caj Delivery</span>
-            <span id="summary-delivery" class="text-white font-semibold">RM 0.00</span>
-          </div>
-          <div class="flex justify-between text-sm font-extrabold text-white pt-2 border-t border-zinc-800">
+          <div class="flex justify-between text-sm font-extrabold text-white pt-1">
             <span class="text-joss-yellow">JUMLAH KESELURUHAN</span>
             <span id="summary-grandtotal" class="text-joss-yellow text-base">RM 0.00</span>
           </div>
         </div>
+
+        <div class="flex gap-2 pt-2">
+          <button onclick="goToCartStep1()" class="bg-zinc-800 text-zinc-300 font-bold px-4 py-3.5 rounded-xl text-xs hover:bg-zinc-700">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Kembali
+          </button>
+          <button onclick="submitOrderToWhatsApp()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold py-3.5 px-4 rounded-xl text-xs tracking-wide uppercase transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
+            <i class="fa-brands fa-whatsapp text-lg"></i>
+            <span>Hantar Pesanan Ke WhatsApp Seller</span>
+          </button>
+        </div>
       </div>
 
-      <div class="p-4 border-t border-zinc-800 bg-zinc-950">
-        <button onclick="submitOrderToWhatsApp()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold py-3.5 px-4 rounded-xl text-xs tracking-wide uppercase transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
-          <i class="fa-brands fa-whatsapp text-lg"></i>
-          <span>Hantar Pesanan Ke WhatsApp Seller</span>
-        </button>
-      </div>
     </div>
   </div>
 
@@ -1197,11 +1198,52 @@
       }
       renderCartItems();
       calculateCartTotals();
+      goToCartStep1();
       document.getElementById('cart-modal').classList.remove('hidden');
     }
 
     function closeCartModal() {
       document.getElementById('cart-modal').classList.add('hidden');
+    }
+
+    function goToCartStep1() {
+      document.getElementById('cart-step-2').classList.add('hidden');
+      document.getElementById('cart-step-1').classList.remove('hidden');
+      document.getElementById('cart-step-indicator').innerText = "Langkah 1 daripada 2: Maklumat Pesanan";
+    }
+
+    function goToCartStep2() {
+      const name = document.getElementById('cust-name').value.trim();
+      const kk = document.getElementById('cust-kk').value.trim();
+      const room = document.getElementById('cust-room').value.trim();
+      const cutoffBanner = document.getElementById('cutoff-error-banner');
+
+      cutoffBanner.classList.add('hidden');
+
+      if (!name || !kk || !room) {
+        showToast('Sila isi Nama, Kolej & No. Bilik anda!');
+        return;
+      }
+
+      // Check Midnight Cutoff ONLY for PF1 & PF2 Locations (Submitted after 12:00 AM)
+      // Note: BUMITA is exempted from this midnight cutoff and can order as long as Admin keeps store OPEN.
+      const isPFLocation = (kk === 'PF1' || kk === 'PF2' || /pf1|pf2|pfi1|pfi2|pfi/i.test(kk));
+      const now = new Date();
+      const currentHour = now.getHours(); // 0 = 12 AM midnight to 5 AM early morning
+
+      if (isPFLocation && (currentHour >= 0 && currentHour < 6)) {
+        cutoffBanner.innerText = "⚠️ Order untuk PF1 & PF2 tidak dapat diproses selepas 12:00am! (BUMITA masih dibuka)";
+        cutoffBanner.classList.remove('hidden');
+        showToast('Pesanan PF1/PF2 telah ditutup selepas 12:00am!');
+        return;
+      }
+
+      // Update Summary in Step 2
+      document.getElementById('step2-cust-summary').innerText = `${name} • ${kk} (${room})`;
+
+      document.getElementById('cart-step-1').classList.add('hidden');
+      document.getElementById('cart-step-2').classList.remove('hidden');
+      document.getElementById('cart-step-indicator').innerText = "Langkah 2 daripada 2: Pembayaran";
     }
 
     function renderCartItems() {
@@ -1367,7 +1409,8 @@
       if (notes) msg += `• Nota: ${notes}\n`;
       msg += `\n🥤 *SENARAI PESANAN*\n${itemsText}`;
       msg += `💰 *JUMLAH KESELURUHAN: RM ${totals.grandTotal.toFixed(2)}*\n\n`;
-      msg += `⚠️ Sila attach/hantar resit pembayaran DuitNow anda di WhatsApp ini! Terima kasih!`;
+      msg += `⚠️ Sila attach/hantar resit pembayaran DuitNow anda di WhatsApp ini! Terima kasih!\n\n`;
+      msg += `📌 *PERINGATAN:* Sila kembali ke laman web untuk menjejak status pesanan anda secara Live! (Jangan refresh laman web jika mahu melihat live tracking)`;
 
       const encodedMsg = encodeURIComponent(msg);
       let targetPhone = (storeSettings.whatsapp || "601139550544").replace(/[^0-9]/g, '');
