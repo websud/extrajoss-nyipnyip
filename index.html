@@ -113,11 +113,11 @@
 
     <!-- REMINDER BANNER BELOW MAIN POSTER -->
     <div class="mb-6 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs text-center font-extrabold flex items-center justify-center gap-2 shadow-sm">
-      <i class="fa-solid fa-clock-circle text-joss-yellow text-sm"></i>
+      <i class="fa-solid fa-clock text-joss-yellow text-sm"></i>
       <span>PF1/PF2: Last order akan diterima sebelum 12:00am</span>
     </div>
 
-    <!-- Active Order Live Tracker Banner (Displayed if Customer has active order) -->
+    <!-- Active Order Live Tracker Banner -->
     <div id="active-order-banner" class="hidden bg-zinc-900/90 border border-joss-yellow/40 p-3.5 rounded-2xl mb-6 shadow-xl flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-xl bg-joss-yellow/20 text-joss-yellow flex items-center justify-center font-bold text-sm">
@@ -154,6 +154,7 @@
 
   </main>
 
+  <!-- Sticky Bottom Cart Bar -->
   <div id="sticky-cart-bar" class="fixed bottom-0 left-0 right-0 z-20 p-4 bg-gradient-to-t from-black via-black/95 to-transparent pointer-events-none">
     <div class="max-w-xl mx-auto pointer-events-auto">
       <button onclick="openCartModal()" class="w-full bg-joss-yellow text-black font-extrabold py-3.5 px-5 rounded-2xl flex items-center justify-between shadow-xl shadow-joss-yellow/20 hover:bg-yellow-400 active:scale-[0.98] transition-all">
@@ -171,6 +172,7 @@
     </div>
   </div>
 
+  <!-- MODAL 1: Customize Item Modal -->
   <div id="customize-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-200">
       
@@ -213,7 +215,40 @@
 
         <!-- Ice Level -->
         <div>
-  <!-- MODAL 2: Troli & Checkout Modal -->
+          <label class="block text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-2">Tahap Ais</label>
+          <div class="grid grid-cols-3 gap-2" id="ice-options">
+            <button type="button" onclick="selectIce('Ais Normal')" class="ice-btn active p-2 rounded-xl border border-joss-yellow bg-joss-yellow/10 text-joss-yellow font-bold text-xs text-center">Ais Normal</button>
+            <button type="button" onclick="selectIce('Extra Ais')" class="ice-btn p-2 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-400 font-semibold text-xs text-center">Extra Ais</button>
+            <button type="button" onclick="selectIce('Kurang Ais')" class="ice-btn p-2 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-400 font-semibold text-xs text-center">Kurang Ais</button>
+          </div>
+        </div>
+
+        <!-- Quantity Control -->
+        <div class="pt-2 border-t border-zinc-800 flex items-center justify-between">
+          <span class="font-extrabold text-zinc-300 text-xs uppercase tracking-wider">Kuantiti Unit</span>
+          <div class="flex items-center gap-3 bg-zinc-950 p-1 rounded-xl border border-zinc-800">
+            <button onclick="adjustCustomQty(-1)" class="w-8 h-8 rounded-lg bg-zinc-800 text-white font-bold flex items-center justify-center hover:bg-zinc-700">-</button>
+            <span id="custom-qty-display" class="font-extrabold text-white w-6 text-center text-sm">1</span>
+            <button onclick="adjustCustomQty(1)" class="w-8 h-8 rounded-lg bg-joss-yellow text-black font-bold flex items-center justify-center hover:bg-yellow-400">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-zinc-800 bg-zinc-950 flex items-center justify-between gap-3">
+        <div>
+          <span class="text-[10px] text-zinc-500 uppercase font-bold block">Jumlah Harga</span>
+          <span id="custom-modal-total" class="text-base font-black text-joss-yellow">RM 0.00</span>
+        </div>
+        <button onclick="confirmAddToCart()" class="flex-1 bg-joss-yellow text-black font-extrabold py-3 px-4 rounded-xl text-xs tracking-wide uppercase hover:bg-yellow-400 transition-all flex items-center justify-center gap-2 shadow-lg shadow-joss-yellow/10">
+          <i class="fa-solid fa-cart-plus"></i>
+          <span>Tambah Ke Troli</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL 2: Troli & Checkout Modal (2-Step Process) -->
   <div id="cart-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
       
@@ -383,6 +418,7 @@
     </div>
   </div>
 
+  <!-- MODAL 3: Live Tracking Modal -->
   <div id="tracking-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-3xl overflow-hidden shadow-2xl flex flex-col">
       <div class="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
@@ -414,7 +450,7 @@
             <span class="text-zinc-400 font-bold flex items-center gap-1">
               <i class="fa-solid fa-stopwatch text-joss-yellow"></i> Anggaran Masa Tiba (ETA):
             </span>
-            <span id="track-order-eta" class="font-extrabold text-joss-neon">+- 45 hingga 55 minit</span>
+            <span id="track-order-eta" class="font-extrabold text-joss-neon">+- 30 hingga 45 minit</span>
           </div>
         </div>
 
@@ -479,6 +515,7 @@
     </div>
   </div>
 
+  <!-- MODAL 4: Rating & Feedback Modal -->
   <div id="delivered-feedback-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-zinc-900 border border-joss-yellow/50 w-full max-w-sm rounded-3xl p-6 text-center shadow-2xl space-y-4">
       <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-3xl mx-auto animate-bounce">
@@ -505,7 +542,7 @@
     </div>
   </div>
 
-  <!-- Admin Auth Security Modal -->
+  <!-- MODAL 5: Admin Auth Security Modal -->
   <div id="admin-auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-xs rounded-2xl p-5 text-center shadow-2xl">
       <div class="w-12 h-12 rounded-full bg-joss-yellow/10 border border-joss-yellow/30 text-joss-yellow flex items-center justify-center mx-auto mb-3 text-lg">
@@ -523,6 +560,7 @@
     </div>
   </div>
 
+  <!-- MODAL 6: Admin Dashboard Panel Modal -->
   <div id="admin-panel-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-2xl rounded-2xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
       
@@ -901,7 +939,6 @@
       }
     }
 
-    // 4. REALTIME FIRESTORE LISTENER & SYNC
     function initRealtimeSync() {
       loadLocalSettings();
       document.getElementById('main-banner-img').src = storeSettings.bannerImage;
@@ -1225,8 +1262,7 @@
         return;
       }
 
-      // Check Midnight Cutoff ONLY for PF1 & PF2 Locations (Submitted after 12:00 AM)
-      // Note: BUMITA is exempted from this midnight cutoff and can order as long as Admin keeps store OPEN.
+      // Midnight Cutoff Check for PF1 & PF2 (Exempts BUMITA)
       const isPFLocation = (kk === 'PF1' || kk === 'PF2' || /pf1|pf2|pfi1|pfi2|pfi/i.test(kk));
       const now = new Date();
       const currentHour = now.getHours(); // 0 = 12 AM midnight to 5 AM early morning
@@ -1318,11 +1354,10 @@
         return;
       }
 
-      // Check Midnight Cutoff ONLY for PF1 & PF2 Locations (Submitted after 12:00 AM)
-      // Note: BUMITA is exempted from this midnight cutoff and can order as long as Admin keeps store OPEN.
+      // Check Midnight Cutoff ONLY for PF1 & PF2 Locations
       const isPFLocation = (kk === 'PF1' || kk === 'PF2' || /pf1|pf2|pfi1|pfi2|pfi/i.test(kk));
       const now = new Date();
-      const currentHour = now.getHours(); // 0 = 12 AM midnight to 5 AM early morning
+      const currentHour = now.getHours();
 
       if (isPFLocation && (currentHour >= 0 && currentHour < 6)) {
         cutoffBanner.innerText = "⚠️ Order untuk PF1 & PF2 tidak dapat diproses selepas 12:00am! (BUMITA masih dibuka)";
@@ -1331,7 +1366,7 @@
         return;
       }
 
-      // Lock submit execution to prevent multi-clicks
+      // Lock submit execution
       isSubmittingOrder = true;
       const submitBtn = document.querySelector('#cart-modal button[onclick="submitOrderToWhatsApp()"]');
       if (submitBtn) {
@@ -1427,7 +1462,6 @@
       window.open(waUrl, '_blank');
       openTrackingModal();
 
-      // Reset submission lock after completion
       setTimeout(() => {
         isSubmittingOrder = false;
         if (submitBtn) {
@@ -1493,7 +1527,6 @@
       }
     }
 
-    // Function to clear active order from main page view (Requirement #2)
     function clearCustomerActiveOrder() {
       localStorage.removeItem('active_joss_order_id');
       activeOrderId = null;
@@ -1636,7 +1669,6 @@
       renderAdminOrdersList();
     }
 
-    // Render Admin Active Orders (Filters out delivered orders by default - Requirement #1)
     function renderAdminOrdersList() {
       const container = document.getElementById('admin-orders-list-container');
       if (!container) return;
