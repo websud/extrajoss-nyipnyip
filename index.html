@@ -89,7 +89,7 @@
         <!-- Live Order Tracking Quick Button -->
         <button id="track-order-btn" onclick="openTrackingModal()" class="hidden px-3 py-1.5 rounded-full bg-joss-yellow/10 border border-joss-yellow/40 text-joss-yellow hover:bg-joss-yellow hover:text-black font-extrabold text-xs transition-all flex items-center gap-1.5 animate-pulse-border">
           <i class="fa-solid fa-radar text-xs animate-spin"></i>
-          <span>Track Status</span>
+          <span>Track Status (<span id="active-orders-count-badge">0</span>)</span>
         </button>
 
         <button onclick="openAdminAuthModal()" class="w-9 h-9 rounded-full bg-zinc-900 border border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-joss-yellow hover:border-joss-yellow transition-all" title="Admin Panel">
@@ -112,7 +112,7 @@
     </div>
 
     <!-- REMINDER BANNER BELOW MAIN POSTER -->
-    <div class="mb-6 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs text-center font-extrabold flex items-center justify-center gap-2 shadow-sm">
+    <div class="mb-4 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs text-center font-extrabold flex items-center justify-center gap-2 shadow-sm">
       <i class="fa-solid fa-clock text-joss-yellow text-sm"></i>
       <span>PF1/PF2: Last order akan diterima sebelum 12:00am</span>
     </div>
@@ -129,7 +129,7 @@
         </div>
       </div>
       <button onclick="openTrackingModal()" class="bg-joss-yellow text-black text-xs font-black px-3 py-1.5 rounded-xl hover:bg-yellow-400 transition-all flex items-center gap-1">
-        <span>Lihat</span>
+        <span>Lihat Semua</span>
         <i class="fa-solid fa-chevron-right text-[10px]"></i>
       </button>
     </div>
@@ -154,7 +154,6 @@
 
   </main>
 
-  <!-- Sticky Bottom Cart Bar -->
   <div id="sticky-cart-bar" class="fixed bottom-0 left-0 right-0 z-20 p-4 bg-gradient-to-t from-black via-black/95 to-transparent pointer-events-none">
     <div class="max-w-xl mx-auto pointer-events-auto">
       <button onclick="openCartModal()" class="w-full bg-joss-yellow text-black font-extrabold py-3.5 px-5 rounded-2xl flex items-center justify-between shadow-xl shadow-joss-yellow/20 hover:bg-yellow-400 active:scale-[0.98] transition-all">
@@ -172,7 +171,6 @@
     </div>
   </div>
 
-  <!-- MODAL 1: Customize Item Modal -->
   <div id="customize-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-200">
       
@@ -248,7 +246,6 @@
     </div>
   </div>
 
-  <!-- MODAL 2: Troli & Checkout Modal (2-Step Process) -->
   <div id="cart-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
       
@@ -279,7 +276,7 @@
         <div class="border-t border-zinc-800 pt-4 space-y-3">
           <h4 class="text-xs font-extrabold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
             <i class="fa-solid fa-user-graduate text-joss-yellow"></i>
-            Customer Detail
+            Maklumat Pelanggan
           </h4>
 
           <!-- Delivery Location Disclaimer Box in Cart -->
@@ -296,9 +293,15 @@
             ⚠️ Order untuk PF1/PF2 tidak dapat diproses kerana lebih waktu (selepas 12:00am)!
           </div>
 
-          <div>
-            <label class="block text-[11px] font-bold text-zinc-400 mb-1">Nama*</label>
-            <input type="text" id="cust-name" placeholder="Contoh: Shafiq / Danial" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-joss-yellow transition-all">
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-[11px] font-bold text-zinc-400 mb-1">Nama Pelanggan *</label>
+              <input type="text" id="cust-name" placeholder="Contoh: Shafiq / Danial" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-joss-yellow transition-all">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-zinc-400 mb-1">No. Telefon (WhatsApp) *</label>
+              <input type="tel" id="cust-phone" placeholder="Contoh: 01139550544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-joss-yellow transition-all">
+            </div>
           </div>
 
           <div class="grid grid-cols-2 gap-2">
@@ -382,7 +385,7 @@
             <div class="mt-3 bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 text-left flex items-start gap-2">
               <i class="fa-solid fa-triangle-exclamation text-amber-400 text-xs mt-0.5"></i>
               <p class="text-[11px] text-amber-200 font-semibold leading-tight">
-                <span class="font-bold underline">PERINGATAN:</span> Sila simpan dan <strong>attach / hantar resit pembayaran</strong> DuitNow anda di chat WhatsApp selepas menekan butang Hantar Pesanan!
+                <span class="font-bold underline">PERINGATAN:</span> Selepas menekan butang Sahkan Pesanan, pesanan anda akan masuk secara langsung ke sistem Admin! Sila simpan resit bayaran jika perlu.
               </p>
             </div>
           </div>
@@ -393,6 +396,14 @@
               <option value="DuitNow QR">DuitNow QR (Bank / TNG eWallet)</option>
               <option value="Cash On Delivery (COD)">Cash On Delivery (COD)</option>
             </select>
+          </div>
+
+          <!-- Dual Admin Contact Support Box -->
+          <div class="bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs space-y-2">
+            <span class="text-[10px] text-zinc-400 font-extrabold uppercase block tracking-wider">Perlu Hubungi Seller / Admin?</span>
+            <div class="grid grid-cols-2 gap-2" id="checkout-admin-contacts">
+              <!-- Rendered via JS -->
+            </div>
           </div>
         </div>
 
@@ -408,9 +419,9 @@
           <button onclick="goToCartStep1()" class="bg-zinc-800 text-zinc-300 font-bold px-4 py-3.5 rounded-xl text-xs hover:bg-zinc-700">
             <i class="fa-solid fa-arrow-left mr-1"></i> Kembali
           </button>
-          <button onclick="submitOrderToWhatsApp()" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold py-3.5 px-4 rounded-xl text-xs tracking-wide uppercase transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20">
-            <i class="fa-brands fa-whatsapp text-lg"></i>
-            <span>Hantar Pesanan Ke WhatsApp Seller</span>
+          <button id="submit-order-direct-btn" onclick="submitOrderDirectToAdmin()" class="flex-1 bg-joss-yellow hover:bg-yellow-400 text-black font-extrabold py-3.5 px-4 rounded-xl text-xs tracking-wide uppercase transition-all flex items-center justify-center gap-2 shadow-lg shadow-joss-yellow/20">
+            <i class="fa-solid fa-paper-plane text-sm"></i>
+            <span>Sahkan & Hantar Pesanan</span>
           </button>
         </div>
       </div>
@@ -418,9 +429,8 @@
     </div>
   </div>
 
-  <!-- MODAL 3: Live Tracking Modal -->
   <div id="tracking-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-    <div class="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+    <div class="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
       <div class="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-radar text-joss-yellow animate-spin"></i>
@@ -431,7 +441,16 @@
         </button>
       </div>
 
-      <div class="p-5 space-y-6 text-xs">
+      <div class="p-5 overflow-y-auto custom-scrollbar space-y-5 text-xs flex-1">
+        
+        <!-- Multi-Order Switcher Selector Tabs (If customer has >1 active orders) -->
+        <div id="multi-order-tab-container" class="hidden pb-2 border-b border-zinc-800">
+          <span class="text-[10px] text-zinc-400 font-bold block mb-1.5 uppercase">Pilih Pesanan Aktif Anda:</span>
+          <div id="multi-order-tabs-list" class="flex gap-1.5 overflow-x-auto custom-scrollbar pb-1">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
         <!-- ETA & ID Box -->
         <div class="bg-zinc-950 p-3.5 rounded-2xl border border-zinc-800/80 space-y-2">
           <div class="flex items-center justify-between">
@@ -452,6 +471,17 @@
             </span>
             <span id="track-order-eta" class="font-extrabold text-joss-neon">+- 30 hingga 45 minit</span>
           </div>
+        </div>
+
+        <!-- Dynamic Pickup Alert Banner -->
+        <div id="pickup-ready-banner" class="hidden bg-emerald-500/20 border-2 border-emerald-500 p-4 rounded-2xl text-center animate-pulse shadow-xl shadow-emerald-500/20">
+          <p class="font-black text-emerald-400 text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-bag-shopping text-base"></i>
+            <span>Order is ready for pickup!</span>
+          </p>
+          <p class="text-xs text-white font-extrabold mt-1">
+            sila pergi ke: <span class="text-joss-yellow font-black text-sm block mt-0.5">BUMITA (A-L7-2)</span>
+          </p>
         </div>
 
         <!-- Location Delivery Disclaimer -->
@@ -484,8 +514,8 @@
           <div id="step-delivery" class="relative flex items-start gap-3.5">
             <div class="step-icon w-7 h-7 rounded-full bg-zinc-800 border-2 border-zinc-700 text-zinc-400 flex items-center justify-center text-xs font-bold z-10">3</div>
             <div>
-              <h5 class="font-extrabold text-white">Dalam Penghantaran / Ready 🛵</h5>
-              <p class="text-[10px] text-zinc-400">Runner dalam perjalanan ke bilik/kolej anda.</p>
+              <h5 id="step-3-title" class="font-extrabold text-white">Dalam Penghantaran / Ready 🛵</h5>
+              <p id="step-3-desc" class="text-[10px] text-zinc-400">Runner dalam perjalanan ke bilik/kolej anda.</p>
             </div>
           </div>
 
@@ -504,18 +534,26 @@
             <!-- Dynamic Items -->
           </div>
         </div>
+
+        <!-- Contact Sellers Button in Tracker -->
+        <div class="border-t border-zinc-800 pt-3">
+          <span class="text-[10px] text-zinc-400 font-extrabold uppercase block mb-1.5">Hubungi Admin / Seller:</span>
+          <div class="grid grid-cols-2 gap-2" id="tracker-admin-contacts">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
       </div>
 
       <div class="p-4 border-t border-zinc-800 bg-zinc-950 flex justify-end gap-2">
-        <button id="clear-delivered-order-btn" onclick="clearCustomerActiveOrder()" class="hidden w-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold py-2.5 rounded-xl transition-all">
-          Selesai & Buat Pesanan Baru
+        <button id="clear-delivered-order-btn" onclick="clearSelectedActiveOrder()" class="hidden w-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold py-2.5 rounded-xl transition-all">
+          Selesai Pesanan Ini
         </button>
         <button id="close-tracking-modal-btn" onclick="closeTrackingModal()" class="w-full bg-zinc-800 text-white font-bold py-2.5 rounded-xl hover:bg-zinc-700">Tutup</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL 4: Rating & Feedback Modal -->
   <div id="delivered-feedback-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-zinc-900 border border-joss-yellow/50 w-full max-w-sm rounded-3xl p-6 text-center shadow-2xl space-y-4">
       <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-3xl mx-auto animate-bounce">
@@ -537,12 +575,11 @@
       <textarea id="feedback-text-input" rows="3" placeholder="Tulis maklum balas atau cadangan anda di sini..." class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-joss-yellow"></textarea>
 
       <button onclick="submitCustomerFeedback()" class="w-full bg-joss-yellow hover:bg-yellow-400 text-black font-extrabold py-3 rounded-xl text-xs uppercase tracking-wide transition-all shadow-lg shadow-joss-yellow/20">
-        Hantar Ulasan & Bersihkan Main Page
+        Hantar Ulasan
       </button>
     </div>
   </div>
 
-  <!-- MODAL 5: Admin Auth Security Modal -->
   <div id="admin-auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-xs rounded-2xl p-5 text-center shadow-2xl">
       <div class="w-12 h-12 rounded-full bg-joss-yellow/10 border border-joss-yellow/30 text-joss-yellow flex items-center justify-center mx-auto mb-3 text-lg">
@@ -560,7 +597,6 @@
     </div>
   </div>
 
-  <!-- MODAL 6: Admin Dashboard Panel Modal -->
   <div id="admin-panel-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-2xl rounded-2xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
       
@@ -583,7 +619,7 @@
           <i class="fa-solid fa-cash-register mr-1"></i> Sales Analytics
         </button>
         <button id="tab-btn-stock" onclick="switchAdminTab('stock')" class="px-4 py-2 rounded-t-xl font-bold bg-zinc-800 text-zinc-400 hover:text-white transition-all">
-          <i class="fa-solid fa-boxes-stacked mr-1"></i> Menu & Flavor Stock
+          <i class="fa-solid fa-boxes-stacked mr-1"></i> Menu & Admin Settings
         </button>
       </div>
 
@@ -653,7 +689,7 @@
         </div>
       </div>
 
-      <!-- TAB 3: Menu & Multi-Flavor Stock Settings Section -->
+      <!-- TAB 3: Menu, Phone Numbers & Settings Section -->
       <div id="admin-tab-stock" class="p-4 overflow-y-auto custom-scrollbar space-y-5 text-xs flex-1 hidden">
         
         <div class="space-y-3 pb-3 border-b border-zinc-800">
@@ -670,15 +706,21 @@
             </select>
           </div>
 
+          <!-- DUAL ADMIN PHONE NUMBERS -->
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block font-bold text-zinc-300 mb-1">No. WhatsApp Seller</label>
-              <input type="text" id="admin-whatsapp-num" placeholder="601139550544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
+              <label class="block font-bold text-zinc-300 mb-1">No. Admin 1 (WhatsApp/Tel) *</label>
+              <input type="text" id="admin-phone-1" placeholder="601139550544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
             </div>
             <div>
-              <label class="block font-bold text-zinc-300 mb-1">ID No. DuitNow</label>
-              <input type="text" id="admin-duitnow-id" placeholder="60 11-3955 0544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
+              <label class="block font-bold text-zinc-300 mb-1">No. Admin 2 (WhatsApp/Tel) *</label>
+              <input type="text" id="admin-phone-2" placeholder="60123456789" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
             </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-zinc-300 mb-1">ID No. DuitNow</label>
+            <input type="text" id="admin-duitnow-id" placeholder="60 11-3955 0544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
           </div>
 
           <div class="grid grid-cols-2 gap-2">
@@ -777,7 +819,7 @@
 
   <script>
     // 1. EMBEDDED DEFAULT BUSINESS BANNER & DUITNOW QR (SVG Base64)
-    const EMBEDDED_BUSINESS_BANNER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='300' viewBox='0 0 800 300'><rect width='800' height='300' fill='%23121212'/><text x='50%' y='40%' font-family='sans-serif' font-weight='900' font-size='42' fill='%23FFDF00' text-anchor='middle'>EXTRA JOSS KK ⚡</text><text x='50%' y='60%' font-family='sans-serif' font-weight='600' font-size='20' fill='%23FFFFFF' text-anchor='middle'>SEGARKAN HARIMU • BUMITA %26 PFI2</text></svg>";
+    const EMBEDDED_BUSINESS_BANNER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='300' viewBox='0 0 800 300'><rect width='800' height='300' fill='%23121212'/><text x='50%' y='40%' font-family='sans-serif' font-weight='900' font-size='42' fill='%23FFDF00' text-anchor='middle'>EXTRA JOSS KK ⚡</text><text x='50%' y='60%' font-family='sans-serif' font-weight='600' font-size='20' fill='%23FFFFFF' text-anchor='middle'>SEGARKAN HARIMU • BUMITA %26 PF1 / PF2</text></svg>";
     const DEFAULT_EMBEDDED_QR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'><rect width='300' height='300' fill='%23FFFFFF'/><rect x='30' y='30' width='80' height='80' fill='%23000000'/><rect x='190' y='30' width='80' height='80' fill='%23000000'/><rect x='30' y='190' width='80' height='80' fill='%23000000'/><text x='150' y='155' font-family='sans-serif' font-weight='bold' font-size='16' fill='%23E60000' text-anchor='middle'>DUITNOW QR</text></svg>";
 
     // 2. FIREBASE INITIALIZATION
@@ -798,11 +840,11 @@
       console.warn("Firebase fallback mode active", e);
     }
 
-    // 3. INITIAL STATE DATA
     let storeSettings = {
       name: "Extra Joss KK",
       status: "open",
-      whatsapp: "601139550544",
+      adminPhone1: "601139550544",
+      adminPhone2: "60123456789",
       duitnowId: "60 11-3955 0544",
       qrImage: DEFAULT_EMBEDDED_QR,
       bannerImage: EMBEDDED_BUSINESS_BANNER,
@@ -882,14 +924,17 @@
     let selectedIce = "Ais Normal";
     let customQty = 1;
     let currentFilterCategory = "all";
-    let activeOrderId = localStorage.getItem('active_joss_order_id') || null;
+
+    // Customer Multi-Order List Local Storage Support
+    let customerActiveOrderIds = JSON.parse(localStorage.getItem('joss_customer_active_orders') || '[]');
+    let currentSelectedTrackingOrderId = customerActiveOrderIds.length > 0 ? customerActiveOrderIds[customerActiveOrderIds.length - 1] : null;
+
     let currentRatingValue = 5;
     let allOrdersList = [];
     let allReviewsList = [];
     let showArchivedOrders = false;
     let isSubmittingOrder = false;
 
-    // Helper: Deduplicate orders by orderId AND content fingerprint (prevents multi-click duplicates)
     function getUniqueOrdersList(ordersArray) {
       if (!Array.isArray(ordersArray)) return [];
       const seenIds = new Set();
@@ -900,14 +945,12 @@
         const id = order.orderId || order.id;
         if (!id || seenIds.has(id)) continue;
 
-        // Content fingerprint to block multi-click duplicate submissions
         const itemsSig = (order.items || []).map(i => `${i.productId || i.name}_${i.qty}`).sort().join('|');
         const fingerprint = `${(order.customerName || '').toLowerCase().trim()}_${(order.location || '').toLowerCase().trim()}_${(order.room || '').toLowerCase().trim()}_${order.totals?.grandTotal}_${itemsSig}`;
         const orderTime = new Date(order.createdAt || Date.now()).getTime();
 
         if (seenFingerprints.has(fingerprint)) {
           const prevTime = seenFingerprints.get(fingerprint);
-          // If created within 2 minutes of an identical order, ignore duplicate click
           if (Math.abs(orderTime - prevTime) < 120000) {
             continue;
           }
@@ -943,9 +986,7 @@
       loadLocalSettings();
       document.getElementById('main-banner-img').src = storeSettings.bannerImage;
 
-      if (activeOrderId) {
-        listenActiveOrder(activeOrderId);
-      }
+      updateCustomerActiveOrderList();
 
       if (!db) {
         renderProducts(currentFilterCategory);
@@ -958,7 +999,8 @@
           const data = doc.data();
           storeSettings.name = data.name || storeSettings.name;
           storeSettings.status = data.status || storeSettings.status;
-          storeSettings.whatsapp = data.whatsapp || storeSettings.whatsapp;
+          storeSettings.adminPhone1 = data.adminPhone1 || storeSettings.adminPhone1;
+          storeSettings.adminPhone2 = data.adminPhone2 || storeSettings.adminPhone2;
           storeSettings.duitnowId = data.duitnowId || storeSettings.duitnowId;
           if (data.qrImage) storeSettings.qrImage = data.qrImage;
           if (data.bannerImage) {
@@ -987,6 +1029,7 @@
         localStorage.setItem('joss_store_orders', JSON.stringify(allOrdersList));
         renderAdminOrdersList();
         calculateAdminAnalytics();
+        updateCustomerActiveOrderList();
       });
 
       db.collection("reviews").onSnapshot((snapshot) => {
@@ -1013,6 +1056,30 @@
 
       document.getElementById('display-duitnow-id').innerText = storeSettings.duitnowId || "60 11-3955 0544";
       document.getElementById('duitnow-qr-img').src = storeSettings.qrImage || DEFAULT_EMBEDDED_QR;
+
+      renderAdminContactButtons();
+    }
+
+    function renderAdminContactButtons() {
+      const p1 = (storeSettings.adminPhone1 || "601139550544").trim();
+      const p2 = (storeSettings.adminPhone2 || "60123456789").trim();
+
+      const html = `
+        <a href="https://wa.me/${p1.replace(/[^0-9]/g, '')}" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500 hover:text-black border border-emerald-500/30 text-emerald-400 p-2 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all">
+          <i class="fa-brands fa-whatsapp text-xs"></i>
+          <span>Admin 1</span>
+        </a>
+        <a href="https://wa.me/${p2.replace(/[^0-9]/g, '')}" target="_blank" class="bg-emerald-500/10 hover:bg-emerald-500 hover:text-black border border-emerald-500/30 text-emerald-400 p-2 rounded-xl text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all">
+          <i class="fa-brands fa-whatsapp text-xs"></i>
+          <span>Admin 2</span>
+        </a>
+      `;
+
+      const checkoutBox = document.getElementById('checkout-admin-contacts');
+      if (checkoutBox) checkoutBox.innerHTML = html;
+
+      const trackerBox = document.getElementById('tracker-admin-contacts');
+      if (trackerBox) trackerBox.innerHTML = html;
     }
 
     function renderProducts(filterCategoryName = 'all') {
@@ -1251,21 +1318,21 @@
 
     function goToCartStep2() {
       const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
       const kk = document.getElementById('cust-kk').value.trim();
       const room = document.getElementById('cust-room').value.trim();
       const cutoffBanner = document.getElementById('cutoff-error-banner');
 
       cutoffBanner.classList.add('hidden');
 
-      if (!name || !kk || !room) {
-        showToast('Sila isi Nama, Kolej & No. Bilik anda!');
+      if (!name || !phone || !kk || !room) {
+        showToast('Sila isi Nama, No. Telefon, Kolej & Bilik anda!');
         return;
       }
 
-      // Midnight Cutoff Check for PF1 & PF2 (Exempts BUMITA)
       const isPFLocation = (kk === 'PF1' || kk === 'PF2' || /pf1|pf2|pfi1|pfi2|pfi/i.test(kk));
       const now = new Date();
-      const currentHour = now.getHours(); // 0 = 12 AM midnight to 5 AM early morning
+      const currentHour = now.getHours();
 
       if (isPFLocation && (currentHour >= 0 && currentHour < 6)) {
         cutoffBanner.innerText = "⚠️ Order untuk PF1 & PF2 tidak dapat diproses selepas 12:00am! (BUMITA masih dibuka)";
@@ -1274,8 +1341,7 @@
         return;
       }
 
-      // Update Summary in Step 2
-      document.getElementById('step2-cust-summary').innerText = `${name} • ${kk} (${room})`;
+      document.getElementById('step2-cust-summary').innerText = `${name} (${phone}) • ${kk} (${room})`;
 
       document.getElementById('cart-step-1').classList.add('hidden');
       document.getElementById('cart-step-2').classList.remove('hidden');
@@ -1331,10 +1397,11 @@
       return { subtotal, deliveryFee, grandTotal };
     }
 
-    async function submitOrderToWhatsApp() {
+    async function submitOrderDirectToAdmin() {
       if (isSubmittingOrder) return;
 
       const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
       const kk = document.getElementById('cust-kk').value.trim();
       const room = document.getElementById('cust-room').value.trim();
       const deliveryType = document.getElementById('cust-delivery-type').value;
@@ -1344,8 +1411,8 @@
 
       cutoffBanner.classList.add('hidden');
 
-      if (!name || !kk || !room) {
-        showToast('Sila isi Nama, Kolej & No. Bilik anda!');
+      if (!name || !phone || !kk || !room) {
+        showToast('Sila isi Nama, No. Telefon, Kolej & Bilik anda!');
         return;
       }
 
@@ -1354,7 +1421,6 @@
         return;
       }
 
-      // Check Midnight Cutoff ONLY for PF1 & PF2 Locations
       const isPFLocation = (kk === 'PF1' || kk === 'PF2' || /pf1|pf2|pfi1|pfi2|pfi/i.test(kk));
       const now = new Date();
       const currentHour = now.getHours();
@@ -1366,12 +1432,11 @@
         return;
       }
 
-      // Lock submit execution
       isSubmittingOrder = true;
-      const submitBtn = document.querySelector('#cart-modal button[onclick="submitOrderToWhatsApp()"]');
+      const submitBtn = document.getElementById('submit-order-direct-btn');
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-lg"></i> <span>Memproses Pesanan...</span>`;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-sm"></i> <span>Menghantar Pesanan...</span>`;
         submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
       }
 
@@ -1381,6 +1446,7 @@
       const orderData = {
         orderId: newOrderId,
         customerName: name,
+        customerPhone: phone,
         location: kk,
         room: room,
         deliveryType: deliveryType,
@@ -1392,7 +1458,6 @@
         createdAt: new Date().toISOString()
       };
 
-      // Auto-Decrement Flavor Stocks
       cart.forEach(cartItem => {
         const targetProd = products.find(p => p.id === cartItem.productId);
         if (targetProd && Array.isArray(targetProd.flavors)) {
@@ -1409,7 +1474,7 @@
           await db.collection("orders").doc(newOrderId).set(orderData);
           await db.collection("settings").doc("store_config").set({ customProducts: products }, { merge: true });
         } catch (e) {
-          console.warn("Firestore save error, fallback to local storage", e);
+          console.warn("Firestore save fallback", e);
         }
       }
 
@@ -1420,125 +1485,165 @@
       localStorage.setItem('joss_store_orders', JSON.stringify(allOrdersList));
       localStorage.setItem('joss_store_products', JSON.stringify(products));
 
-      activeOrderId = newOrderId;
-      localStorage.setItem('active_joss_order_id', newOrderId);
-      listenActiveOrder(newOrderId);
-
-      // Construct WhatsApp String
-      let itemsText = "";
-      cart.forEach((item, idx) => {
-        itemsText += `${idx + 1}. *${item.name}* (${item.qty}x)\n`;
-        itemsText += `    - Perisa: ${item.flavor}\n`;
-        if (item.mix !== 'Tiada') itemsText += `    - Gaya: ${item.mix}\n`;
-        itemsText += `    - Tahap Ais: ${item.ice}\n`;
-        itemsText += `    - Harga: RM ${item.totalPrice.toFixed(2)}\n\n`;
-      });
-
-      let msg = `⚡ *PESANAN BARU - ${storeSettings.name.toUpperCase()}* ⚡\n`;
-      msg += `🆔 ID Pesanan: *#${newOrderId}*\n\n`;
-      msg += `👤 *Customer Detail*\n`;
-      msg += `• Nama: ${name}\n`;
-      msg += `• Kolej / Lokasi: ${kk}\n`;
-      msg += `• Blok & Bilik: ${room}\n`;
-      msg += `• Bayaran: ${paymentMethod}\n`;
-      if (notes) msg += `• Nota: ${notes}\n`;
-      msg += `\n🥤 *SENARAI PESANAN*\n${itemsText}`;
-      msg += `💰 *JUMLAH KESELURUHAN: RM ${totals.grandTotal.toFixed(2)}*\n\n`;
-      msg += `⚠️ Sila attach/hantar resit pembayaran DuitNow anda di WhatsApp ini! Terima kasih!\n\n`;
-      msg += `📌 *PERINGATAN:* Sila kembali ke laman web untuk menjejak status pesanan anda secara Live! (Jangan refresh laman web jika mahu melihat live tracking)`;
-
-      const encodedMsg = encodeURIComponent(msg);
-      let targetPhone = (storeSettings.whatsapp || "601139550544").replace(/[^0-9]/g, '');
-      if (!targetPhone.startsWith('60')) targetPhone = '60' + targetPhone;
-      
-      const waUrl = `https://wa.me/${targetPhone}?text=${encodedMsg}`;
+      // Append new Order ID to Customer's Active Orders list
+      if (!customerActiveOrderIds.includes(newOrderId)) {
+        customerActiveOrderIds.push(newOrderId);
+        localStorage.setItem('joss_customer_active_orders', JSON.stringify(customerActiveOrderIds));
+      }
+      currentSelectedTrackingOrderId = newOrderId;
 
       cart = [];
       updateCartBadge();
       closeCartModal();
       renderProducts(currentFilterCategory);
 
-      showToast('Pesanan disahkan & dihantar ke Seller!');
-      window.open(waUrl, '_blank');
+      showToast('Pesanan berjaya dihantar ke Admin!');
+      updateCustomerActiveOrderList();
       openTrackingModal();
 
       setTimeout(() => {
         isSubmittingOrder = false;
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.innerHTML = `<i class="fa-brands fa-whatsapp text-lg"></i> <span>Hantar Pesanan Ke WhatsApp Seller</span>`;
+          submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-sm"></i> <span>Sahkan & Hantar Pesanan</span>`;
           submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
         }
-      }, 1000);
+      }, 800);
     }
 
-    function listenActiveOrder(orderId) {
+    function updateCustomerActiveOrderList() {
+      const activeBtn = document.getElementById('track-order-btn');
+      const activeBanner = document.getElementById('active-order-banner');
+      const badgeCount = document.getElementById('active-orders-count-badge');
+
+      const customerOrders = allOrdersList.filter(o => customerActiveOrderIds.includes(o.orderId));
+      const activeCustomerOrders = customerOrders.filter(o => o.status !== 'delivered' && o.status !== 'cancelled');
+
+      if (customerActiveOrderIds.length > 0) {
+        activeBtn.classList.remove('hidden');
+        activeBanner.classList.remove('hidden');
+        badgeCount.innerText = activeCustomerOrders.length;
+
+        if (!currentSelectedTrackingOrderId && customerActiveOrderIds.length > 0) {
+          currentSelectedTrackingOrderId = customerActiveOrderIds[customerActiveOrderIds.length - 1];
+        }
+
+        const activeOrderObj = allOrdersList.find(o => o.orderId === currentSelectedTrackingOrderId);
+        if (activeOrderObj) {
+          document.getElementById('banner-order-status').innerText = `#${activeOrderObj.orderId}: ${getStatusLabel(activeOrderObj.status)}`;
+        } else {
+          document.getElementById('banner-order-status').innerText = `${activeCustomerOrders.length} Pesanan Aktif`;
+        }
+      } else {
+        activeBtn.classList.add('hidden');
+        activeBanner.classList.add('hidden');
+      }
+
+      renderTrackerContent(currentSelectedTrackingOrderId);
+    }
+
+    function renderTrackerContent(orderId) {
       if (!orderId) return;
 
-      document.getElementById('track-order-btn').classList.remove('hidden');
-      document.getElementById('active-order-banner').classList.remove('hidden');
+      const tabsContainer = document.getElementById('multi-order-tab-container');
+      const tabsList = document.getElementById('multi-order-tabs-list');
 
-      const updateUI = (data) => {
-        if (!data) return;
-        document.getElementById('banner-order-status').innerText = getStatusLabel(data.status);
-        document.getElementById('track-order-id').innerText = '#' + data.orderId;
-        document.getElementById('track-order-total').innerText = `RM ${(data.totals?.grandTotal || 0).toFixed(2)}`;
-
-        // Dynamic ETA Display
-        const loc = (data.location || '').toLowerCase();
-        const etaElem = document.getElementById('track-order-eta');
-        if (loc.includes('bumita')) {
-          etaElem.innerText = '+- 15 minit (Segera)';
-        } else {
-          etaElem.innerText = '+- 30 hingga 45 minit (Batch)';
-        }
-
-        updateStepper(data.status);
-
-        const itemsList = document.getElementById('track-items-list');
-        itemsList.innerHTML = (data.items || []).map(i => `
-          <div class="flex justify-between text-[11px]">
-            <span>${i.name} (${i.flavor}) x${i.qty}</span>
-            <span class="font-bold">RM ${i.totalPrice.toFixed(2)}</span>
-          </div>
-        `).join('');
-
-        const clearBtn = document.getElementById('clear-delivered-order-btn');
-        if (data.status === 'delivered' || data.status === 'cancelled') {
-          clearBtn.classList.remove('hidden');
-        } else {
-          clearBtn.classList.add('hidden');
-        }
-
-        if (data.status === 'delivered' && !data.hasRated && !localStorage.getItem(`rated_${orderId}`)) {
-          setTimeout(() => {
-            document.getElementById('delivered-feedback-modal').classList.remove('hidden');
-          }, 800);
-        }
-      };
-
-      if (db) {
-        db.collection("orders").doc(orderId).onSnapshot(doc => {
-          if (doc.exists) updateUI(doc.data());
-        });
+      if (customerActiveOrderIds.length > 1) {
+        tabsContainer.classList.remove('hidden');
+        tabsList.innerHTML = customerActiveOrderIds.map(id => {
+          const ord = allOrdersList.find(o => o.orderId === id);
+          const isSelected = id === orderId;
+          const statusIcon = ord?.status === 'delivered' ? '✅' : ord?.status === 'cancelled' ? '❌' : '⚡';
+          return `
+            <button onclick="switchCustomerTrackingOrder('${id}')" class="px-3 py-1.5 rounded-xl font-extrabold text-[11px] whitespace-nowrap transition-all border ${
+              isSelected ? 'bg-joss-yellow text-black border-joss-yellow shadow-md' : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
+            }">
+              ${statusIcon} #${id}
+            </button>
+          `;
+        }).join('');
       } else {
-        const found = allOrdersList.find(o => o.orderId === orderId);
-        if (found) updateUI(found);
+        tabsContainer.classList.add('hidden');
+      }
+
+      const data = allOrdersList.find(o => o.orderId === orderId);
+      if (!data) return;
+
+      document.getElementById('track-order-id').innerText = '#' + data.orderId;
+      document.getElementById('track-order-total').innerText = `RM ${(data.totals?.grandTotal || 0).toFixed(2)}`;
+
+      const loc = (data.location || '').toLowerCase();
+      const etaElem = document.getElementById('track-order-eta');
+      if (loc.includes('bumita')) {
+        etaElem.innerText = '+- 15 minit (Segera)';
+      } else {
+        etaElem.innerText = '+- 30 hingga 45 minit (Batch)';
+      }
+
+      // Handle Pickup vs Delivery display logic dynamically
+      const pickupBanner = document.getElementById('pickup-ready-banner');
+      const step3Title = document.getElementById('step-3-title');
+      const step3Desc = document.getElementById('step-3-desc');
+
+      if (data.deliveryType === 'pickup') {
+        if (step3Title) step3Title.innerText = "Pesanan Sedia Diambil 🛍️";
+        if (step3Desc) step3Desc.innerText = "Sila pergi ke BUMITA (A-L7-2) untuk mengambil pesanan.";
+
+        if (data.status === 'ready') {
+          if (pickupBanner) pickupBanner.classList.remove('hidden');
+        } else {
+          if (pickupBanner) pickupBanner.classList.add('hidden');
+        }
+      } else {
+        if (step3Title) step3Title.innerText = "Dalam Penghantaran / Ready 🛵";
+        if (step3Desc) step3Desc.innerText = "Runner dalam perjalanan ke bilik/kolej anda.";
+        if (pickupBanner) pickupBanner.classList.add('hidden');
+      }
+
+      updateStepper(data.status);
+
+      const itemsList = document.getElementById('track-items-list');
+      itemsList.innerHTML = (data.items || []).map(i => `
+        <div class="flex justify-between text-[11px]">
+          <span>${i.name} (${i.flavor}) x${i.qty}</span>
+          <span class="font-bold">RM ${i.totalPrice.toFixed(2)}</span>
+        </div>
+      `).join('');
+
+      const clearBtn = document.getElementById('clear-delivered-order-btn');
+      if (data.status === 'delivered' || data.status === 'cancelled') {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+
+      if (data.status === 'delivered' && !data.hasRated && !localStorage.getItem(`rated_${orderId}`)) {
+        setTimeout(() => {
+          document.getElementById('delivered-feedback-modal').classList.remove('hidden');
+        }, 800);
       }
     }
 
-    function clearCustomerActiveOrder() {
-      localStorage.removeItem('active_joss_order_id');
-      activeOrderId = null;
-      document.getElementById('track-order-btn').classList.add('hidden');
-      document.getElementById('active-order-banner').classList.add('hidden');
+    function switchCustomerTrackingOrder(orderId) {
+      currentSelectedTrackingOrderId = orderId;
+      renderTrackerContent(orderId);
+      updateCustomerActiveOrderList();
+    }
+
+    function clearSelectedActiveOrder() {
+      if (currentSelectedTrackingOrderId) {
+        customerActiveOrderIds = customerActiveOrderIds.filter(id => id !== currentSelectedTrackingOrderId);
+        localStorage.setItem('joss_customer_active_orders', JSON.stringify(customerActiveOrderIds));
+        currentSelectedTrackingOrderId = customerActiveOrderIds.length > 0 ? customerActiveOrderIds[customerActiveOrderIds.length - 1] : null;
+      }
+      updateCustomerActiveOrderList();
       closeTrackingModal();
-      showToast('Status pesanan telah dibersihkan. Anda boleh membuat pesanan baharu!');
+      showToast('Status pesanan dibersihkan dari peranti anda.');
     }
 
     function getStatusLabel(status) {
       switch (status) {
-        case 'pending': return '🟡 Menunggu Pengesahan Seller';
+        case 'pending': return '🟡 Menunggu Pengesahan Admin';
         case 'preparing': return '🥤 Sedang Disediakan';
         case 'ready': return '⚡ Siap / Dalam Penghantaran';
         case 'delivered': return '✅ Pesanan Selesai Dihantar!';
@@ -1565,7 +1670,7 @@
     }
 
     function openTrackingModal() {
-      if (!activeOrderId) return;
+      if (customerActiveOrderIds.length === 0) return;
       document.getElementById('tracking-modal').classList.remove('hidden');
     }
 
@@ -1585,22 +1690,22 @@
     function submitCustomerFeedback() {
       const text = document.getElementById('feedback-text-input').value.trim();
       const reviewObj = {
-        orderId: activeOrderId,
+        orderId: currentSelectedTrackingOrderId,
         rating: currentRatingValue,
         comment: text,
         timestamp: new Date().toISOString()
       };
 
-      if (activeOrderId) {
-        localStorage.setItem(`rated_${activeOrderId}`, 'true');
+      if (currentSelectedTrackingOrderId) {
+        localStorage.setItem(`rated_${currentSelectedTrackingOrderId}`, 'true');
         if (db) {
           db.collection("reviews").add(reviewObj);
-          db.collection("orders").doc(activeOrderId).update({ hasRated: true });
+          db.collection("orders").doc(currentSelectedTrackingOrderId).update({ hasRated: true });
         }
       }
 
       document.getElementById('delivered-feedback-modal').classList.add('hidden');
-      clearCustomerActiveOrder();
+      clearSelectedActiveOrder();
       showToast('Terima kasih atas ulasan anda!');
     }
 
@@ -1626,7 +1731,8 @@
     function openAdminPanelModal() {
       document.getElementById('admin-store-name').value = storeSettings.name || 'Extra Joss KK';
       document.getElementById('admin-store-status').value = storeSettings.status || 'open';
-      document.getElementById('admin-whatsapp-num').value = storeSettings.whatsapp || '601139550544';
+      document.getElementById('admin-phone-1').value = storeSettings.adminPhone1 || '601139550544';
+      document.getElementById('admin-phone-2').value = storeSettings.adminPhone2 || '60123456789';
       document.getElementById('admin-duitnow-id').value = storeSettings.duitnowId || '60 11-3955 0544';
 
       renderAdminStockList();
@@ -1689,33 +1795,73 @@
         const card = document.createElement('div');
         const isCompleted = order.status === 'delivered' || order.status === 'cancelled';
         
-        card.className = `bg-zinc-950 border ${isCompleted ? 'border-zinc-800/50 opacity-70' : 'border-zinc-800'} p-3.5 rounded-2xl space-y-2.5`;
+        card.className = `bg-zinc-950 border ${isCompleted ? 'border-zinc-800/50 opacity-70' : 'border-zinc-800'} p-4 rounded-2xl space-y-3`;
         
-        const itemsSummary = (order.items || []).map(i => `${i.name} (${i.flavor}) x${i.qty}`).join(', ');
+        const itemsSummary = (order.items || []).map(i => `• ${i.name} (${i.flavor} | ${i.mix !== 'Tiada' ? i.mix + ' | ' : ''}${i.ice}) x${i.qty} - RM${i.totalPrice.toFixed(2)}`).join('<br>');
+
+        const cleanPhone = (order.customerPhone || '').replace(/[^0-9]/g, '');
 
         card.innerHTML = `
-          <div class="flex justify-between items-start">
+          <div class="flex justify-between items-start border-b border-zinc-800/80 pb-2.5">
             <div>
-              <span class="font-mono font-extrabold text-joss-yellow text-xs">#${order.orderId}</span>
-              <h5 class="font-bold text-white text-sm mt-0.5">${order.customerName} (${order.location} • ${order.room})</h5>
+              <div class="flex items-center gap-2">
+                <span class="font-mono font-extrabold text-joss-yellow text-sm">#${order.orderId}</span>
+                <span class="text-[10px] text-zinc-500 font-bold">${new Date(order.createdAt || Date.now()).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+              </div>
+              <h5 class="font-black text-white text-base mt-0.5">${order.customerName}</h5>
             </div>
-            <span class="text-xs font-black text-white bg-zinc-900 px-2.5 py-1 rounded-xl border border-zinc-800">
+            <span class="text-xs font-black text-joss-yellow bg-joss-yellow/10 px-3 py-1.5 rounded-xl border border-joss-yellow/30">
               RM ${(order.totals?.grandTotal || 0).toFixed(2)}
             </span>
           </div>
 
-          <p class="text-[11px] text-zinc-400"><strong>Items:</strong> ${itemsSummary}</p>
+          <!-- FULL CUSTOMER DETAILS -->
+          <div class="grid grid-cols-2 gap-2 text-[11px] bg-zinc-900/80 p-2.5 rounded-xl border border-zinc-800">
+            <div>
+              <span class="text-zinc-500 font-bold block text-[10px] uppercase">Lokasi / Kolej:</span>
+              <span class="text-white font-extrabold">${order.location} (${order.room})</span>
+            </div>
+            <div>
+              <span class="text-zinc-500 font-bold block text-[10px] uppercase">No. Telefon Pelanggan:</span>
+              <div class="flex items-center gap-1.5 mt-0.5">
+                <span class="text-white font-extrabold font-mono">${order.customerPhone || 'N/A'}</span>
+                ${cleanPhone ? `
+                  <a href="https://wa.me/${cleanPhone.startsWith('6') ? cleanPhone : '6' + cleanPhone}" target="_blank" class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-1.5 py-0.5 rounded text-[10px] font-bold hover:bg-emerald-500 hover:text-black transition-all">
+                    <i class="fa-brands fa-whatsapp"></i> Chat
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+            <div>
+              <span class="text-zinc-500 font-bold block text-[10px] uppercase">Jenis Penghantaran:</span>
+              <span class="text-zinc-300 font-semibold">${order.deliveryType === 'room' ? 'Delivery (+RM0.50)' : 'Self Pick-Up'}</span>
+            </div>
+            <div>
+              <span class="text-zinc-500 font-bold block text-[10px] uppercase">Bayaran:</span>
+              <span class="text-joss-yellow font-bold">${order.paymentMethod || 'DuitNow QR'}</span>
+            </div>
+            ${order.notes ? `
+              <div class="col-span-2 border-t border-zinc-800/80 pt-1.5 mt-0.5">
+                <span class="text-zinc-500 font-bold block text-[10px] uppercase">Nota Pelanggan:</span>
+                <span class="text-amber-300 italic font-medium">${order.notes}</span>
+              </div>
+            ` : ''}
+          </div>
 
-          <div class="flex items-center gap-2 pt-1 border-t border-zinc-900 flex-wrap">
-            <span class="text-[10px] text-zinc-500 uppercase font-bold">Status:</span>
-            <select onchange="updateOrderStatus('${order.orderId}', this.value)" class="bg-zinc-900 border border-zinc-800 rounded-lg text-xs p-1 text-white focus:outline-none focus:border-joss-yellow">
+          <div class="text-[11px] text-zinc-300 leading-relaxed bg-zinc-900/40 p-2.5 rounded-xl border border-zinc-800/60">
+            <strong class="text-zinc-400 block text-[10px] uppercase mb-1">Senarai Item Dipesan:</strong>
+            ${itemsSummary}
+          </div>
+
+          <div class="flex items-center gap-2 pt-1 border-t border-zinc-800/80 flex-wrap">
+            <span class="text-[10px] text-zinc-400 uppercase font-extrabold">Kemaskini Status:</span>
+            <select onchange="updateOrderStatus('${order.orderId}', this.value)" class="bg-zinc-900 border border-zinc-700 rounded-xl text-xs px-2.5 py-1.5 text-white focus:outline-none focus:border-joss-yellow font-bold">
               <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>🟡 Pending</option>
               <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>🥤 Preparing</option>
               <option value="ready" ${order.status === 'ready' ? 'selected' : ''}>⚡ Ready / Delivering</option>
               <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>✅ Delivered (Selesai)</option>
               <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>❌ Cancelled (Batal)</option>
             </select>
-            ${isCompleted ? `<span class="text-[9px] text-zinc-500 italic ml-auto">(Tersimpan dalam Sejarah)</span>` : ''}
           </div>
         `;
         container.appendChild(card);
@@ -1734,6 +1880,7 @@
       showToast(`Status #${orderId} dikemaskini!`);
       renderAdminOrdersList();
       calculateAdminAnalytics();
+      updateCustomerActiveOrderList();
     }
 
     function calculateAdminAnalytics() {
@@ -1911,7 +2058,8 @@
       
       storeSettings.name = document.getElementById('admin-store-name').value.trim() || "Extra Joss KK";
       storeSettings.status = document.getElementById('admin-store-status').value;
-      storeSettings.whatsapp = document.getElementById('admin-whatsapp-num').value.trim() || "601139550544";
+      storeSettings.adminPhone1 = document.getElementById('admin-phone-1').value.trim() || "601139550544";
+      storeSettings.adminPhone2 = document.getElementById('admin-phone-2').value.trim() || "60123456789";
       storeSettings.duitnowId = document.getElementById('admin-duitnow-id').value.trim() || "60 11-3955 0544";
 
       products.forEach((p, pIdx) => {
