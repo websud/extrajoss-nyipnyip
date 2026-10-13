@@ -1085,6 +1085,7 @@
     function renderProducts(filterCategoryName = 'all') {
       currentFilterCategory = filterCategoryName;
       const grid = document.getElementById('product-grid');
+      if (!grid) return;
       grid.innerHTML = '';
 
       const filtered = filterCategoryName === 'all' 
@@ -1094,8 +1095,12 @@
       filtered.forEach(p => {
         const card = document.createElement('div');
         
+        // Dynamic stock calculation across all flavor options
         const totalFlavorStock = Array.isArray(p.flavors) 
-          ? p.flavors.reduce((sum, f) => sum + (typeof f === 'object' ? f.stock : 99), 0)
+          ? p.flavors.reduce((sum, f) => {
+              const qty = typeof f === 'object' ? parseInt(f.stock) || 0 : 99;
+              return sum + qty;
+            }, 0)
           : 99;
 
         const isOutOfStock = p.stockStatus === 'out' || totalFlavorStock <= 0;
@@ -1170,7 +1175,7 @@
       if (currentCustomizingItem.flavors && currentCustomizingItem.flavors.length > 0) {
         currentCustomizingItem.flavors.forEach((f) => {
           const flavorName = typeof f === 'object' ? f.name : f;
-          const flavorStock = typeof f === 'object' ? f.stock : 99;
+          const flavorStock = typeof f === 'object' ? parseInt(f.stock) || 0 : 99;
           const isFlavorOut = flavorStock <= 0;
 
           const btn = document.createElement('button');
@@ -1196,11 +1201,17 @@
           }
 
           btn.onclick = () => {
+            if (isFlavorOut) return;
             selectedFlavorObj = { name: flavorName, stock: flavorStock };
+            if (customQty > flavorStock) {
+              customQty = Math.max(1, flavorStock);
+              document.getElementById('custom-qty-display').innerText = customQty;
+            }
             document.querySelectorAll('.flavor-btn').forEach(b => {
               if (!b.disabled) b.className = 'flavor-btn border-zinc-800 bg-zinc-950 text-zinc-300 p-2.5 rounded-xl border font-bold text-xs flex justify-between items-center transition-all';
             });
             btn.className = 'flavor-btn active border-joss-yellow bg-joss-yellow/10 text-joss-yellow p-2.5 rounded-xl border font-bold text-xs flex justify-between items-center transition-all';
+            updateCustomizeModalTotal();
           };
 
           flavorContainer.appendChild(btn);
@@ -1458,12 +1469,16 @@
         createdAt: new Date().toISOString()
       };
 
+      // Subtract ordered flavor quantity directly from product stock
       cart.forEach(cartItem => {
         const targetProd = products.find(p => p.id === cartItem.productId);
         if (targetProd && Array.isArray(targetProd.flavors)) {
           targetProd.flavors.forEach(f => {
-            if (typeof f === 'object' && f.name === cartItem.flavor) {
-              f.stock = Math.max(0, f.stock - cartItem.qty);
+            const fName = typeof f === 'object' ? f.name : f;
+            if (fName === cartItem.flavor) {
+              if (typeof f === 'object') {
+                f.stock = Math.max(0, (parseInt(f.stock) || 0) - cartItem.qty);
+              }
             }
           });
         }
@@ -2062,13 +2077,14 @@
       storeSettings.adminPhone2 = document.getElementById('admin-phone-2').value.trim() || "60123456789";
       storeSettings.duitnowId = document.getElementById('admin-duitnow-id').value.trim() || "60 11-3955 0544";
 
+      // Parse and save flavor stocks as clean objects
       products.forEach((p, pIdx) => {
         if (Array.isArray(p.flavors)) {
-          p.flavors.forEach((f, fIdx) => {
+          p.flavors = p.flavors.map((f, fIdx) => {
+            const flavorName = typeof f === 'object' ? f.name : f;
             const input = document.getElementById(`flavor-stock-${pIdx}-${fIdx}`);
-            if (input) {
-              if (typeof f === 'object') f.stock = parseInt(input.value) || 0;
-            }
+            const newStock = input ? Math.max(0, parseInt(input.value) || 0) : (typeof f === 'object' ? f.stock : 99);
+            return { name: flavorName, stock: newStock };
           });
         }
       });
