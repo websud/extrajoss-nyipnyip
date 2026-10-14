@@ -1879,14 +1879,27 @@
               <span class="text-zinc-300 font-semibold">${order.deliveryType === 'room' ? 'Delivery (+RM0.50)' : 'Self Pick-Up'}</span>
             </div>
             <div>
-              <span class="text-zinc-500 font-bold block text-[10px] uppercase">Bayaran:</span>
-              <span class="text-joss-yellow font-bold">${order.paymentMethod || 'DuitNow QR'}</span>
-              ${order.receiptImage ? `
-                <button onclick="viewReceiptImage('${order.orderId}')" class="mt-1.5 bg-joss-yellow/10 border border-joss-yellow/40 hover:bg-joss-yellow hover:text-black text-joss-yellow font-extrabold px-2 py-1 rounded-lg text-[10px] transition-all flex items-center gap-1">
-                  <i class="fa-solid fa-file-invoice-dollar"></i>
-                  <span>Lihat Resit</span>
-                </button>
-              ` : (order.paymentMethod === 'DuitNow QR' ? '<span class="text-[9px] text-red-400 block font-normal italic">Tiada Resit</span>' : '')}
+              <span class="text-zinc-500 font-bold block text-[10px] uppercase">Bayaran & Resit:</span>
+              <span class="text-joss-yellow font-bold block">${order.paymentMethod || 'DuitNow QR'}</span>
+              ${order.paymentMethod === 'DuitNow QR' ? (
+                order.receiptImage ? `
+                  <div class="mt-2 p-2 bg-zinc-900 border border-joss-yellow/40 rounded-xl space-y-1.5">
+                    <span class="text-[9px] font-extrabold text-emerald-400 uppercase flex items-center gap-1">
+                      <i class="fa-solid fa-circle-check"></i> Resit Dimuat Naik
+                    </span>
+                    <button type="button" onclick="viewReceiptImage('${order.orderId}')" class="w-full bg-joss-yellow text-black hover:bg-yellow-400 font-extrabold py-1.5 px-2 rounded-lg text-[10px] transition-all flex items-center justify-center gap-1 shadow">
+                      <i class="fa-solid fa-file-invoice-dollar"></i>
+                      <span>SAHKAN & LIHAT RESIT</span>
+                    </button>
+                  </div>
+                ` : `
+                  <div class="mt-1.5 p-1.5 bg-red-500/10 border border-red-500/30 rounded-lg">
+                    <span class="text-[10px] text-red-400 font-bold block">⚠️ Tiada Resit Dimuat Naik</span>
+                  </div>
+                `
+              ) : `
+                <span class="text-[10px] text-zinc-400 block mt-0.5">(Bayar Tunai / COD)</span>
+              `}
             </div>
             ${order.notes ? `
               <div class="col-span-2 border-t border-zinc-800/80 pt-1.5 mt-0.5">
