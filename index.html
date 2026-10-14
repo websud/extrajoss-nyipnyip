@@ -133,17 +133,9 @@
       </button>
     </div>
 
-    <!-- Menu Category Filter Scroll -->
-    <div class="flex items-center gap-2 overflow-x-auto pb-3 mb-4 custom-scrollbar text-xs">
-      <button onclick="filterCategory('all')" class="cat-btn active px-4 py-2 rounded-xl font-bold bg-joss-yellow text-black whitespace-nowrap transition-all shadow-md shadow-joss-yellow/10">
-        Semua Menu
-      </button>
-      <button onclick="filterCategory('extrajoss')" class="cat-btn px-4 py-2 rounded-xl font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap transition-all">
-        ⚡ Extra Joss
-      </button>
-      <button onclick="filterCategory('drinks')" class="cat-btn px-4 py-2 rounded-xl font-semibold bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700 whitespace-nowrap transition-all">
-        🥤 Minuman Lain
-      </button>
+    <!-- Dynamic Custom Menu Category Filter Scroll -->
+    <div id="category-filter-container" class="flex items-center gap-2 overflow-x-auto pb-3 mb-4 custom-scrollbar text-xs">
+      <!-- Rendered dynamically via JS to support Admin Custom Categories -->
     </div>
 
     <!-- Dynamic Menu Grid Container -->
@@ -211,7 +203,7 @@
         </div>
 
         <!-- Ice Level -->
-        <div>
+        <div id="ice-section">
           <label class="block text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-2">Tahap Ais</label>
           <div class="grid grid-cols-3 gap-2" id="ice-options">
             <button type="button" onclick="selectIce('Ais Normal')" class="ice-btn active p-2 rounded-xl border border-joss-yellow bg-joss-yellow/10 text-joss-yellow font-bold text-xs text-center">Ais Normal</button>
@@ -334,7 +326,7 @@
 
         <div class="border-t border-zinc-800 pt-3 space-y-1.5 text-xs text-zinc-400">
           <div class="flex justify-between">
-            <span>Jumlah Minuman</span>
+            <span>Jumlah Minuman / Barangan</span>
             <span id="summary-subtotal" class="text-white font-semibold">RM 0.00</span>
           </div>
           <div class="flex justify-between">
@@ -498,6 +490,11 @@
           </p>
         </div>
 
+        <!-- Order Cancelled Banner Notification -->
+        <div id="order-cancelled-banner" class="hidden">
+          <!-- Rendered via JS when status === 'cancelled' -->
+        </div>
+
         <!-- Location Delivery Disclaimer -->
         <div class="bg-zinc-950 border border-zinc-800 p-3 rounded-2xl text-[11px] text-zinc-300 space-y-1">
           <p class="font-extrabold text-joss-yellow flex items-center gap-1">
@@ -521,7 +518,7 @@
             <div class="step-icon w-7 h-7 rounded-full bg-zinc-800 border-2 border-zinc-700 text-zinc-400 flex items-center justify-center text-xs font-bold z-10">2</div>
             <div>
               <h5 class="font-extrabold text-white">Sedang Disediakan 🥤</h5>
-              <p class="text-[10px] text-zinc-400">Air Extra Joss anda sedang dibancuh segar!</p>
+              <p class="text-[10px] text-zinc-400">Pesanan anda sedang dibancuh/disediakan segar!</p>
             </div>
           </div>
 
@@ -537,7 +534,7 @@
             <div class="step-icon w-7 h-7 rounded-full bg-zinc-800 border-2 border-zinc-700 text-zinc-400 flex items-center justify-center text-xs font-bold z-10">4</div>
             <div>
               <h5 class="font-extrabold text-white">Pesanan Selesai Dihantar 🎉</h5>
-              <p class="text-[10px] text-zinc-400">Selamat menikmati Extra Joss padu anda!</p>
+              <p class="text-[10px] text-zinc-400">Selamat menikmati pesanan padu anda!</p>
             </div>
           </div>
         </div>
@@ -723,7 +720,7 @@
           <!-- DUAL ADMIN PHONE NUMBERS -->
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block font-bold text-zinc-300 mb-1">No. Admin 1 (WhatsApp/Tel) *</label>
+              <label class="block font-bold text-zinc-300 mb-1">No. Admin 1 (WhatsApp Order Alert) *</label>
               <input type="text" id="admin-phone-1" placeholder="601139550544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
             </div>
             <div>
@@ -761,7 +758,7 @@
             </button>
           </div>
 
-          <!-- Add New Product Form -->
+          <!-- Add New Product Form with Fully Custom Category Support -->
           <div id="add-product-form" class="hidden bg-zinc-950 border border-joss-yellow/30 p-3.5 rounded-xl mb-4 space-y-3">
             <h5 class="font-bold text-white text-xs border-b border-zinc-800 pb-1.5 flex justify-between items-center">
               <span>Bina Item / Menu Baru</span>
@@ -771,7 +768,7 @@
             <div class="grid grid-cols-2 gap-2">
               <div>
                 <label class="block text-[10px] text-zinc-400 mb-0.5">Nama Menu *</label>
-                <input type="text" id="new-prod-name" placeholder="Contoh: Extra Joss Mangga" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white text-xs">
+                <input type="text" id="new-prod-name" placeholder="Contoh: Extra Joss Mangga / Nasi Goreng" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white text-xs">
               </div>
               <div>
                 <label class="block text-[10px] text-zinc-400 mb-0.5">Harga Asas (RM) *</label>
@@ -779,28 +776,39 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-2">
+            <!-- Dynamic & Custom Category Selector -->
+            <div class="space-y-2">
               <div>
-                <label class="block text-[10px] text-zinc-400 mb-0.5">Kategori *</label>
-                <select id="new-prod-category" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white text-xs">
+                <label class="block text-[10px] text-zinc-400 mb-0.5">Kategori Menu *</label>
+                <select id="new-prod-category-select" onchange="handleCategorySelectChange()" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white text-xs">
                   <option value="extrajoss">⚡ Extra Joss</option>
                   <option value="drinks">🥤 Minuman Lain</option>
+                  <option value="food">🍔 Makanan / Snacks</option>
+                  <option value="others">🍿 Lain-Lain</option>
+                  <option value="__custom__">➕ + Tambah Kategori Baharu (Custom)</option>
                 </select>
               </div>
+
+              <div id="custom-category-input-container" class="hidden">
+                <label class="block text-[10px] text-joss-yellow font-bold mb-0.5">Taip Nama Kategori Baharu Anda *</label>
+                <input type="text" id="new-prod-custom-category" placeholder="Contoh: Desserts / Western / Roti Canai" class="w-full bg-zinc-900 border border-joss-yellow/50 rounded-lg p-2 text-white text-xs focus:outline-none focus:border-joss-yellow">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
               <div>
                 <label class="block text-[10px] text-zinc-400 mb-0.5">Badge Tag</label>
-                <input type="text" id="new-prod-badge" placeholder="FRESH / BESTSELLER" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white text-xs">
+                <input type="text" id="new-prod-badge" placeholder="FRESH / BESTSELLER / HOT" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white text-xs">
+              </div>
+              <div>
+                <label class="block text-[10px] text-zinc-400 mb-0.5">Penerangan Ringkas</label>
+                <input type="text" id="new-prod-desc" placeholder="Bancuhan segar / Hidangan panas..." class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white text-xs">
               </div>
             </div>
 
             <div>
-              <label class="block text-[10px] text-zinc-400 mb-0.5">Pilihan Perisa (Dipisahkan koma)</label>
+              <label class="block text-[10px] text-zinc-400 mb-0.5">Pilihan Perisa / Jenis (Dipisahkan koma)</label>
               <input type="text" id="new-prod-flavors" placeholder="Active, Anggur, Mangga" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white text-xs">
-            </div>
-
-            <div>
-              <label class="block text-[10px] text-zinc-400 mb-0.5">Penerangan Produk</label>
-              <input type="text" id="new-prod-desc" placeholder="Bancuhan segar dan padu..." class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white text-xs">
             </div>
 
             <button type="button" onclick="addNewProduct()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold py-2 rounded-xl text-xs uppercase tracking-wide transition-all">
@@ -954,6 +962,15 @@
     let currentRatingValue = 5;
     let allReviewsList = [];
 
+    // Category Display Mapping Preset
+    const CATEGORY_MAP = {
+      'all': 'Semua Menu',
+      'extrajoss': '⚡ Extra Joss',
+      'drinks': '🥤 Minuman Lain',
+      'food': '🍔 Makanan & Snacks',
+      'others': '🍿 Lain-Lain'
+    };
+
     function initRealtimeSync() {
       loadLocalSettings();
       
@@ -961,6 +978,7 @@
 
       if (!db) {
         updateHeaderAndQRDisplay();
+        renderCategoryFilters();
         renderProducts(currentFilterCategory);
         updateCustomerActiveOrderList();
         calculateAdminAnalytics();
@@ -987,6 +1005,7 @@
           localStorage.setItem('joss_store_products', JSON.stringify(products));
         }
         updateHeaderAndQRDisplay();
+        renderCategoryFilters();
         renderProducts(currentFilterCategory);
       }, (err) => {
         console.warn("Config listener notice:", err);
@@ -1076,10 +1095,10 @@
 
       const contactsHtml = `
         <a href="https://wa.me/${p1.replace(/[^0-9]/g, '')}" target="_blank" class="bg-zinc-900 border border-zinc-800 hover:border-joss-yellow p-2 rounded-xl text-center text-zinc-300 font-bold hover:text-joss-yellow transition-all flex items-center justify-center gap-1.5 text-[11px]">
-          <i class="fa-brands fa-whatsapp text-emerald-400"></i> Seller 1
+          <i class="fa-brands fa-whatsapp text-emerald-400"></i> Admin 1
         </a>
         <a href="https://wa.me/${p2.replace(/[^0-9]/g, '')}" target="_blank" class="bg-zinc-900 border border-zinc-800 hover:border-joss-yellow p-2 rounded-xl text-center text-zinc-300 font-bold hover:text-joss-yellow transition-all flex items-center justify-center gap-1.5 text-[11px]">
-          <i class="fa-brands fa-whatsapp text-emerald-400"></i> Seller 2
+          <i class="fa-brands fa-whatsapp text-emerald-400"></i> Admin 2
         </a>
       `;
 
@@ -1087,6 +1106,38 @@
       const trackerContacts = document.getElementById('tracker-admin-contacts');
       if (checkoutContacts) checkoutContacts.innerHTML = contactsHtml;
       if (trackerContacts) trackerContacts.innerHTML = contactsHtml;
+    }
+
+    // Dynamic Category Filter Rendering based on Products
+    function renderCategoryFilters() {
+      const container = document.getElementById('category-filter-container');
+      if (!container) return;
+
+      // Extract unique categories from current products
+      const categoryKeys = new Set(['all']);
+      products.forEach(p => {
+        if (p.category) categoryKeys.add(p.category.trim().toLowerCase());
+      });
+
+      container.innerHTML = '';
+
+      categoryKeys.forEach(catKey => {
+        const btn = document.createElement('button');
+        const isActive = currentFilterCategory === catKey;
+
+        btn.className = `cat-btn px-4 py-2 rounded-xl font-bold whitespace-nowrap transition-all ${
+          isActive 
+            ? 'active bg-joss-yellow text-black shadow-md shadow-joss-yellow/10' 
+            : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:border-zinc-700'
+        }`;
+
+        // Format label
+        let displayLabel = CATEGORY_MAP[catKey] || (catKey.charAt(0).toUpperCase() + catKey.slice(1));
+        btn.innerText = displayLabel;
+        btn.onclick = () => filterCategory(catKey, btn);
+
+        container.appendChild(btn);
+      });
     }
 
     function renderProducts(filterCategoryName = 'all') {
@@ -1097,7 +1148,12 @@
 
       const filtered = filterCategoryName === 'all' 
         ? products 
-        : products.filter(p => p.category === filterCategoryName);
+        : products.filter(p => (p.category || '').toLowerCase() === filterCategoryName.toLowerCase());
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<p class="col-span-full text-center text-zinc-500 py-8 text-xs italic">Tiada menu buat kategori ini lagi.</p>`;
+        return;
+      }
 
       filtered.forEach(p => {
         const card = document.createElement('div');
@@ -1145,13 +1201,18 @@
       });
     }
 
-    function filterCategory(cat) {
-      document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.classList.remove('bg-joss-yellow', 'text-black', 'active');
-        btn.classList.add('bg-zinc-900', 'text-zinc-400');
+    function filterCategory(cat, btnElement) {
+      currentFilterCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.classList.remove('bg-joss-yellow', 'text-black', 'active', 'shadow-md');
+        b.classList.add('bg-zinc-900', 'text-zinc-400');
       });
-      event.currentTarget.classList.remove('bg-zinc-900', 'text-zinc-400');
-      event.currentTarget.classList.add('bg-joss-yellow', 'text-black', 'active');
+      
+      if (btnElement) {
+        btnElement.classList.remove('bg-zinc-900', 'text-zinc-400');
+        btnElement.classList.add('bg-joss-yellow', 'text-black', 'active', 'shadow-md');
+      }
+
       renderProducts(cat);
     }
 
@@ -1229,7 +1290,17 @@
         selectedMixPrice = 0.00;
       }
 
-      selectedIce = 'Ais Normal';
+      // Hide Ice Section for Food/Other Categories if not applicable
+      const iceSection = document.getElementById('ice-section');
+      const itemCat = (currentCustomizingItem.category || '').toLowerCase();
+      if (itemCat === 'food' || itemCat === 'others' || itemCat.includes('makanan') || itemCat.includes('snack')) {
+        if (iceSection) iceSection.classList.add('hidden');
+        selectedIce = 'Tiada Ais';
+      } else {
+        if (iceSection) iceSection.classList.remove('hidden');
+        selectedIce = 'Ais Normal';
+      }
+
       customQty = 1;
       document.getElementById('custom-qty-display').innerText = customQty;
 
@@ -1535,13 +1606,26 @@
       }
       currentSelectedTrackingOrderId = newOrderId;
 
+      // AUTOMATED WHATSAPP ALERT NOTIFICATION TO ADMIN 1
+      const payStatusText = paymentMethod === 'DuitNow QR' ? 'PAID' : 'COD';
+      const adminMsg = `✅ You have a new order inbound!\nOrder ID: #${newOrderId}\nPayment Status: ${payStatusText}\n⚠️ Please check on admin monitor to see order details ⚠️`;
+      
+      let p1Target = (storeSettings.adminPhone1 || "601139550544").replace(/[^0-9]/g, '');
+      if (!p1Target.startsWith('60')) {
+        if (p1Target.startsWith('0')) p1Target = '6' + p1Target;
+        else p1Target = '60' + p1Target;
+      }
+      const waNotifyUrl = `https://wa.me/${p1Target}?text=${encodeURIComponent(adminMsg)}`;
+      window.open(waNotifyUrl, '_blank');
+
       cart = [];
       if (receiptFileInput) receiptFileInput.value = '';
       updateCartBadge();
       closeCartModal();
+      renderCategoryFilters();
       renderProducts(currentFilterCategory);
 
-      showToast('Pesanan & resit berjaya dihantar ke Admin!');
+      showToast('Pesanan berjaya dihantar ke Admin Monitor!');
       updateCustomerActiveOrderList();
       openTrackingModal();
 
@@ -1561,7 +1645,7 @@
       const badgeCount = document.getElementById('active-orders-count-badge');
 
       const customerOrders = allOrdersList.filter(o => customerActiveOrderIds.includes(o.orderId));
-      const activeCustomerOrders = customerOrders.filter(o => o.status !== 'delivered' && o.status !== 'cancelled');
+      const activeCustomerOrders = customerOrders.filter(o => o.status !== 'delivered');
 
       if (customerActiveOrderIds.length > 0) {
         activeBtn.classList.remove('hidden');
@@ -1625,8 +1709,39 @@
       }
 
       const pickupBanner = document.getElementById('pickup-ready-banner');
+      const cancelledBanner = document.getElementById('order-cancelled-banner');
       const step3Title = document.getElementById('step-3-title');
       const step3Desc = document.getElementById('step-3-desc');
+
+      // CANCELLED ORDER BANNER NOTIFICATION
+      if (data.status === 'cancelled') {
+        const p1Raw = storeSettings.adminPhone1 || '011-39550544';
+        let p1Clean = p1Raw.replace(/[^0-9]/g, '');
+        if (!p1Clean.startsWith('60')) {
+          if (p1Clean.startsWith('0')) p1Clean = '6' + p1Clean;
+          else p1Clean = '60' + p1Clean;
+        }
+
+        if (cancelledBanner) {
+          cancelledBanner.innerHTML = `
+            <div class="bg-red-500/20 border-2 border-red-500 p-4 rounded-2xl text-center space-y-2 animate-pulse shadow-xl shadow-red-500/20">
+              <p class="font-black text-red-400 text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-circle-xmark text-base"></i>
+                <span>Order anda telah dicancelkan oleh admin!</span>
+              </p>
+              <p class="text-[11px] text-zinc-300">
+                Sila contact admin jika perlu bantuan di: 
+                <a href="https://wa.me/${p1Clean}" target="_blank" class="text-joss-yellow font-extrabold underline block mt-0.5">
+                  <i class="fa-brands fa-whatsapp text-emerald-400"></i> ${p1Raw}
+                </a>
+              </p>
+            </div>
+          `;
+          cancelledBanner.classList.remove('hidden');
+        }
+      } else {
+        if (cancelledBanner) cancelledBanner.classList.add('hidden');
+      }
 
       if (data.deliveryType === 'pickup') {
         if (step3Title) step3Title.innerText = "Pesanan Sedia Diambil 🛍️";
@@ -2045,16 +2160,21 @@
           }).join('');
         }
 
+        const categoryDisplay = CATEGORY_MAP[p.category] || p.category;
+
         div.innerHTML = `
           <div class="flex justify-between items-center font-bold text-white text-xs border-b border-zinc-800 pb-2">
-            <span>${p.name} (RM ${p.price.toFixed(2)})</span>
+            <div>
+              <span>${p.name} (RM ${p.price.toFixed(2)})</span>
+              <span class="text-[9px] block text-joss-yellow font-normal uppercase">Kategori: ${categoryDisplay}</span>
+            </div>
             <button onclick="deleteProduct('${p.id}')" class="text-red-400 hover:text-red-300 p-1">
               <i class="fa-solid fa-trash-can text-xs"></i>
             </button>
           </div>
 
           <div>
-            <label class="block text-[10px] text-zinc-400 mb-1 font-bold uppercase">Stok Mengikut Perisa:</label>
+            <label class="block text-[10px] text-zinc-400 mb-1 font-bold uppercase">Stok Mengikut Perisa / Pilihan:</label>
             <div class="space-y-1.5">
               ${flavorsInputsHtml}
             </div>
@@ -2068,12 +2188,34 @@
       document.getElementById('add-product-form').classList.toggle('hidden');
     }
 
+    function handleCategorySelectChange() {
+      const selectElem = document.getElementById('new-prod-category-select');
+      const customContainer = document.getElementById('custom-category-input-container');
+      
+      if (selectElem.value === '__custom__') {
+        customContainer.classList.remove('hidden');
+      } else {
+        customContainer.classList.add('hidden');
+      }
+    }
+
     function addNewProduct() {
       const name = document.getElementById('new-prod-name').value.trim();
       const price = parseFloat(document.getElementById('new-prod-price').value);
-      const category = document.getElementById('new-prod-category').value;
+      const categorySelect = document.getElementById('new-prod-category-select').value;
+      const customCategoryInput = document.getElementById('new-prod-custom-category').value.trim();
+      
+      let category = categorySelect;
+      if (categorySelect === '__custom__') {
+        if (!customCategoryInput) {
+          showToast('Sila taip nama kategori kustom baharu anda!');
+          return;
+        }
+        category = customCategoryInput.toLowerCase();
+      }
+
       const badge = document.getElementById('new-prod-badge').value.trim() || 'BARU 🥤';
-      const desc = document.getElementById('new-prod-desc').value.trim() || 'Minuman segar.';
+      const desc = document.getElementById('new-prod-desc').value.trim() || 'Hidangan segar.';
       const flavorsInput = document.getElementById('new-prod-flavors').value.trim();
 
       if (!name || isNaN(price)) {
@@ -2087,7 +2229,11 @@
 
       const newProd = {
         id: 'item-' + Date.now(),
-        name, category, price, desc, badge,
+        name, 
+        category, 
+        price, 
+        desc, 
+        badge,
         flavors: flavorsArray,
         isExtraJoss: category === 'extrajoss',
         stockStatus: 'available',
@@ -2095,16 +2241,29 @@
       };
 
       products.push(newProd);
+
+      // Reset Form Inputs
+      document.getElementById('new-prod-name').value = '';
+      document.getElementById('new-prod-price').value = '';
+      document.getElementById('new-prod-custom-category').value = '';
+      document.getElementById('new-prod-badge').value = '';
+      document.getElementById('new-prod-desc').value = '';
+      document.getElementById('new-prod-flavors').value = '';
+      document.getElementById('new-prod-category-select').value = 'extrajoss';
+      handleCategorySelectChange();
+
       toggleAddProductForm();
       renderAdminStockList();
+      renderCategoryFilters();
       renderProducts(currentFilterCategory);
-      showToast('Menu Baru Berjaya Ditambah!');
+      showToast('Menu Baru & Kategori Berjaya Ditambah!');
     }
 
     function deleteProduct(productId) {
       if (confirm('Adakah anda pasti untuk memadam menu ini?')) {
         products = products.filter(p => p.id !== productId);
         renderAdminStockList();
+        renderCategoryFilters();
         renderProducts(currentFilterCategory);
         showToast('Menu telah dipadam.');
       }
@@ -2171,6 +2330,7 @@
       }
 
       updateHeaderAndQRDisplay();
+      renderCategoryFilters();
       renderProducts(currentFilterCategory);
       closeAdminPanelModal();
       showToast('Tetapan & Stok Berjaya Dikemaskini!');
