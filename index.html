@@ -1667,12 +1667,14 @@
       const adminMsg = `✅ You have a new order inbound!\nOrder ID: #${newOrderId}\nPayment Status: ${payStatusText}\n⚠️ Please check on admin monitor to see order details ⚠️`;
       
       let p1Target = (storeSettings.adminPhone1 || "601139550544").replace(/[^0-9]/g, '');
-      if (!p1Target.startsWith('60')) {
-        if (p1Target.startsWith('0')) p1Target = '6' + p1Target;
-        else p1Target = '60' + p1Target;
+      if (p1Target.startsWith('0')) {
+        p1Target = '6' + p1Target;
+      } else if (!p1Target.startsWith('60')) {
+        p1Target = '60' + p1Target;
       }
-      const waNotifyUrl = `https://wa.me/${p1Target}?text=${encodeURIComponent(adminMsg)}`;
-      window.open(waNotifyUrl, '_blank');
+      
+      // Use official WhatsApp API URL format for reliable mobile app opening
+      const waNotifyUrl = `https://api.whatsapp.com/send?phone=${p1Target}&text=${encodeURIComponent(adminMsg)}`;
 
       cart = [];
       if (receiptFileInput) receiptFileInput.value = '';
@@ -1681,7 +1683,7 @@
       renderCategoryFilters();
       renderProducts(currentFilterCategory);
 
-      showToast('Pesanan berjaya dihantar ke Admin Monitor!');
+      showToast('Pesanan disahkan! Buka WhatsApp Admin...');
       updateCustomerActiveOrderList();
       openTrackingModal();
 
@@ -1692,7 +1694,9 @@
           submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-sm"></i> <span>Sahkan & Hantar Pesanan</span>`;
           submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
         }
-      }, 800);
+        // Direct redirection triggers WhatsApp App launch reliably on iOS and Android
+        window.location.href = waNotifyUrl;
+      }, 500);
     }
 
     function updateCustomerActiveOrderList() {
