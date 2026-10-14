@@ -825,6 +825,27 @@
     </div>
   </div>
 
+  <!-- MODAL: View Receipt Modal for Admin -->
+  <div id="receipt-view-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-2xl p-4 shadow-2xl flex flex-col items-center">
+      <div class="w-full flex items-center justify-between pb-3 border-b border-zinc-800 mb-3">
+        <h4 class="font-extrabold text-white text-sm flex items-center gap-2">
+          <i class="fa-solid fa-file-invoice-dollar text-joss-yellow"></i>
+          <span>Resit Bukti Bayaran (<span id="modal-receipt-order-id" class="text-joss-yellow font-mono">#---</span>)</span>
+        </h4>
+        <button onclick="closeReceiptModal()" class="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="w-full max-h-[70vh] overflow-y-auto flex justify-center bg-black/50 p-2 rounded-xl border border-zinc-800">
+        <img id="modal-receipt-img" src="" alt="Resit Pembayaran" class="max-w-full h-auto rounded-lg object-contain">
+      </div>
+      <button onclick="closeReceiptModal()" class="w-full mt-4 bg-zinc-800 text-white font-bold py-2.5 rounded-xl hover:bg-zinc-700 text-xs">
+        Tutup
+      </button>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-zinc-800 border border-zinc-700 text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-2">
     <i class="fa-solid fa-circle-check text-joss-yellow"></i>
@@ -1860,6 +1881,12 @@
             <div>
               <span class="text-zinc-500 font-bold block text-[10px] uppercase">Bayaran:</span>
               <span class="text-joss-yellow font-bold">${order.paymentMethod || 'DuitNow QR'}</span>
+              ${order.receiptImage ? `
+                <button onclick="viewReceiptImage('${order.orderId}')" class="mt-1.5 bg-joss-yellow/10 border border-joss-yellow/40 hover:bg-joss-yellow hover:text-black text-joss-yellow font-extrabold px-2 py-1 rounded-lg text-[10px] transition-all flex items-center gap-1">
+                  <i class="fa-solid fa-file-invoice-dollar"></i>
+                  <span>Lihat Resit</span>
+                </button>
+              ` : (order.paymentMethod === 'DuitNow QR' ? '<span class="text-[9px] text-red-400 block font-normal italic">Tiada Resit</span>' : '')}
             </div>
             ${order.notes ? `
               <div class="col-span-2 border-t border-zinc-800/80 pt-1.5 mt-0.5">
@@ -2072,6 +2099,21 @@
 
     function closeAdminPanelModal() {
       document.getElementById('admin-panel-modal').classList.add('hidden');
+    }
+
+    function viewReceiptImage(orderId) {
+      const order = allOrdersList.find(o => o.orderId === orderId);
+      if (!order || !order.receiptImage) {
+        showToast('Resit tidak ditemui untuk pesanan ini.');
+        return;
+      }
+      document.getElementById('modal-receipt-order-id').innerText = '#' + order.orderId;
+      document.getElementById('modal-receipt-img').src = order.receiptImage;
+      document.getElementById('receipt-view-modal').classList.remove('hidden');
+    }
+
+    function closeReceiptModal() {
+      document.getElementById('receipt-view-modal').classList.add('hidden');
     }
 
     async function saveAdminSettings() {
