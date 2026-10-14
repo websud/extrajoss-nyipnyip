@@ -641,7 +641,11 @@
             <i class="fa-solid fa-bell text-joss-yellow"></i>
             Pesanan Masuk (Aktif)
           </h4>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="requestBrowserNotificationPermission()" id="enable-notif-btn" class="bg-joss-yellow/10 hover:bg-joss-yellow hover:text-black text-joss-yellow border border-joss-yellow/30 font-bold px-2.5 py-1 rounded-lg text-[10px] transition-all flex items-center gap-1">
+              <i class="fa-solid fa-bell"></i>
+              <span>Aktifkan Notifikasi Bunyi & Push</span>
+            </button>
             <button onclick="toggleShowArchivedOrders()" id="toggle-archive-btn" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-2.5 py-1 rounded-lg text-[10px] transition-all">
               <i class="fa-solid fa-box-archive mr-1"></i> Tunjuk Sejarah/Arsip
             </button>
@@ -947,6 +951,7 @@
 
     let cart = [];
     let allOrdersList = [];
+    let previousOrdersCount = 0;
     let customerActiveOrderIds = JSON.parse(localStorage.getItem('joss_customer_active_orders') || '[]');
     let currentSelectedTrackingOrderId = null;
 
@@ -1019,6 +1024,14 @@
             fetchedOrders.push(doc.data());
           });
           fetchedOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          
+          // Sound & Push Notification trigger if new order arrives
+          const currentCount = fetchedOrders.length;
+          if (previousOrdersCount > 0 && currentCount > previousOrdersCount) {
+            triggerAdminNewOrderNotification(fetchedOrders[0]);
+          }
+          previousOrdersCount = currentCount;
+
           allOrdersList = getUniqueOrdersList(fetchedOrders);
           localStorage.setItem('joss_store_orders', JSON.stringify(allOrdersList));
           
@@ -1038,6 +1051,49 @@
             allReviewsList.push(doc.data());
           });
           renderAdminReviews();
+        }
+      });
+    }
+
+    // Trigger Sound & Browser System Notification for Admin
+    function triggerAdminNewOrderNotification(latestOrder) {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5 Tone
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.15); // A5 Tone
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.6);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.6);
+      } catch (e) {
+        console.warn("Audio Context alert blocked or not allowed", e);
+      }
+
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('⚡ Pesanan Baharu Masuk!', {
+          body: `Order #${latestOrder?.orderId || ''} - ${latestOrder?.customerName || 'Pelanggan'} (RM ${(latestOrder?.totals?.grandTotal || 0).toFixed(2)})`,
+          icon: '⚡'
+        });
+      }
+    }
+
+    function requestBrowserNotificationPermission() {
+      if (!('Notification' in window)) {
+        showToast('Pelayar anda tidak menyokong Push Notification.');
+        return;
+      }
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          showToast('Notifikasi & Penggera Pengeluaran Bunyi Diaktifkan!');
+          const btn = document.getElementById('enable-notif-btn');
+          if (btn) btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> <span>Notifikasi Aktif</span>`;
+        } else {
+          showToast('Kebenaran Notifikasi Ditolak oleh Pelayar.');
         }
       });
     }
