@@ -680,10 +680,10 @@
           
           <div class="bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-xl text-[11px] text-emerald-200 leading-relaxed space-y-1">
             <p class="font-extrabold text-emerald-400 flex items-center gap-1">
-              <i class="fa-solid fa-cloud-check text-sm"></i> Info Sambungan Firebase Cloud (Multi-Device Active):
+              <i class="fa-solid fa-cloud-check text-sm"></i> Cloud Direct Sync (100% Online Active):
             </p>
             <p>
-              Pangkalan data Firebase Firestore diaktifkan secara automatik. Pesanan dari <strong>Telefon Pelanggan</strong> kini disinkronkan secara <strong>Real-time</strong> ke <strong>Telefon Admin 1 & Admin 2</strong>!
+              Semua pertukaran status kedai (BUKA/TUTUP), menu, dan pesanan pelanggan disambungkan terus ke <strong>Firebase Cloud Real-Time Database</strong>.
             </p>
           </div>
 
@@ -848,7 +848,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, onSnapshot, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, updateDoc, collection, onSnapshot, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     // Defaults Embedded Images
     const EMBEDDED_BUSINESS_BANNER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='300' viewBox='0 0 800 300'><rect width='800' height='300' fill='%23121212'/><rect x='10' y='10' width='780' height='280' rx='20' fill='%231E1E1E' stroke='%23FFDF00' stroke-width='3'/><text x='50%' y='40%' dominant-baseline='middle' text-anchor='middle' fill='%23FFDF00' font-size='38' font-family='sans-serif' font-weight='900'>⚡ BRO JOSSS ⚡</text><text x='50%' y='60%' dominant-baseline='middle' text-anchor='middle' fill='%23FFFFFF' font-size='18' font-family='sans-serif'>BUMITA • PF1 • PF2 | SEGAR, PADU %26 Bertenaga!</text></svg>";
@@ -875,7 +875,7 @@
       console.warn("Firebase Init Caution:", e);
     }
 
-    // State Variables
+    // Default State Variables
     window.storeSettings = {
       name: "BRO JOSSS",
       status: "open",
@@ -938,6 +938,7 @@
 
     window.cart = [];
     window.allOrdersList = [];
+    // Only keep tracked IDs locally for the user's device view
     window.customerActiveOrderIds = JSON.parse(localStorage.getItem('joss_customer_active_orders') || '[]');
     window.currentSelectedTrackingOrderId = null;
 
@@ -975,8 +976,6 @@
 
     // Initialize Authentication & Firestore Subscriptions
     async function initAppAndDatabase() {
-      // Load local settings FIRST to guarantee instant banner & initial UI load
-      loadLocalSettings();
       updateHeaderAndQRDisplay();
       renderCategoryFilters();
       renderProducts(window.currentFilterCategory);
@@ -1001,11 +1000,11 @@
       });
     }
 
-    // REAL-TIME LISTENERS across all devices
+    // REAL-TIME LISTENERS across all devices (No stale local overrides!)
     function setupFirestoreRealtimeListeners() {
       if (!currentUser || !db) return;
 
-      // 1. Listen to Settings & Menu Store Configuration
+      // 1. Listen to Settings & Menu Store Configuration (Direct Sync)
       onSnapshot(getSettingsDocRef(), (docSnap) => {
         if (docSnap.exists()) {
           const data = docSnap.data();
@@ -1013,8 +1012,6 @@
           if (data.customProducts && Array.isArray(data.customProducts)) {
             window.products = data.customProducts;
           }
-          localStorage.setItem('joss_store_settings', JSON.stringify(window.storeSettings));
-          localStorage.setItem('joss_store_products', JSON.stringify(window.products));
           
           updateHeaderAndQRDisplay();
           renderCategoryFilters();
@@ -1022,7 +1019,7 @@
         }
       }, (err) => console.warn("Settings realtime sync error:", err));
 
-      // 2. Listen to All Live Orders Across Devices
+      // 2. Listen to All Live Orders Across Devices (Direct Sync)
       onSnapshot(getOrdersCollectionRef(), (querySnap) => {
         const cloudOrders = [];
         querySnap.forEach((doc) => {
@@ -1031,7 +1028,6 @@
 
         cloudOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         window.allOrdersList = cloudOrders;
-        localStorage.setItem('joss_store_orders', JSON.stringify(window.allOrdersList));
 
         updateCustomerActiveOrderList();
         renderAdminOrdersList();
@@ -1044,23 +1040,6 @@
         querySnap.forEach((doc) => window.allReviewsList.push(doc.data()));
         renderAdminReviews();
       }, (err) => console.warn("Reviews realtime sync error:", err));
-    }
-
-    function loadLocalSettings() {
-      const localSettings = localStorage.getItem('joss_store_settings');
-      if (localSettings) {
-        try { window.storeSettings = { ...window.storeSettings, ...JSON.parse(localSettings) }; } catch (e) {}
-      }
-
-      const localProducts = localStorage.getItem('joss_store_products');
-      if (localProducts) {
-        try { window.products = JSON.parse(localProducts); } catch (e) {}
-      }
-
-      const localOrders = localStorage.getItem('joss_store_orders');
-      if (localOrders) {
-        try { window.allOrdersList = JSON.parse(localOrders); } catch (e) {}
-      }
     }
 
     window.updateHeaderAndQRDisplay = function() {
@@ -1183,9 +1162,9 @@
             <p class="text-[11px] text-zinc-400 mt-1 leading-snug">${p.desc || ''}</p>
           </div>
 
-          <button onclick="window.openCustomizeModal('${p.id}')" ${isOutOfStock ? 'disabled' : ''} class="mt-4 w-full ${isOutOfStock ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed border-zinc-800' : 'bg-zinc-800 hover:bg-joss-yellow hover:text-black text-white border-zinc-700'} font-bold py-2 px-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 border">
-            <i class="fa-solid ${isOutOfStock ? 'fa-ban' : 'fa-plus'} text-[10px]"></i>
-            <span>${isOutOfStock ? 'Kehabisan Stok' : 'Pilih & Order'}</span>
+          <button onclick="window.openCustomizeModal('${p.id}')" ${isOutOfStock || window.storeSettings.status === 'closed' ? 'disabled' : ''} class="mt-4 w-full ${isOutOfStock || window.storeSettings.status === 'closed' ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed border-zinc-800' : 'bg-zinc-800 hover:bg-joss-yellow hover:text-black text-white border-zinc-700'} font-bold py-2 px-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 border">
+            <i class="fa-solid ${isOutOfStock || window.storeSettings.status === 'closed' ? 'fa-ban' : 'fa-plus'} text-[10px]"></i>
+            <span>${window.storeSettings.status === 'closed' ? 'Kedai Tutup' : (isOutOfStock ? 'Kehabisan Stok' : 'Pilih & Order')}</span>
           </button>
         `;
         grid.appendChild(card);
@@ -1525,8 +1504,14 @@
       }
     };
 
+    // Submit Order directly to Cloud Firestore & Sync Across Devices
     window.submitOrderDirectToAdmin = async function() {
       if (window.isSubmittingOrder) return;
+
+      if (window.storeSettings.status === 'closed') {
+        window.showToast('Kedai sedang TUTUP. Pesanan tidak dapat dihantar.');
+        return;
+      }
 
       const name = document.getElementById('cust-name').value.trim();
       const phone = document.getElementById('cust-phone').value.trim();
@@ -1598,17 +1583,25 @@
         }
       });
 
-      // Save Order into Firestore Cloud Data (RULE 1 Path)
+      // DIRECT CLOUD SAVE to Firestore Data (Rule 1 Path)
       if (db && currentUser) {
         try {
           await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', newOrderId), orderData);
           await setDoc(getSettingsDocRef(), { customProducts: window.products }, { merge: true });
         } catch (e) {
-          console.warn("Firestore save error:", e);
+          console.error("Firestore save error:", e);
+          window.showToast("Gagal menyimpan ke Cloud. Sila cuba lagi.");
+          window.isSubmittingOrder = false;
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-sm"></i> <span>Sahkan & Hantar Pesanan</span>`;
+            submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+          }
+          return;
         }
       }
 
-      // Add to Customer Tracker Locally
+      // Track on customer's own device
       if (!window.customerActiveOrderIds.includes(newOrderId)) {
         window.customerActiveOrderIds.push(newOrderId);
         localStorage.setItem('joss_customer_active_orders', JSON.stringify(window.customerActiveOrderIds));
@@ -2290,7 +2283,7 @@
     };
 
     window.saveAdminSettings = async function() {
-      window.showToast('Sedang menyimpan tetapan...');
+      window.showToast('Sedang menyimpan tetapan ke Cloud...');
       
       window.storeSettings.name = document.getElementById('admin-store-name').value.trim() || "BRO JOSSS";
       window.storeSettings.status = document.getElementById('admin-store-status').value;
@@ -2319,9 +2312,6 @@
         window.storeSettings.qrImage = await window.readFileAsDataURL(qrInput.files[0], 500);
       }
 
-      localStorage.setItem('joss_store_settings', JSON.stringify(window.storeSettings));
-      localStorage.setItem('joss_store_products', JSON.stringify(window.products));
-
       if (db && currentUser) {
         await setDoc(getSettingsDocRef(), {
           ...window.storeSettings,
@@ -2333,7 +2323,7 @@
       window.renderCategoryFilters();
       window.renderProducts(window.currentFilterCategory);
       window.closeAdminPanelModal();
-      window.showToast('Tetapan & Stok Berjaya Dikemaskini!');
+      window.showToast('Tetapan & Stok Berjaya Disimpan ke Cloud!');
     };
 
     window.readFileAsDataURL = function(file, maxWidth = 600) {
