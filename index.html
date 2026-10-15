@@ -12,6 +12,10 @@
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
   <script>
     tailwind.config = {
       theme: {
@@ -61,7 +65,6 @@
 </head>
 <body class="min-h-screen flex flex-col font-sans pb-24 border-t-4 border-joss-yellow">
 
-  <!-- Header -->
   <header class="sticky top-0 z-30 bg-black/90 backdrop-blur-md border-b border-zinc-800 px-4 py-3">
     <div class="max-w-xl mx-auto flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -70,7 +73,7 @@
         </div>
         <div>
           <h1 id="header-store-name" class="font-extrabold text-lg tracking-tight text-white flex items-center gap-2">
-            BRO JOSSS
+            Extra Joss KK
             <span id="store-status-badge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold">
               OPEN
             </span>
@@ -99,12 +102,11 @@
     ⚠️ Maaf, kedai sedang <strong>TUTUP</strong> buat sementara waktu. Sebarang pesanan tidak akan diproses.
   </div>
 
-  <!-- Main Content Body -->
   <main class="max-w-xl mx-auto w-full px-4 pt-5 flex-1">
     
-    <!-- INSTANT EMBEDDED BUSINESS BANNER (No load delay) -->
+    <!-- EMBEDDED BUSINESS BANNER -->
     <div class="relative overflow-hidden rounded-2xl border border-zinc-800 mb-3 shadow-2xl bg-zinc-900">
-      <img id="main-banner-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='300' viewBox='0 0 800 300'><rect width='800' height='300' fill='%23121212'/><rect x='10' y='10' width='780' height='280' rx='20' fill='%231E1E1E' stroke='%23FFDF00' stroke-width='3'/><text x='50%' y='40%' dominant-baseline='middle' text-anchor='middle' fill='%23FFDF00' font-size='38' font-family='sans-serif' font-weight='900'>⚡ BRO JOSSS ⚡</text><text x='50%' y='60%' dominant-baseline='middle' text-anchor='middle' fill='%23FFFFFF' font-size='18' font-family='sans-serif'>BUMITA • PF1 • PF2 | SEGAR, PADU %26 Bertenaga!</text></svg>" alt="Jualan Air Extra Joss Banner" class="w-full h-auto object-cover rounded-2xl hover:scale-105 transition-transform duration-500">
+      <img id="main-banner-img" src="" alt="Jualan Air Extra Joss Banner" class="w-full h-auto object-cover rounded-2xl hover:scale-105 transition-transform duration-500">
     </div>
 
     <!-- REMINDER BANNER -->
@@ -142,7 +144,6 @@
 
   </main>
 
-  <!-- Sticky Bottom Cart Floating Bar -->
   <div id="sticky-cart-bar" class="fixed bottom-0 left-0 right-0 z-20 p-4 bg-gradient-to-t from-black via-black/95 to-transparent pointer-events-none">
     <div class="max-w-xl mx-auto pointer-events-auto">
       <button onclick="openCartModal()" class="w-full bg-joss-yellow text-black font-extrabold py-3.5 px-5 rounded-2xl flex items-center justify-between shadow-xl shadow-joss-yellow/20 hover:bg-yellow-400 active:scale-[0.98] transition-all">
@@ -160,7 +161,6 @@
     </div>
   </div>
 
-  <!-- Customize Item Modal -->
   <div id="customize-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl animate-in slide-in-from-bottom duration-200">
       
@@ -178,14 +178,18 @@
       </div>
 
       <div class="p-5 overflow-y-auto custom-scrollbar space-y-5 text-sm flex-1">
+        <!-- Flavor selection -->
         <div id="flavor-section">
           <div class="flex justify-between items-center mb-2">
             <label class="block text-xs font-extrabold text-zinc-400 uppercase tracking-wider">Pilihan Perisa / Jenis</label>
             <span id="selected-flavor-stock-label" class="text-[11px] font-extrabold text-joss-yellow">Baki: 0</span>
           </div>
-          <div id="flavor-options" class="grid grid-cols-1 gap-2"></div>
+          <div id="flavor-options" class="grid grid-cols-1 gap-2">
+            <!-- Dynamic options -->
+          </div>
         </div>
 
+        <!-- Mixing option -->
         <div id="mix-section">
           <label class="block text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-2">Custom / Mix</label>
           <div class="grid grid-cols-2 gap-2" id="mix-options">
@@ -200,6 +204,7 @@
           </div>
         </div>
 
+        <!-- Ice Level -->
         <div id="ice-section">
           <label class="block text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-2">Tahap Ais</label>
           <div class="grid grid-cols-3 gap-2" id="ice-options">
@@ -209,6 +214,7 @@
           </div>
         </div>
 
+        <!-- Quantity Control with Strict Stock Cap -->
         <div class="pt-2 border-t border-zinc-800 flex items-center justify-between">
           <div>
             <span class="font-extrabold text-zinc-300 text-xs uppercase tracking-wider block">Kuantiti Unit</span>
@@ -236,10 +242,10 @@
     </div>
   </div>
 
-  <!-- Cart Modal -->
   <div id="cart-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 hidden transition-opacity">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
       
+      <!-- Cart Header -->
       <div class="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-shopping-bag text-joss-yellow"></i>
@@ -253,11 +259,13 @@
         </button>
       </div>
 
-      <!-- STEP 1: Customer Details -->
+      <!-- STEP 1: Customer Details & Items -->
       <div id="cart-step-1" class="p-5 overflow-y-auto custom-scrollbar space-y-5 text-sm flex-1">
         <div>
           <h4 class="text-xs font-extrabold text-zinc-400 uppercase tracking-wider mb-3">Item Dipilih</h4>
-          <div id="cart-items-container" class="space-y-2.5"></div>
+          <div id="cart-items-container" class="space-y-2.5">
+            <!-- Dynamic Cart Items -->
+          </div>
         </div>
 
         <div class="border-t border-zinc-800 pt-4 space-y-3">
@@ -337,8 +345,9 @@
         </div>
       </div>
 
-      <!-- STEP 2: Payment -->
+      <!-- STEP 2: Payment & DuitNow QR -->
       <div id="cart-step-2" class="p-5 overflow-y-auto custom-scrollbar space-y-5 text-sm flex-1 hidden">
+        
         <div class="bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs space-y-1 text-zinc-300">
           <p class="font-extrabold text-joss-yellow flex justify-between items-center">
             <span>Maklumat Pelanggan</span>
@@ -365,11 +374,11 @@
             <p class="text-xs font-bold text-zinc-300 mb-2">Scan QR DuitNow Di Bawah Untuk Bayaran Online:</p>
 
             <div class="w-48 h-48 bg-white p-2.5 rounded-2xl shadow-lg border-2 border-joss-yellow flex items-center justify-center my-1">
-              <img id="duitnow-qr-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'><rect width='300' height='300' fill='%23FFFFFF'/><rect x='20' y='20' width='80' height='80' fill='%23121212'/><rect x='30' y='30' width='60' height='60' fill='%23FFFFFF'/><rect x='40' y='40' width='40' height='40' fill='%23121212'/><rect x='200' y='20' width='80' height='80' fill='%23121212'/><rect x='210' y='30' width='60' height='60' fill='%23FFFFFF'/><rect x='220' y='40' width='40' height='40' fill='%23121212'/><rect x='20' y='200' width='80' height='80' fill='%23121212'/><rect x='30' y='210' width='60' height='60' fill='%23FFFFFF'/><rect x='40' y='220' width='40' height='40' fill='%23121212'/><text x='150' y='155' dominant-baseline='middle' text-anchor='middle' fill='%23E60000' font-size='18' font-family='sans-serif' font-weight='bold'>DuitNow QR</text></svg>" alt="DuitNow QR Code" class="w-full h-full object-contain">
+              <img id="duitnow-qr-img" src="" alt="DuitNow QR Code" class="w-full h-full object-contain">
             </div>
 
             <p class="text-[11px] text-zinc-400 mt-2 font-mono">
-              ID DuitNow: <span id="display-duitnow-id" class="text-joss-yellow font-bold">01139550544</span>
+              ID DuitNow: <span id="display-duitnow-id" class="text-joss-yellow font-bold">60 11-3955 0544</span>
             </p>
           </div>
 
@@ -394,7 +403,9 @@
 
           <div class="bg-zinc-950 border border-zinc-800 p-3 rounded-xl text-xs space-y-2">
             <span class="text-[10px] text-zinc-400 font-extrabold uppercase block tracking-wider">Perlu Hubungi Seller / Admin?</span>
-            <div class="grid grid-cols-2 gap-2" id="checkout-admin-contacts"></div>
+            <div class="grid grid-cols-2 gap-2" id="checkout-admin-contacts">
+              <!-- Rendered via JS -->
+            </div>
           </div>
         </div>
 
@@ -419,7 +430,6 @@
     </div>
   </div>
 
-  <!-- Live Order Tracking Modal -->
   <div id="tracking-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-md rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
       <div class="p-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
@@ -435,7 +445,9 @@
       <div class="p-5 overflow-y-auto custom-scrollbar space-y-5 text-xs flex-1">
         <div id="multi-order-tab-container" class="hidden pb-2 border-b border-zinc-800">
           <span class="text-[10px] text-zinc-400 font-bold block mb-1.5 uppercase">Pilih Pesanan Aktif Anda:</span>
-          <div id="multi-order-tabs-list" class="flex gap-1.5 overflow-x-auto custom-scrollbar pb-1"></div>
+          <div id="multi-order-tabs-list" class="flex gap-1.5 overflow-x-auto custom-scrollbar pb-1">
+            <!-- Rendered via JS -->
+          </div>
         </div>
 
         <div class="bg-zinc-950 p-3.5 rounded-2xl border border-zinc-800/80 space-y-2">
@@ -458,6 +470,7 @@
           </div>
         </div>
 
+        <!-- Direct WhatsApp Action Button For Customer -->
         <div id="whatsapp-direct-send-container" class="bg-emerald-500/10 border border-emerald-500/40 p-3 rounded-2xl space-y-1.5">
           <span class="text-[10px] font-extrabold text-emerald-400 uppercase block flex items-center gap-1">
             <i class="fa-brands fa-whatsapp text-sm"></i> Hantar Mesej Pesanan Ke Admin WhatsApp:
@@ -546,7 +559,32 @@
     </div>
   </div>
 
-  <!-- Admin Passcode Auth Modal -->
+  <div id="delivered-feedback-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+    <div class="bg-zinc-900 border border-joss-yellow/50 w-full max-w-sm rounded-3xl p-6 text-center shadow-2xl space-y-4">
+      <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-3xl mx-auto animate-bounce">
+        ✅
+      </div>
+      <div>
+        <h3 class="font-black text-white text-lg">Pesanan Diterima!</h3>
+        <p class="text-xs text-zinc-400 mt-1">Terima kasih kerana membeli di Extra Joss KK. Sila tinggalkan rating & ulasan anda!</p>
+      </div>
+
+      <div class="flex justify-center gap-2 text-2xl text-zinc-700" id="star-rating-container">
+        <i class="fa-solid fa-star cursor-pointer hover:text-joss-yellow transition-colors" onclick="setStarRating(1)"></i>
+        <i class="fa-solid fa-star cursor-pointer hover:text-joss-yellow transition-colors" onclick="setStarRating(2)"></i>
+        <i class="fa-solid fa-star cursor-pointer hover:text-joss-yellow transition-colors" onclick="setStarRating(3)"></i>
+        <i class="fa-solid fa-star cursor-pointer hover:text-joss-yellow transition-colors" onclick="setStarRating(4)"></i>
+        <i class="fa-solid fa-star cursor-pointer hover:text-joss-yellow transition-colors" onclick="setStarRating(5)"></i>
+      </div>
+
+      <textarea id="feedback-text-input" rows="3" placeholder="Tulis maklum balas atau cadangan anda di sini..." class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-joss-yellow"></textarea>
+
+      <button onclick="submitCustomerFeedback()" class="w-full bg-joss-yellow hover:bg-yellow-400 text-black font-extrabold py-3 rounded-xl text-xs uppercase tracking-wide transition-all shadow-lg shadow-joss-yellow/20">
+        Hantar Ulasan
+      </button>
+    </div>
+  </div>
+
   <div id="admin-auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-xs rounded-2xl p-5 text-center shadow-2xl">
       <div class="w-12 h-12 rounded-full bg-joss-yellow/10 border border-joss-yellow/30 text-joss-yellow flex items-center justify-center mx-auto mb-3 text-lg">
@@ -564,7 +602,6 @@
     </div>
   </div>
 
-  <!-- Admin Panel Dashboard Modal -->
   <div id="admin-panel-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 hidden">
     <div class="bg-zinc-900 border border-zinc-800 w-full max-w-2xl rounded-2xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl">
       
@@ -592,33 +629,16 @@
 
       <!-- TAB 1: Live Orders Monitor -->
       <div id="admin-tab-orders" class="p-4 overflow-y-auto custom-scrollbar space-y-4 text-xs flex-1">
-        
-        <div class="bg-zinc-950 p-3 rounded-2xl border border-zinc-800 space-y-2">
-          <div class="flex items-center justify-between flex-wrap gap-2">
-            <h4 class="font-extrabold text-white text-xs uppercase tracking-wider flex items-center gap-2">
-              <i class="fa-solid fa-bell text-joss-yellow"></i>
-              Pemantau Pesanan (Orders Monitor)
-            </h4>
-            <span id="admin-active-orders-count" class="bg-joss-yellow/10 text-joss-yellow font-extrabold px-2.5 py-0.5 rounded-full border border-joss-yellow/20 text-[11px]">
-              0 Active
-            </span>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-            <div class="relative">
-              <input type="text" id="admin-order-search" oninput="renderAdminOrdersList()" placeholder="🔍 Cari ID, Nama, No. Tel, Lokasi..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-joss-yellow">
-            </div>
-            <div>
-              <select id="admin-order-status-filter" onchange="renderAdminOrdersList()" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-joss-yellow font-bold">
-                <option value="active">⚡ Order Aktif Sahaja (Pending / Prep / Ready)</option>
-                <option value="all">📋 Semua Order (Termasuk Delivered / Cancelled)</option>
-                <option value="pending">🟡 Pending (Menunggu)</option>
-                <option value="preparing">🥤 Preparing (Disediakan)</option>
-                <option value="ready">⚡ Ready / Delivery</option>
-                <option value="delivered">✅ Delivered (Selesai)</option>
-                <option value="cancelled">❌ Cancelled (Batal)</option>
-              </select>
-            </div>
+        <div class="flex justify-between items-center flex-wrap gap-2">
+          <h4 class="font-extrabold text-white text-xs uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-bell text-joss-yellow"></i>
+            Pesanan Masuk (Aktif)
+          </h4>
+          <div class="flex items-center gap-2 flex-wrap">
+            <button onclick="toggleShowArchivedOrders()" id="toggle-archive-btn" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-2.5 py-1 rounded-lg text-[10px] transition-all">
+              <i class="fa-solid fa-box-archive mr-1"></i> Tunjuk Sejarah/Arsip
+            </button>
+            <span id="admin-active-orders-count" class="bg-joss-yellow/10 text-joss-yellow font-extrabold px-2.5 py-0.5 rounded-full border border-joss-yellow/20">0 Active</span>
           </div>
         </div>
 
@@ -673,23 +693,13 @@
         </div>
       </div>
 
-      <!-- TAB 3: Settings & Admin Config -->
+      <!-- TAB 3: Settings & Telegram Config -->
       <div id="admin-tab-stock" class="p-4 overflow-y-auto custom-scrollbar space-y-5 text-xs flex-1 hidden">
         
         <div class="space-y-3 pb-3 border-b border-zinc-800">
-          
-          <div class="bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-xl text-[11px] text-emerald-200 leading-relaxed space-y-1">
-            <p class="font-extrabold text-emerald-400 flex items-center gap-1">
-              <i class="fa-solid fa-cloud-check text-sm"></i> Cloud Direct Sync (100% Online Active):
-            </p>
-            <p>
-              Semua pertukaran status kedai (BUKA/TUTUP), menu, dan pesanan pelanggan disambungkan terus ke <strong>Firebase Cloud Real-Time Database</strong>.
-            </p>
-          </div>
-
           <div>
             <label class="block font-bold text-zinc-300 mb-1">Nama Kedai / Bisnes</label>
-            <input type="text" id="admin-store-name" placeholder="BRO JOSSS" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
+            <input type="text" id="admin-store-name" placeholder="Extra Joss KK" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
           </div>
 
           <div>
@@ -707,13 +717,28 @@
             </div>
             <div>
               <label class="block font-bold text-zinc-300 mb-1">No. Admin 2 *</label>
-              <input type="text" id="admin-phone-2" placeholder="601112247018" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
+              <input type="text" id="admin-phone-2" placeholder="60123456789" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
+            </div>
+          </div>
+
+          <!-- TELEGRAM BOT SETTINGS FOR DIRECT BACKGROUND PUSH NOTIFICATIONS -->
+          <div class="bg-zinc-950 border border-joss-yellow/30 p-3 rounded-xl space-y-2">
+            <label class="block font-extrabold text-joss-yellow uppercase text-[10px] tracking-wider flex items-center gap-1.5">
+              <i class="fa-brands fa-telegram text-sky-400 text-sm"></i>
+              Notifikasi Telegram Latar Belakang (Server Alert)
+            </label>
+            <p class="text-[10px] text-zinc-400 leading-snug">
+              Dapatkan notifikasi automatik ke skrin telefon anda (walaupun skrin mati / web ditutup). Dapatkan Bot Token dari <strong>@BotFather</strong> dan Chat ID dari <strong>@userinfobot</strong>.
+            </p>
+            <div class="space-y-1.5">
+              <input type="text" id="admin-telegram-token" placeholder="Telegram Bot Token (eg: 7123456789:AA...)" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white font-mono text-[11px] focus:outline-none focus:border-joss-yellow">
+              <input type="text" id="admin-telegram-chatid" placeholder="Telegram Chat ID (eg: 123456789)" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white font-mono text-[11px] focus:outline-none focus:border-joss-yellow">
             </div>
           </div>
 
           <div>
             <label class="block font-bold text-zinc-300 mb-1">ID No. DuitNow</label>
-            <input type="text" id="admin-duitnow-id" placeholder="01139550544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
+            <input type="text" id="admin-duitnow-id" placeholder="60 11-3955 0544" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-joss-yellow">
           </div>
 
           <div class="grid grid-cols-2 gap-2">
@@ -787,11 +812,6 @@
             </div>
 
             <div>
-              <label class="block text-[10px] text-zinc-400 mb-0.5">Gambar Produk (Optional)</label>
-              <input type="file" id="new-prod-image-file" accept="image/*" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-1.5 text-zinc-300 text-xs cursor-pointer">
-            </div>
-
-            <div>
               <label class="block text-[10px] text-zinc-400 mb-0.5">Pilihan Perisa / Jenis (Dipisahkan koma)</label>
               <input type="text" id="new-prod-flavors" placeholder="Active, Anggur, Mangga" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2 text-white text-xs">
             </div>
@@ -844,50 +864,44 @@
     <span id="toast-message">Mesej Notifikasi</span>
   </div>
 
-  <!-- Firebase V11 Script & Logic Implementation -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, updateDoc, collection, onSnapshot, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // Defaults Embedded Images
-    const EMBEDDED_BUSINESS_BANNER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='300' viewBox='0 0 800 300'><rect width='800' height='300' fill='%23121212'/><rect x='10' y='10' width='780' height='280' rx='20' fill='%231E1E1E' stroke='%23FFDF00' stroke-width='3'/><text x='50%' y='40%' dominant-baseline='middle' text-anchor='middle' fill='%23FFDF00' font-size='38' font-family='sans-serif' font-weight='900'>⚡ BRO JOSSS ⚡</text><text x='50%' y='60%' dominant-baseline='middle' text-anchor='middle' fill='%23FFFFFF' font-size='18' font-family='sans-serif'>BUMITA • PF1 • PF2 | SEGAR, PADU %26 Bertenaga!</text></svg>";
+  <script>
+    // Embedded SVG Base64 Defaults
+    const EMBEDDED_BUSINESS_BANNER = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='300' viewBox='0 0 800 300'><rect width='800' height='300' fill='%23121212'/><rect x='10' y='10' width='780' height='280' rx='20' fill='%231E1E1E' stroke='%23FFDF00' stroke-width='3'/><text x='50%' y='40%' dominant-baseline='middle' text-anchor='middle' fill='%23FFDF00' font-size='38' font-family='sans-serif' font-weight='900'>⚡ EXTRA JOSS KK ⚡</text><text x='50%' y='60%' dominant-baseline='middle' text-anchor='middle' fill='%23FFFFFF' font-size='18' font-family='sans-serif'>BUMITA • PF1 • PF2 | SEGAR, PADU %26 Bertenaga!</text></svg>";
     const DEFAULT_EMBEDDED_QR = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'><rect width='300' height='300' fill='%23FFFFFF'/><rect x='20' y='20' width='80' height='80' fill='%23121212'/><rect x='30' y='30' width='60' height='60' fill='%23FFFFFF'/><rect x='40' y='40' width='40' height='40' fill='%23121212'/><rect x='200' y='20' width='80' height='80' fill='%23121212'/><rect x='210' y='30' width='60' height='60' fill='%23FFFFFF'/><rect x='220' y='40' width='40' height='40' fill='%23121212'/><rect x='20' y='200' width='80' height='80' fill='%23121212'/><rect x='30' y='210' width='60' height='60' fill='%23FFFFFF'/><rect x='40' y='220' width='40' height='40' fill='%23121212'/><text x='150' y='155' dominant-baseline='middle' text-anchor='middle' fill='%23E60000' font-size='18' font-family='sans-serif' font-weight='bold'>DuitNow QR</text></svg>";
 
-    // Initialize Global Constants
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'extrajoss-app-id';
-    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+    // Firebase Config
+    const firebaseConfig = {
       apiKey: "AIzaSyDummyKeyForArchitecture",
-      authDomain: "online-ordering-system.firebaseapp.com",
-      projectId: "online-ordering-system",
-      storageBucket: "online-ordering-system.appspot.com",
+      authDomain: "online-ordering-system-5aa6a.firebaseapp.com",
+      projectId: "online-ordering-system-5aa6a",
+      storageBucket: "online-ordering-system-5aa6a.firebasestorage.app",
       messagingSenderId: "100000000000",
       appId: "1:100000000000:web:abcdef123456"
     };
 
-    let app, auth, db, currentUser = null;
-
+    let db;
     try {
-      app = initializeApp(firebaseConfig);
-      auth = getAuth(app);
-      db = getFirestore(app);
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.firestore();
     } catch (e) {
-      console.warn("Firebase Init Caution:", e);
+      console.warn("Firebase fallback mode", e);
     }
 
-    // Default State Variables
-    window.storeSettings = {
-      name: "BRO JOSSS",
+    // Application State
+    let storeSettings = {
+      name: "Extra Joss KK",
       status: "open",
       adminPhone1: "601139550544",
-      adminPhone2: "601112247018",
-      duitnowId: "01139550544",
+      adminPhone2: "60123456789",
+      duitnowId: "60 11-3955 0544",
+      telegramToken: "",
+      telegramChatId: "",
       qrImage: DEFAULT_EMBEDDED_QR,
       bannerImage: EMBEDDED_BUSINESS_BANNER,
       adminPasscode: "1518"
     };
 
-    window.products = [
+    let products = [
       {
         id: "ej-1",
         name: "Extra Joss Original",
@@ -936,22 +950,23 @@
       }
     ];
 
-    window.cart = [];
-    window.allOrdersList = [];
-    // Only keep tracked IDs locally for the user's device view
-    window.customerActiveOrderIds = JSON.parse(localStorage.getItem('joss_customer_active_orders') || '[]');
-    window.currentSelectedTrackingOrderId = null;
+    let cart = [];
+    let allOrdersList = [];
+    let customerActiveOrderIds = JSON.parse(localStorage.getItem('joss_customer_active_orders') || '[]');
+    let currentSelectedTrackingOrderId = null;
 
-    window.currentCustomizingItem = null;
-    window.selectedFlavor = "";
-    window.selectedFlavorStock = 0;
-    window.selectedMix = "Original (Tanpa Susu)";
-    window.selectedMixPrice = 0.00;
-    window.selectedIce = "Ais Normal";
-    window.customQty = 1;
-    window.currentFilterCategory = "all";
-    window.isSubmittingOrder = false;
-    window.allReviewsList = [];
+    let currentCustomizingItem = null;
+    let selectedFlavor = "";
+    let selectedFlavorStock = 0;
+    let selectedMix = "Original (Tanpa Susu)";
+    let selectedMixPrice = 0.00;
+    let selectedIce = "Ais Normal";
+    let customQty = 1;
+    let currentFilterCategory = "all";
+    let showArchivedOrders = false;
+    let isSubmittingOrder = false;
+    let currentRatingValue = 5;
+    let allReviewsList = [];
 
     const CATEGORY_MAP = {
       'all': 'Semua Menu',
@@ -961,94 +976,100 @@
       'others': '🍿 Lain-Lain'
     };
 
-    // Rule 1 Public Collections Paths
-    function getOrdersCollectionRef() {
-      return collection(db, 'artifacts', appId, 'public', 'data', 'orders');
-    }
+    function initRealtimeSync() {
+      loadLocalSettings();
+      document.getElementById('main-banner-img').src = storeSettings.bannerImage || EMBEDDED_BUSINESS_BANNER;
 
-    function getSettingsDocRef() {
-      return doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'store_config');
-    }
+      if (!db) {
+        updateHeaderAndQRDisplay();
+        renderCategoryFilters();
+        renderProducts(currentFilterCategory);
+        updateCustomerActiveOrderList();
+        calculateAdminAnalytics();
+        return;
+      }
 
-    function getReviewsCollectionRef() {
-      return collection(db, 'artifacts', appId, 'public', 'data', 'reviews');
-    }
+      db.collection("settings").doc("store_config").onSnapshot((doc) => {
+        if (doc.exists) {
+          const data = doc.data();
+          storeSettings.name = data.name || storeSettings.name;
+          storeSettings.status = data.status || storeSettings.status;
+          storeSettings.adminPhone1 = data.adminPhone1 || storeSettings.adminPhone1;
+          storeSettings.adminPhone2 = data.adminPhone2 || storeSettings.adminPhone2;
+          storeSettings.duitnowId = data.duitnowId || storeSettings.duitnowId;
+          storeSettings.telegramToken = data.telegramToken || storeSettings.telegramToken;
+          storeSettings.telegramChatId = data.telegramChatId || storeSettings.telegramChatId;
+          if (data.qrImage) storeSettings.qrImage = data.qrImage;
+          if (data.bannerImage) storeSettings.bannerImage = data.bannerImage;
 
-    // Initialize Authentication & Firestore Subscriptions
-    async function initAppAndDatabase() {
-      updateHeaderAndQRDisplay();
-      renderCategoryFilters();
-      renderProducts(window.currentFilterCategory);
-
-      if (!auth) return;
-
-      onAuthStateChanged(auth, async (user) => {
-        if (user) {
-          currentUser = user;
-          setupFirestoreRealtimeListeners();
-        } else {
-          try {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-              await signInWithCustomToken(auth, __initial_auth_token);
-            } else {
-              await signInAnonymously(auth);
-            }
-          } catch (err) {
-            console.warn("Auth initialization fallback:", err);
+          if (data.customProducts && Array.isArray(data.customProducts)) {
+            products = data.customProducts;
           }
+
+          localStorage.setItem('joss_store_settings', JSON.stringify(storeSettings));
+          localStorage.setItem('joss_store_products', JSON.stringify(products));
+        }
+        updateHeaderAndQRDisplay();
+        renderCategoryFilters();
+        renderProducts(currentFilterCategory);
+      });
+
+      db.collection("orders").onSnapshot((snapshot) => {
+        if (snapshot && !snapshot.empty) {
+          const fetchedOrders = [];
+          snapshot.forEach(doc => fetchedOrders.push(doc.data()));
+          fetchedOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+          allOrdersList = getUniqueOrdersList(fetchedOrders);
+          localStorage.setItem('joss_store_orders', JSON.stringify(allOrdersList));
+          
+          updateCustomerActiveOrderList();
+          renderAdminOrdersList();
+          calculateAdminAnalytics();
+        }
+      });
+
+      db.collection("reviews").onSnapshot((snapshot) => {
+        if (snapshot && !snapshot.empty) {
+          allReviewsList = [];
+          snapshot.forEach(doc => allReviewsList.push(doc.data()));
+          renderAdminReviews();
         }
       });
     }
 
-    // REAL-TIME LISTENERS across all devices (No stale local overrides!)
-    function setupFirestoreRealtimeListeners() {
-      if (!currentUser || !db) return;
+    function loadLocalSettings() {
+      const localSettings = localStorage.getItem('joss_store_settings');
+      if (localSettings) {
+        try { storeSettings = { ...storeSettings, ...JSON.parse(localSettings) }; } catch (e) {}
+      }
 
-      // 1. Listen to Settings & Menu Store Configuration (Direct Sync)
-      onSnapshot(getSettingsDocRef(), (docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          window.storeSettings = { ...window.storeSettings, ...data };
-          if (data.customProducts && Array.isArray(data.customProducts)) {
-            window.products = data.customProducts;
-          }
-          
-          updateHeaderAndQRDisplay();
-          renderCategoryFilters();
-          renderProducts(window.currentFilterCategory);
-        }
-      }, (err) => console.warn("Settings realtime sync error:", err));
+      const localProducts = localStorage.getItem('joss_store_products');
+      if (localProducts) {
+        try { products = JSON.parse(localProducts); } catch (e) {}
+      }
 
-      // 2. Listen to All Live Orders Across Devices (Direct Sync)
-      onSnapshot(getOrdersCollectionRef(), (querySnap) => {
-        const cloudOrders = [];
-        querySnap.forEach((doc) => {
-          cloudOrders.push(doc.data());
-        });
-
-        cloudOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        window.allOrdersList = cloudOrders;
-
-        updateCustomerActiveOrderList();
-        renderAdminOrdersList();
-        calculateAdminAnalytics();
-      }, (err) => console.warn("Orders realtime sync error:", err));
-
-      // 3. Listen to Reviews
-      onSnapshot(getReviewsCollectionRef(), (querySnap) => {
-        window.allReviewsList = [];
-        querySnap.forEach((doc) => window.allReviewsList.push(doc.data()));
-        renderAdminReviews();
-      }, (err) => console.warn("Reviews realtime sync error:", err));
+      const localOrders = localStorage.getItem('joss_store_orders');
+      if (localOrders) {
+        try { allOrdersList = getUniqueOrdersList(JSON.parse(localOrders)); } catch (e) {}
+      }
     }
 
-    window.updateHeaderAndQRDisplay = function() {
-      document.getElementById('header-store-name').childNodes[0].nodeValue = (window.storeSettings.name || "BRO JOSSS") + " ";
+    function getUniqueOrdersList(list) {
+      const map = new Map();
+      list.forEach(o => {
+        if (o && o.orderId) map.set(o.orderId, o);
+      });
+      return Array.from(map.values());
+    }
+
+    function updateHeaderAndQRDisplay() {
+      document.getElementById('header-store-name').childNodes[0].nodeValue = (storeSettings.name || "Extra Joss KK") + " ";
       
       const badge = document.getElementById('store-status-badge');
       const closedBanner = document.getElementById('closed-banner');
 
-      if (window.storeSettings.status === 'open') {
+      if (storeSettings.status === 'open') {
         badge.className = "text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold";
         badge.innerText = "OPEN";
         closedBanner.classList.add('hidden');
@@ -1058,16 +1079,12 @@
         closedBanner.classList.remove('hidden');
       }
 
-      document.getElementById('display-duitnow-id').innerText = window.storeSettings.duitnowId || "01139550544";
-      document.getElementById('duitnow-qr-img').src = window.storeSettings.qrImage || DEFAULT_EMBEDDED_QR;
-      
-      const bannerElem = document.getElementById('main-banner-img');
-      if (bannerElem) {
-        bannerElem.src = window.storeSettings.bannerImage || EMBEDDED_BUSINESS_BANNER;
-      }
+      document.getElementById('display-duitnow-id').innerText = storeSettings.duitnowId || "60 11-3955 0544";
+      document.getElementById('duitnow-qr-img').src = storeSettings.qrImage || DEFAULT_EMBEDDED_QR;
+      document.getElementById('main-banner-img').src = storeSettings.bannerImage || EMBEDDED_BUSINESS_BANNER;
 
-      const p1 = window.storeSettings.adminPhone1 || "601139550544";
-      const p2 = window.storeSettings.adminPhone2 || "601112247018";
+      const p1 = storeSettings.adminPhone1 || "601139550544";
+      const p2 = storeSettings.adminPhone2 || "60123456789";
 
       const contactsHtml = `
         <a href="https://wa.me/${p1.replace(/[^0-9]/g, '')}" target="_blank" class="bg-zinc-900 border border-zinc-800 hover:border-joss-yellow p-2 rounded-xl text-center text-zinc-300 font-bold hover:text-joss-yellow transition-all flex items-center justify-center gap-1.5 text-[11px]">
@@ -1082,14 +1099,14 @@
       const trackerContacts = document.getElementById('tracker-admin-contacts');
       if (checkoutContacts) checkoutContacts.innerHTML = contactsHtml;
       if (trackerContacts) trackerContacts.innerHTML = contactsHtml;
-    };
+    }
 
-    window.renderCategoryFilters = function() {
+    function renderCategoryFilters() {
       const container = document.getElementById('category-filter-container');
       if (!container) return;
 
       const categoryKeys = new Set(['all']);
-      window.products.forEach(p => {
+      products.forEach(p => {
         if (p.category) categoryKeys.add(p.category.trim().toLowerCase());
       });
 
@@ -1097,7 +1114,7 @@
 
       categoryKeys.forEach(catKey => {
         const btn = document.createElement('button');
-        const isActive = window.currentFilterCategory === catKey;
+        const isActive = currentFilterCategory === catKey;
 
         btn.className = `cat-btn px-4 py-2 rounded-xl font-bold whitespace-nowrap transition-all ${
           isActive 
@@ -1107,21 +1124,21 @@
 
         let displayLabel = CATEGORY_MAP[catKey] || (catKey.charAt(0).toUpperCase() + catKey.slice(1));
         btn.innerText = displayLabel;
-        btn.onclick = () => window.filterCategory(catKey, btn);
+        btn.onclick = () => filterCategory(catKey, btn);
 
         container.appendChild(btn);
       });
-    };
+    }
 
-    window.renderProducts = function(filterCategoryName = 'all') {
-      window.currentFilterCategory = filterCategoryName;
+    function renderProducts(filterCategoryName = 'all') {
+      currentFilterCategory = filterCategoryName;
       const grid = document.getElementById('product-grid');
       if (!grid) return;
       grid.innerHTML = '';
 
       const filtered = filterCategoryName === 'all' 
-        ? window.products 
-        : window.products.filter(p => (p.category || '').toLowerCase() === filterCategoryName.toLowerCase());
+        ? products 
+        : products.filter(p => (p.category || '').toLowerCase() === filterCategoryName.toLowerCase());
 
       if (filtered.length === 0) {
         grid.innerHTML = `<p class="col-span-full text-center text-zinc-500 py-8 text-xs italic">Tiada menu buat kategori ini lagi.</p>`;
@@ -1162,17 +1179,17 @@
             <p class="text-[11px] text-zinc-400 mt-1 leading-snug">${p.desc || ''}</p>
           </div>
 
-          <button onclick="window.openCustomizeModal('${p.id}')" ${isOutOfStock || window.storeSettings.status === 'closed' ? 'disabled' : ''} class="mt-4 w-full ${isOutOfStock || window.storeSettings.status === 'closed' ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed border-zinc-800' : 'bg-zinc-800 hover:bg-joss-yellow hover:text-black text-white border-zinc-700'} font-bold py-2 px-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 border">
-            <i class="fa-solid ${isOutOfStock || window.storeSettings.status === 'closed' ? 'fa-ban' : 'fa-plus'} text-[10px]"></i>
-            <span>${window.storeSettings.status === 'closed' ? 'Kedai Tutup' : (isOutOfStock ? 'Kehabisan Stok' : 'Pilih & Order')}</span>
+          <button onclick="openCustomizeModal('${p.id}')" ${isOutOfStock ? 'disabled' : ''} class="mt-4 w-full ${isOutOfStock ? 'bg-zinc-800 text-zinc-600 cursor-not-allowed border-zinc-800' : 'bg-zinc-800 hover:bg-joss-yellow hover:text-black text-white border-zinc-700'} font-bold py-2 px-3 rounded-xl text-xs transition-all flex items-center justify-center gap-1.5 border">
+            <i class="fa-solid ${isOutOfStock ? 'fa-ban' : 'fa-plus'} text-[10px]"></i>
+            <span>${isOutOfStock ? 'Kehabisan Stok' : 'Pilih & Order'}</span>
           </button>
         `;
         grid.appendChild(card);
       });
-    };
+    }
 
-    window.filterCategory = function(cat, btnElement) {
-      window.currentFilterCategory = cat;
+    function filterCategory(cat, btnElement) {
+      currentFilterCategory = cat;
       document.querySelectorAll('.cat-btn').forEach(b => {
         b.classList.remove('bg-joss-yellow', 'text-black', 'active', 'shadow-md');
         b.classList.add('bg-zinc-900', 'text-zinc-400');
@@ -1182,23 +1199,23 @@
         btnElement.classList.add('bg-joss-yellow', 'text-black', 'active', 'shadow-md');
       }
       renderProducts(cat);
-    };
+    }
 
-    window.openCustomizeModal = function(productId) {
-      if (window.storeSettings.status === 'closed') {
-        window.showToast('Maaf, kedai sedang TUTUP. Tidak boleh membuat pesanan.');
+    function openCustomizeModal(productId) {
+      if (storeSettings.status === 'closed') {
+        showToast('Maaf, kedai sedang TUTUP. Tidak boleh membuat pesanan.');
         return;
       }
 
-      window.currentCustomizingItem = window.products.find(p => p.id === productId);
-      if (!window.currentCustomizingItem) return;
+      currentCustomizingItem = products.find(p => p.id === productId);
+      if (!currentCustomizingItem) return;
 
-      document.getElementById('custom-item-name').innerText = window.currentCustomizingItem.name;
-      document.getElementById('custom-item-base-price').innerText = `Asas: RM ${window.currentCustomizingItem.price.toFixed(2)}`;
+      document.getElementById('custom-item-name').innerText = currentCustomizingItem.name;
+      document.getElementById('custom-item-base-price').innerText = `Asas: RM ${currentCustomizingItem.price.toFixed(2)}`;
 
       const imgElem = document.getElementById('custom-item-img');
-      if (window.currentCustomizingItem.image) {
-        imgElem.src = window.currentCustomizingItem.image;
+      if (currentCustomizingItem.image) {
+        imgElem.src = currentCustomizingItem.image;
         imgElem.classList.remove('hidden');
       } else {
         imgElem.classList.add('hidden');
@@ -1207,10 +1224,10 @@
       const flavorContainer = document.getElementById('flavor-options');
       flavorContainer.innerHTML = '';
       
-      if (window.currentCustomizingItem.flavors && window.currentCustomizingItem.flavors.length > 0) {
+      if (currentCustomizingItem.flavors && currentCustomizingItem.flavors.length > 0) {
         let firstAvailableSet = false;
         
-        window.currentCustomizingItem.flavors.forEach((f) => {
+        currentCustomizingItem.flavors.forEach((f) => {
           const flavorName = typeof f === 'object' ? f.name : f;
           const flavorStock = typeof f === 'object' ? (parseInt(f.stock) || 0) : 99;
           const isOut = flavorStock <= 0;
@@ -1219,8 +1236,8 @@
           btn.type = 'button';
 
           if (!isOut && !firstAvailableSet) {
-            window.selectedFlavor = flavorName;
-            window.selectedFlavorStock = flavorStock;
+            selectedFlavor = flavorName;
+            selectedFlavorStock = flavorStock;
             firstAvailableSet = true;
             btn.className = 'flavor-btn active border-joss-yellow bg-joss-yellow/10 text-joss-yellow p-2.5 rounded-xl border font-bold text-xs text-left transition-all flex justify-between items-center';
           } else if (isOut) {
@@ -1236,72 +1253,73 @@
           `;
 
           if (!isOut) {
-            btn.onclick = () => window.selectFlavor(flavorName, flavorStock, btn);
+            btn.onclick = () => selectFlavor(flavorName, flavorStock, btn);
           }
 
           flavorContainer.appendChild(btn);
         });
       } else {
-        window.selectedFlavor = "Standard";
-        window.selectedFlavorStock = 99;
+        selectedFlavor = "Standard";
+        selectedFlavorStock = 99;
         flavorContainer.innerHTML = `<span class="text-xs text-zinc-500">Tiada pilihan perisa tambahan</span>`;
       }
 
       const mixSection = document.getElementById('mix-section');
-      if (window.currentCustomizingItem.isExtraJoss) {
+      if (currentCustomizingItem.isExtraJoss) {
         mixSection.classList.remove('hidden');
-        window.selectedMix = 'Original (Tanpa Susu)';
-        window.selectedMixPrice = 0.00;
+        selectedMix = 'Original (Tanpa Susu)';
+        selectedMixPrice = 0.00;
       } else {
         mixSection.classList.add('hidden');
-        window.selectedMix = 'Tiada';
-        window.selectedMixPrice = 0.00;
+        selectedMix = 'Tiada';
+        selectedMixPrice = 0.00;
       }
 
       const iceSection = document.getElementById('ice-section');
-      const itemCat = (window.currentCustomizingItem.category || '').toLowerCase();
+      const itemCat = (currentCustomizingItem.category || '').toLowerCase();
       if (itemCat === 'food' || itemCat === 'others' || itemCat.includes('makanan') || itemCat.includes('snack')) {
         if (iceSection) iceSection.classList.add('hidden');
-        window.selectedIce = 'Tiada Ais';
+        selectedIce = 'Tiada Ais';
       } else {
         if (iceSection) iceSection.classList.remove('hidden');
-        window.selectedIce = 'Ais Normal';
+        selectedIce = 'Ais Normal';
       }
 
-      window.customQty = 1;
-      document.getElementById('custom-qty-display').innerText = window.customQty;
-      window.updateFlavorStockDisplay();
-      window.updateCustomizeModalTotal();
-      document.getElementById('customize-modal').classList.remove('hidden');
-    };
+      customQty = 1;
+      document.getElementById('custom-qty-display').innerText = customQty;
+      updateFlavorStockDisplay();
 
-    window.selectFlavor = function(flavorName, stockQty, btnElement) {
-      window.selectedFlavor = flavorName;
-      window.selectedFlavorStock = stockQty;
+      updateCustomizeModalTotal();
+      document.getElementById('customize-modal').classList.remove('hidden');
+    }
+
+    function selectFlavor(flavorName, stockQty, btnElement) {
+      selectedFlavor = flavorName;
+      selectedFlavorStock = stockQty;
 
       document.querySelectorAll('.flavor-btn').forEach(b => {
         b.className = 'flavor-btn border-zinc-800 bg-zinc-950 text-zinc-300 p-2.5 rounded-xl border font-bold text-xs text-left transition-all flex justify-between items-center';
       });
       btnElement.className = 'flavor-btn active border-joss-yellow bg-joss-yellow/10 text-joss-yellow p-2.5 rounded-xl border font-bold text-xs text-left transition-all flex justify-between items-center';
 
-      if (window.customQty > window.selectedFlavorStock) {
-        window.customQty = Math.max(1, window.selectedFlavorStock);
-        document.getElementById('custom-qty-display').innerText = window.customQty;
+      if (customQty > selectedFlavorStock) {
+        customQty = Math.max(1, selectedFlavorStock);
+        document.getElementById('custom-qty-display').innerText = customQty;
       }
 
-      window.updateFlavorStockDisplay();
-      window.updateCustomizeModalTotal();
-    };
+      updateFlavorStockDisplay();
+      updateCustomizeModalTotal();
+    }
 
-    window.updateFlavorStockDisplay = function() {
+    function updateFlavorStockDisplay() {
       const stockLabel = document.getElementById('selected-flavor-stock-label');
       if (stockLabel) {
-        stockLabel.innerText = `Baki Stok Perisa: ${window.selectedFlavorStock}`;
+        stockLabel.innerText = `Baki Stok Perisa: ${selectedFlavorStock}`;
       }
 
       const plusBtn = document.getElementById('qty-plus-btn');
       if (plusBtn) {
-        if (window.customQty >= window.selectedFlavorStock) {
+        if (customQty >= selectedFlavorStock) {
           plusBtn.disabled = true;
           plusBtn.classList.add('opacity-40', 'cursor-not-allowed');
         } else {
@@ -1309,108 +1327,108 @@
           plusBtn.classList.remove('opacity-40', 'cursor-not-allowed');
         }
       }
-    };
+    }
 
-    window.selectMix = function(mixName, extraPrice) {
-      window.selectedMix = mixName;
-      window.selectedMixPrice = extraPrice;
+    function selectMix(mixName, extraPrice) {
+      selectedMix = mixName;
+      selectedMixPrice = extraPrice;
       document.querySelectorAll('.mix-btn').forEach(b => {
         b.className = 'mix-btn p-2.5 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-300 text-left font-bold text-xs transition-all flex justify-between items-center';
       });
       event.currentTarget.className = 'mix-btn active p-2.5 rounded-xl border border-joss-yellow bg-joss-yellow/10 text-joss-yellow text-left font-bold text-xs transition-all flex justify-between items-center';
-      window.updateCustomizeModalTotal();
-    };
+      updateCustomizeModalTotal();
+    }
 
-    window.selectIce = function(iceName) {
-      window.selectedIce = iceName;
+    function selectIce(iceName) {
+      selectedIce = iceName;
       document.querySelectorAll('.ice-btn').forEach(b => {
         b.className = 'ice-btn p-2 rounded-xl border border-zinc-800 bg-zinc-950 text-zinc-400 font-semibold text-xs text-center';
       });
       event.currentTarget.className = 'ice-btn active p-2 rounded-xl border border-joss-yellow bg-joss-yellow/10 text-joss-yellow font-bold text-xs text-center';
-    };
+    }
 
-    window.adjustCustomQty = function(delta) {
-      const targetQty = window.customQty + delta;
-      if (targetQty > window.selectedFlavorStock) {
-        window.showToast(`Stok terhad! Hanya baki ${window.selectedFlavorStock} unit sahaja lagi.`);
+    function adjustCustomQty(delta) {
+      const targetQty = customQty + delta;
+      if (targetQty > selectedFlavorStock) {
+        showToast(`Stok terhad! Hanya baki ${selectedFlavorStock} unit sahaja lagi.`);
         return;
       }
-      window.customQty = Math.max(1, targetQty);
-      document.getElementById('custom-qty-display').innerText = window.customQty;
-      window.updateFlavorStockDisplay();
-      window.updateCustomizeModalTotal();
-    };
+      customQty = Math.max(1, targetQty);
+      document.getElementById('custom-qty-display').innerText = customQty;
+      updateFlavorStockDisplay();
+      updateCustomizeModalTotal();
+    }
 
-    window.updateCustomizeModalTotal = function() {
-      if (!window.currentCustomizingItem) return;
-      const singleUnitPrice = window.currentCustomizingItem.price + window.selectedMixPrice;
-      const grandTotal = singleUnitPrice * window.customQty;
+    function updateCustomizeModalTotal() {
+      if (!currentCustomizingItem) return;
+      const singleUnitPrice = currentCustomizingItem.price + selectedMixPrice;
+      const grandTotal = singleUnitPrice * customQty;
       document.getElementById('custom-modal-total').innerText = `RM ${grandTotal.toFixed(2)}`;
-    };
+    }
 
-    window.closeCustomizeModal = function() {
+    function closeCustomizeModal() {
       document.getElementById('customize-modal').classList.add('hidden');
-    };
+    }
 
-    window.confirmAddToCart = function() {
-      if (!window.currentCustomizingItem) return;
+    function confirmAddToCart() {
+      if (!currentCustomizingItem) return;
 
-      const existingInCart = window.cart
-        .filter(item => item.productId === window.currentCustomizingItem.id && item.flavor === window.selectedFlavor)
+      const existingInCart = cart
+        .filter(item => item.productId === currentCustomizingItem.id && item.flavor === selectedFlavor)
         .reduce((sum, item) => sum + item.qty, 0);
 
-      if ((existingInCart + window.customQty) > window.selectedFlavorStock) {
-        window.showToast(`Stok perisa ${window.selectedFlavor} tidak mencukupi (Baki: ${window.selectedFlavorStock}).`);
+      if ((existingInCart + customQty) > selectedFlavorStock) {
+        showToast(`Stok perisa ${selectedFlavor} tidak mencukupi (Baki: ${selectedFlavorStock}).`);
         return;
       }
 
-      const singleUnitPrice = window.currentCustomizingItem.price + window.selectedMixPrice;
+      const singleUnitPrice = currentCustomizingItem.price + selectedMixPrice;
       const cartItem = {
         cartItemId: Date.now().toString(),
-        productId: window.currentCustomizingItem.id,
-        name: window.currentCustomizingItem.name,
-        flavor: window.selectedFlavor,
-        mix: window.selectedMix,
-        ice: window.selectedIce,
-        qty: window.customQty,
+        productId: currentCustomizingItem.id,
+        name: currentCustomizingItem.name,
+        flavor: selectedFlavor,
+        mix: selectedMix,
+        ice: selectedIce,
+        qty: customQty,
         unitPrice: singleUnitPrice,
-        totalPrice: singleUnitPrice * window.customQty
+        totalPrice: singleUnitPrice * customQty
       };
 
-      window.cart.push(cartItem);
-      window.updateCartBadge();
-      window.closeCustomizeModal();
-      window.showToast('Item berjaya ditambah ke troli!');
-    };
+      cart.push(cartItem);
+      updateCartBadge();
+      closeCustomizeModal();
+      showToast('Item berjaya ditambah ke troli!');
+    }
 
-    window.updateCartBadge = function() {
-      const totalCount = window.cart.reduce((sum, item) => sum + item.qty, 0);
-      const totalPrice = window.cart.reduce((sum, item) => sum + item.totalPrice, 0);
+    function updateCartBadge() {
+      const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+      const totalPrice = cart.reduce((sum, item) => sum + item.totalPrice, 0);
 
       document.getElementById('cart-count-badge').innerText = totalCount;
       document.getElementById('cart-total-price').innerText = `RM ${totalPrice.toFixed(2)}`;
-    };
+    }
 
-    window.openCartModal = function() {
-      if (window.cart.length === 0) {
-        window.showToast('Troli anda masih kosong!');
+    function openCartModal() {
+      if (cart.length === 0) {
+        showToast('Troli anda masih kosong!');
         return;
       }
-      window.renderCartItems();
-      window.calculateCartTotals();
-      window.goToCartStep1();
+      renderCartItems();
+      calculateCartTotals();
+      goToCartStep1();
       document.getElementById('cart-modal').classList.remove('hidden');
-    };
+    }
 
-    window.closeCartModal = function() {
+    function closeCartModal() {
       document.getElementById('cart-modal').classList.add('hidden');
-    };
+    }
 
-    window.renderCartItems = function() {
+    function renderCartItems() {
       const container = document.getElementById('cart-items-container');
       container.innerHTML = '';
 
-      window.cart.forEach(item => {
+      cart.forEach(item => {
         const div = document.createElement('div');
         div.className = "bg-zinc-950 border border-zinc-800/80 p-3 rounded-xl flex items-center justify-between";
         div.innerHTML = `
@@ -1422,28 +1440,28 @@
             <p class="text-xs font-bold text-white mt-1">RM ${item.totalPrice.toFixed(2)} (${item.qty}x)</p>
           </div>
 
-          <button onclick="window.removeCartItem('${item.cartItemId}')" class="w-7 h-7 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white flex items-center justify-center transition-all">
+          <button onclick="removeCartItem('${item.cartItemId}')" class="w-7 h-7 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white flex items-center justify-center transition-all">
             <i class="fa-solid fa-trash-can text-xs"></i>
           </button>
         `;
         container.appendChild(div);
       });
-    };
+    }
 
-    window.removeCartItem = function(cartItemId) {
-      window.cart = window.cart.filter(item => item.cartItemId !== cartItemId);
-      window.updateCartBadge();
-      if (window.cart.length === 0) {
-        window.closeCartModal();
-        window.showToast('Troli telah kosong.');
+    function removeCartItem(cartItemId) {
+      cart = cart.filter(item => item.cartItemId !== cartItemId);
+      updateCartBadge();
+      if (cart.length === 0) {
+        closeCartModal();
+        showToast('Troli telah kosong.');
       } else {
-        window.renderCartItems();
-        window.calculateCartTotals();
+        renderCartItems();
+        calculateCartTotals();
       }
-    };
+    }
 
-    window.calculateCartTotals = function() {
-      const subtotal = window.cart.reduce((sum, item) => sum + item.totalPrice, 0);
+    function calculateCartTotals() {
+      const subtotal = cart.reduce((sum, item) => sum + item.totalPrice, 0);
       const deliveryType = document.getElementById('cust-delivery-type').value;
       const deliveryFee = deliveryType === 'room' ? 0.50 : 0.00;
       const grandTotal = subtotal + deliveryFee;
@@ -1453,15 +1471,15 @@
       document.getElementById('summary-grandtotal').innerText = `RM ${grandTotal.toFixed(2)}`;
 
       return { subtotal, deliveryFee, grandTotal };
-    };
+    }
 
-    window.goToCartStep1 = function() {
+    function goToCartStep1() {
       document.getElementById('cart-step-1').classList.remove('hidden');
       document.getElementById('cart-step-2').classList.add('hidden');
       document.getElementById('cart-step-indicator').innerText = "Langkah 1 daripada 2: Maklumat Pesanan";
-    };
+    }
 
-    window.goToCartStep2 = function() {
+    function goToCartStep2() {
       const name = document.getElementById('cust-name').value.trim();
       const phone = document.getElementById('cust-phone').value.trim();
       const kk = document.getElementById('cust-kk').value.trim();
@@ -1471,7 +1489,7 @@
       cutoffBanner.classList.add('hidden');
 
       if (!name || !phone || !kk || !room) {
-        window.showToast('Sila isi Nama, No. Telefon, Kolej & Bilik anda!');
+        showToast('Sila isi Nama, No. Telefon, Kolej & Bilik anda!');
         return;
       }
 
@@ -1482,7 +1500,7 @@
       if (isPFLocation && (currentHour >= 0 && currentHour < 6)) {
         cutoffBanner.innerText = "⚠️ Order untuk PF1 & PF2 tidak dapat diproses selepas 12:00am! (BUMITA masih dibuka)";
         cutoffBanner.classList.remove('hidden');
-        window.showToast('Pesanan PF1/PF2 telah ditutup selepas 12:00am!');
+        showToast('Pesanan PF1/PF2 telah ditutup selepas 12:00am!');
         return;
       }
 
@@ -1491,10 +1509,10 @@
       document.getElementById('cart-step-2').classList.remove('hidden');
       document.getElementById('cart-step-indicator').innerText = "Langkah 2 daripada 2: Pembayaran & Pengesahan";
       
-      window.toggleReceiptUploadField();
-    };
+      toggleReceiptUploadField();
+    }
 
-    window.toggleReceiptUploadField = function() {
+    function toggleReceiptUploadField() {
       const method = document.getElementById('cust-payment-method').value;
       const container = document.getElementById('receipt-upload-container');
       if (method === 'DuitNow QR') {
@@ -1502,16 +1520,10 @@
       } else {
         container.classList.add('hidden');
       }
-    };
+    }
 
-    // Submit Order directly to Cloud Firestore & Sync Across Devices
-    window.submitOrderDirectToAdmin = async function() {
-      if (window.isSubmittingOrder) return;
-
-      if (window.storeSettings.status === 'closed') {
-        window.showToast('Kedai sedang TUTUP. Pesanan tidak dapat dihantar.');
-        return;
-      }
+    async function submitOrderDirectToAdmin() {
+      if (isSubmittingOrder) return;
 
       const name = document.getElementById('cust-name').value.trim();
       const phone = document.getElementById('cust-phone').value.trim();
@@ -1523,25 +1535,25 @@
       const receiptFileInput = document.getElementById('cust-receipt-file');
 
       if (!name || !phone || !kk || !room) {
-        window.showToast('Sila isi Nama, No. Telefon, Kolej & Bilik anda!');
+        showToast('Sila isi Nama, No. Telefon, Kolej & Bilik anda!');
         return;
       }
 
-      if (window.cart.length === 0) {
-        window.showToast('Troli anda kosong!');
+      if (cart.length === 0) {
+        showToast('Troli anda kosong!');
         return;
       }
 
       let receiptBase64 = "";
       if (paymentMethod === 'DuitNow QR') {
         if (!receiptFileInput || !receiptFileInput.files || !receiptFileInput.files[0]) {
-          window.showToast('Sila muat naik (attach) resit bayaran DuitNow terlebih dahulu!');
+          showToast('Sila muat naik (attach) resit bayaran DuitNow terlebih dahulu!');
           return;
         }
-        receiptBase64 = await window.readFileAsDataURL(receiptFileInput.files[0], 600);
+        receiptBase64 = await readFileAsDataURL(receiptFileInput.files[0], 600);
       }
 
-      window.isSubmittingOrder = true;
+      isSubmittingOrder = true;
       const submitBtn = document.getElementById('submit-order-direct-btn');
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -1549,7 +1561,7 @@
         submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
       }
 
-      const totals = window.calculateCartTotals();
+      const totals = calculateCartTotals();
       const newOrderId = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
 
       const orderData = {
@@ -1562,15 +1574,15 @@
         paymentMethod: paymentMethod,
         receiptImage: receiptBase64,
         notes: notes,
-        items: [...window.cart],
+        items: [...cart],
         totals: totals,
         status: 'pending',
         createdAt: new Date().toISOString()
       };
 
-      // Deduct Flavor Stocks
-      window.cart.forEach(cartItem => {
-        const targetProd = window.products.find(p => p.id === cartItem.productId);
+      // Deduct Exact Flavor Stock
+      cart.forEach(cartItem => {
+        const targetProd = products.find(p => p.id === cartItem.productId);
         if (targetProd && Array.isArray(targetProd.flavors)) {
           targetProd.flavors.forEach(f => {
             const fName = typeof f === 'object' ? f.name : f;
@@ -1583,57 +1595,57 @@
         }
       });
 
-      // DIRECT CLOUD SAVE to Firestore Data (Rule 1 Path)
-      if (db && currentUser) {
+      if (db) {
         try {
-          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', newOrderId), orderData);
-          await setDoc(getSettingsDocRef(), { customProducts: window.products }, { merge: true });
+          await db.collection("orders").doc(newOrderId).set(orderData);
+          await db.collection("settings").doc("store_config").set({ customProducts: products }, { merge: true });
         } catch (e) {
-          console.error("Firestore save error:", e);
-          window.showToast("Gagal menyimpan ke Cloud. Sila cuba lagi.");
-          window.isSubmittingOrder = false;
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-sm"></i> <span>Sahkan & Hantar Pesanan</span>`;
-            submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
-          }
-          return;
+          console.warn("Firestore save fallback", e);
         }
       }
 
-      // Track on customer's own device
-      if (!window.customerActiveOrderIds.includes(newOrderId)) {
-        window.customerActiveOrderIds.push(newOrderId);
-        localStorage.setItem('joss_customer_active_orders', JSON.stringify(window.customerActiveOrderIds));
+      if (!allOrdersList.some(o => o.orderId === newOrderId)) {
+        allOrdersList.unshift(orderData);
       }
-      window.currentSelectedTrackingOrderId = newOrderId;
+      allOrdersList = getUniqueOrdersList(allOrdersList);
+      localStorage.setItem('joss_store_orders', JSON.stringify(allOrdersList));
+      localStorage.setItem('joss_store_products', JSON.stringify(products));
 
-      // Auto Redirect to WhatsApp Admin 1
-      window.sendOrderDetailsToWhatsAppAdmin1(orderData);
+      if (!customerActiveOrderIds.includes(newOrderId)) {
+        customerActiveOrderIds.push(newOrderId);
+        localStorage.setItem('joss_customer_active_orders', JSON.stringify(customerActiveOrderIds));
+      }
+      currentSelectedTrackingOrderId = newOrderId;
 
-      window.cart = [];
+      // AUTOMATED BACKGROUND TELEGRAM NOTIFICATION TO ADMIN
+      sendDirectTelegramNotification(orderData);
+
+      // OPEN WHATSAPP DIREKTORI CLIENT TO ADMIN 1
+      sendOrderDetailsToWhatsAppAdmin1(orderData);
+
+      cart = [];
       if (receiptFileInput) receiptFileInput.value = '';
-      window.updateCartBadge();
-      window.closeCartModal();
-      window.renderCategoryFilters();
-      window.renderProducts(window.currentFilterCategory);
+      updateCartBadge();
+      closeCartModal();
+      renderCategoryFilters();
+      renderProducts(currentFilterCategory);
 
-      window.showToast('Pesanan disahkan & dihantar kepada Admin!');
-      window.updateCustomerActiveOrderList();
-      window.openTrackingModal();
+      showToast('Pesanan disahkan & dihantar kepada Admin!');
+      updateCustomerActiveOrderList();
+      openTrackingModal();
 
       setTimeout(() => {
-        window.isSubmittingOrder = false;
+        isSubmittingOrder = false;
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-sm"></i> <span>Sahkan & Hantar Pesanan</span>`;
           submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
         }
       }, 500);
-    };
+    }
 
-    window.sendOrderDetailsToWhatsAppAdmin1 = function(order) {
-      let p1Raw = window.storeSettings.adminPhone1 || '601139550544';
+    function sendOrderDetailsToWhatsAppAdmin1(order) {
+      let p1Raw = storeSettings.adminPhone1 || '601139550544';
       let p1Clean = p1Raw.replace(/[^0-9]/g, '');
       if (!p1Clean.startsWith('60')) {
         if (p1Clean.startsWith('0')) p1Clean = '6' + p1Clean;
@@ -1644,7 +1656,7 @@
         `${idx + 1}. *${item.name}* (${item.flavor})\n   • Mix: ${item.mix} | Ais: ${item.ice}\n   • Kuantiti: x${item.qty} (RM ${item.totalPrice.toFixed(2)})`
       ).join('\n\n');
 
-      let msg = `⚡ *PESANAN BAHARU - ${(window.storeSettings.name || 'BRO JOSSS').toUpperCase()}* ⚡\n\n`;
+      let msg = `⚡ *PESANAN BAHARU - ${(storeSettings.name || 'EXTRA JOSS KK').toUpperCase()}* ⚡\n\n`;
       msg += `🆔 *Order ID:* #${order.orderId}\n`;
       msg += `👤 *Pelanggan:* ${order.customerName}\n`;
       msg += `📞 *No. Tel:* ${order.customerPhone}\n`;
@@ -1655,41 +1667,74 @@
 
       msg += `\n🥤 *SENARAI PESANAN:*\n${itemsText}\n\n`;
       msg += `💰 *JUMLAH KESELURUHAN: RM ${(order.totals?.grandTotal || 0).toFixed(2)}*\n\n`;
-      msg += `📌 *Sila semak status semasa order anda di web, TERIMA KASIH!*`;
+      msg += `📌 *Sila semak Admin Monitor untuk pengesahan resit & memproses pesanan!*`;
 
       const encodedMsg = encodeURIComponent(msg);
       const waUrl = `https://wa.me/${p1Clean}?text=${encodedMsg}`;
-      window.open(waUrl, '_blank');
-    };
+      window.location.href = waUrl;
+    }
 
-    window.sendActiveOrderToWhatsAppManual = function() {
-      if (!window.currentSelectedTrackingOrderId) return;
-      const order = window.allOrdersList.find(o => o.orderId === window.currentSelectedTrackingOrderId);
+    function sendActiveOrderToWhatsAppManual() {
+      if (!currentSelectedTrackingOrderId) return;
+      const order = allOrdersList.find(o => o.orderId === currentSelectedTrackingOrderId);
       if (order) {
-        window.sendOrderDetailsToWhatsAppAdmin1(order);
+        sendOrderDetailsToWhatsAppAdmin1(order);
       }
-    };
+    }
 
-    window.updateCustomerActiveOrderList = function() {
+    // Direct Server Push Alert via Telegram API
+    function sendDirectTelegramNotification(order) {
+      const token = storeSettings.telegramToken;
+      const chatId = storeSettings.telegramChatId;
+
+      if (!token || !chatId) {
+        console.log("Telegram Bot credentials not configured in Admin Settings.");
+        return;
+      }
+
+      const payStatus = order.paymentMethod === 'DuitNow QR' ? 'PAID (DuitNow QR)' : 'COD (Cash)';
+      const itemsList = order.items.map(i => `• ${i.name} (${i.flavor}) x${i.qty}`).join('\n');
+
+      const tgMsg = `⚡ *PESANAN BAHARU MASUK!* ⚡\n\n` +
+        `🆔 *Order ID:* #${order.orderId}\n` +
+        `👤 *Pelanggan:* ${order.customerName} (${order.customerPhone})\n` +
+        `📍 *Lokasi:* ${order.location} - ${order.room}\n` +
+        `💳 *Status Bayaran:* ${payStatus}\n` +
+        `💰 *Jumlah:* RM ${order.totals.grandTotal.toFixed(2)}\n\n` +
+        `🥤 *Item Dipesan:*\n${itemsList}\n\n` +
+        `⚠️ *Sila semak Admin Monitor untuk menyemak resit & memproses order.*`;
+
+      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: tgMsg,
+          parse_mode: 'Markdown'
+        })
+      }).catch(err => console.warn("Telegram alert error:", err));
+    }
+
+    function updateCustomerActiveOrderList() {
       const activeBtn = document.getElementById('track-order-btn');
       const activeBanner = document.getElementById('active-order-banner');
       const badgeCount = document.getElementById('active-orders-count-badge');
 
-      const customerOrders = window.allOrdersList.filter(o => window.customerActiveOrderIds.includes(o.orderId));
+      const customerOrders = allOrdersList.filter(o => customerActiveOrderIds.includes(o.orderId));
       const activeCustomerOrders = customerOrders.filter(o => o.status !== 'delivered');
 
-      if (window.customerActiveOrderIds.length > 0) {
+      if (customerActiveOrderIds.length > 0) {
         activeBtn.classList.remove('hidden');
         activeBanner.classList.remove('hidden');
         badgeCount.innerText = activeCustomerOrders.length;
 
-        if (!window.currentSelectedTrackingOrderId && window.customerActiveOrderIds.length > 0) {
-          window.currentSelectedTrackingOrderId = window.customerActiveOrderIds[window.customerActiveOrderIds.length - 1];
+        if (!currentSelectedTrackingOrderId && customerActiveOrderIds.length > 0) {
+          currentSelectedTrackingOrderId = customerActiveOrderIds[customerActiveOrderIds.length - 1];
         }
 
-        const activeOrderObj = window.allOrdersList.find(o => o.orderId === window.currentSelectedTrackingOrderId);
+        const activeOrderObj = allOrdersList.find(o => o.orderId === currentSelectedTrackingOrderId);
         if (activeOrderObj) {
-          document.getElementById('banner-order-status').innerText = `#${activeOrderObj.orderId}: ${window.getStatusLabel(activeOrderObj.status)}`;
+          document.getElementById('banner-order-status').innerText = `#${activeOrderObj.orderId}: ${getStatusLabel(activeOrderObj.status)}`;
         } else {
           document.getElementById('banner-order-status').innerText = `${activeCustomerOrders.length} Pesanan Aktif`;
         }
@@ -1698,23 +1743,23 @@
         activeBanner.classList.add('hidden');
       }
 
-      window.renderTrackerContent(window.currentSelectedTrackingOrderId);
-    };
+      renderTrackerContent(currentSelectedTrackingOrderId);
+    }
 
-    window.renderTrackerContent = function(orderId) {
+    function renderTrackerContent(orderId) {
       if (!orderId) return;
 
       const tabsContainer = document.getElementById('multi-order-tab-container');
       const tabsList = document.getElementById('multi-order-tabs-list');
 
-      if (window.customerActiveOrderIds.length > 1) {
+      if (customerActiveOrderIds.length > 1) {
         tabsContainer.classList.remove('hidden');
-        tabsList.innerHTML = window.customerActiveOrderIds.map(id => {
-          const ord = window.allOrdersList.find(o => o.orderId === id);
+        tabsList.innerHTML = customerActiveOrderIds.map(id => {
+          const ord = allOrdersList.find(o => o.orderId === id);
           const isSelected = id === orderId;
           const statusIcon = ord?.status === 'delivered' ? '✅' : ord?.status === 'cancelled' ? '❌' : '⚡';
           return `
-            <button onclick="window.switchCustomerTrackingOrder('${id}')" class="px-3 py-1.5 rounded-xl font-extrabold text-[11px] whitespace-nowrap transition-all border ${
+            <button onclick="switchCustomerTrackingOrder('${id}')" class="px-3 py-1.5 rounded-xl font-extrabold text-[11px] whitespace-nowrap transition-all border ${
               isSelected ? 'bg-joss-yellow text-black border-joss-yellow shadow-md' : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white'
             }">
               ${statusIcon} #${id}
@@ -1725,7 +1770,7 @@
         tabsContainer.classList.add('hidden');
       }
 
-      const data = window.allOrdersList.find(o => o.orderId === orderId);
+      const data = allOrdersList.find(o => o.orderId === orderId);
       if (!data) return;
 
       document.getElementById('track-order-id').innerText = '#' + data.orderId;
@@ -1745,7 +1790,7 @@
       const step3Desc = document.getElementById('step-3-desc');
 
       if (data.status === 'cancelled') {
-        const p1Raw = window.storeSettings.adminPhone1 || '011-39550544';
+        const p1Raw = storeSettings.adminPhone1 || '011-39550544';
         let p1Clean = p1Raw.replace(/[^0-9]/g, '');
         if (!p1Clean.startsWith('60')) {
           if (p1Clean.startsWith('0')) p1Clean = '6' + p1Clean;
@@ -1788,7 +1833,7 @@
         if (pickupBanner) pickupBanner.classList.add('hidden');
       }
 
-      window.updateStepper(data.status);
+      updateStepper(data.status);
 
       const itemsList = document.getElementById('track-items-list');
       itemsList.innerHTML = (data.items || []).map(i => `
@@ -1804,26 +1849,32 @@
       } else {
         clearBtn.classList.add('hidden');
       }
-    };
 
-    window.switchCustomerTrackingOrder = function(orderId) {
-      window.currentSelectedTrackingOrderId = orderId;
-      window.renderTrackerContent(orderId);
-      window.updateCustomerActiveOrderList();
-    };
-
-    window.clearSelectedActiveOrder = function() {
-      if (window.currentSelectedTrackingOrderId) {
-        window.customerActiveOrderIds = window.customerActiveOrderIds.filter(id => id !== window.currentSelectedTrackingOrderId);
-        localStorage.setItem('joss_customer_active_orders', JSON.stringify(window.customerActiveOrderIds));
-        window.currentSelectedTrackingOrderId = window.customerActiveOrderIds.length > 0 ? window.customerActiveOrderIds[window.customerActiveOrderIds.length - 1] : null;
+      if (data.status === 'delivered' && !data.hasRated && !localStorage.getItem(`rated_${orderId}`)) {
+        setTimeout(() => {
+          document.getElementById('delivered-feedback-modal').classList.remove('hidden');
+        }, 800);
       }
-      window.updateCustomerActiveOrderList();
-      window.closeTrackingModal();
-      window.showToast('Status pesanan dibersihkan dari peranti anda.');
-    };
+    }
 
-    window.getStatusLabel = function(status) {
+    function switchCustomerTrackingOrder(orderId) {
+      currentSelectedTrackingOrderId = orderId;
+      renderTrackerContent(orderId);
+      updateCustomerActiveOrderList();
+    }
+
+    function clearSelectedActiveOrder() {
+      if (currentSelectedTrackingOrderId) {
+        customerActiveOrderIds = customerActiveOrderIds.filter(id => id !== currentSelectedTrackingOrderId);
+        localStorage.setItem('joss_customer_active_orders', JSON.stringify(customerActiveOrderIds));
+        currentSelectedTrackingOrderId = customerActiveOrderIds.length > 0 ? customerActiveOrderIds[customerActiveOrderIds.length - 1] : null;
+      }
+      updateCustomerActiveOrderList();
+      closeTrackingModal();
+      showToast('Status pesanan dibersihkan dari peranti anda.');
+    }
+
+    function getStatusLabel(status) {
       switch (status) {
         case 'pending': return '🟡 Menunggu Pengesahan Admin';
         case 'preparing': return '🥤 Sedang Disediakan';
@@ -1832,9 +1883,9 @@
         case 'cancelled': return '❌ Pesanan Dibatalkan';
         default: return 'Memproses...';
       }
-    };
+    }
 
-    window.updateStepper = function(status) {
+    function updateStepper(status) {
       const steps = ['pending', 'preparing', 'delivery', 'delivered'];
       const statusMap = { 'pending': 0, 'preparing': 1, 'ready': 2, 'delivered': 3 };
       const currentIdx = statusMap[status] ?? 0;
@@ -1849,50 +1900,83 @@
           icon.className = "step-icon w-7 h-7 rounded-full bg-zinc-800 border-2 border-zinc-700 text-zinc-400 flex items-center justify-center text-xs font-bold z-10";
         }
       });
-    };
+    }
 
-    window.openTrackingModal = function() {
-      if (window.customerActiveOrderIds.length === 0) return;
+    function openTrackingModal() {
+      if (customerActiveOrderIds.length === 0) return;
       document.getElementById('tracking-modal').classList.remove('hidden');
-    };
+    }
 
-    window.closeTrackingModal = function() {
+    function closeTrackingModal() {
       document.getElementById('tracking-modal').classList.add('hidden');
-    };
+    }
 
-    window.openAdminAuthModal = function() {
+    function setStarRating(rating) {
+      currentRatingValue = rating;
+      const stars = document.querySelectorAll('#star-rating-container i');
+      stars.forEach((s, idx) => {
+        if (idx < rating) s.className = "fa-solid fa-star text-joss-yellow cursor-pointer";
+        else s.className = "fa-solid fa-star text-zinc-700 cursor-pointer";
+      });
+    }
+
+    function submitCustomerFeedback() {
+      const text = document.getElementById('feedback-text-input').value.trim();
+      const reviewObj = {
+        orderId: currentSelectedTrackingOrderId,
+        rating: currentRatingValue,
+        comment: text,
+        timestamp: new Date().toISOString()
+      };
+
+      if (currentSelectedTrackingOrderId) {
+        localStorage.setItem(`rated_${currentSelectedTrackingOrderId}`, 'true');
+        if (db) {
+          db.collection("reviews").add(reviewObj);
+          db.collection("orders").doc(currentSelectedTrackingOrderId).update({ hasRated: true });
+        }
+      }
+
+      document.getElementById('delivered-feedback-modal').classList.add('hidden');
+      clearSelectedActiveOrder();
+      showToast('Terima kasih atas ulasan anda!');
+    }
+
+    function openAdminAuthModal() {
       document.getElementById('admin-passcode-input').value = '';
       document.getElementById('admin-auth-modal').classList.remove('hidden');
-    };
+    }
 
-    window.closeAdminAuthModal = function() {
+    function closeAdminAuthModal() {
       document.getElementById('admin-auth-modal').classList.add('hidden');
-    };
+    }
 
-    window.verifyAdminPasscode = function() {
+    function verifyAdminPasscode() {
       const input = document.getElementById('admin-passcode-input').value.trim();
-      if (input === (window.storeSettings.adminPasscode || '1518')) {
-        window.closeAdminAuthModal();
-        window.openAdminPanelModal();
+      if (input === (storeSettings.adminPasscode || '1518')) {
+        closeAdminAuthModal();
+        openAdminPanelModal();
       } else {
-        window.showToast('PIN Passcode Salah!');
+        showToast('PIN Passcode Salah!');
       }
-    };
+    }
 
-    window.openAdminPanelModal = function() {
-      document.getElementById('admin-store-name').value = window.storeSettings.name || 'BRO JOSSS';
-      document.getElementById('admin-store-status').value = window.storeSettings.status || 'open';
-      document.getElementById('admin-phone-1').value = window.storeSettings.adminPhone1 || '601139550544';
-      document.getElementById('admin-phone-2').value = window.storeSettings.adminPhone2 || '601112247018';
-      document.getElementById('admin-duitnow-id').value = window.storeSettings.duitnowId || '01139550544';
+    function openAdminPanelModal() {
+      document.getElementById('admin-store-name').value = storeSettings.name || 'Extra Joss KK';
+      document.getElementById('admin-store-status').value = storeSettings.status || 'open';
+      document.getElementById('admin-phone-1').value = storeSettings.adminPhone1 || '601139550544';
+      document.getElementById('admin-phone-2').value = storeSettings.adminPhone2 || '60123456789';
+      document.getElementById('admin-duitnow-id').value = storeSettings.duitnowId || '60 11-3955 0544';
+      document.getElementById('admin-telegram-token').value = storeSettings.telegramToken || '';
+      document.getElementById('admin-telegram-chatid').value = storeSettings.telegramChatId || '';
 
-      window.renderAdminStockList();
-      window.renderAdminOrdersList();
-      window.calculateAdminAnalytics();
+      renderAdminStockList();
+      renderAdminOrdersList();
+      calculateAdminAnalytics();
       document.getElementById('admin-panel-modal').classList.remove('hidden');
-    };
+    }
 
-    window.switchAdminTab = function(tabName) {
+    function switchAdminTab(tabName) {
       document.getElementById('admin-tab-orders').classList.add('hidden');
       document.getElementById('admin-tab-sales').classList.add('hidden');
       document.getElementById('admin-tab-stock').classList.add('hidden');
@@ -1911,39 +1995,38 @@
         document.getElementById('admin-tab-stock').classList.remove('hidden');
         document.getElementById('tab-btn-stock').className = "px-4 py-2 rounded-t-xl font-bold bg-joss-yellow text-black transition-all";
       }
-    };
+    }
 
-    window.renderAdminOrdersList = function() {
+    function toggleShowArchivedOrders() {
+      showArchivedOrders = !showArchivedOrders;
+      const btn = document.getElementById('toggle-archive-btn');
+      if (showArchivedOrders) {
+        btn.innerHTML = `<i class="fa-solid fa-eye-slash mr-1"></i> Sembunyi Sejarah`;
+        btn.className = "bg-joss-yellow/20 text-joss-yellow border border-joss-yellow/40 font-bold px-2.5 py-1 rounded-lg text-[10px] transition-all";
+      } else {
+        btn.innerHTML = `<i class="fa-solid fa-box-archive mr-1"></i> Tunjuk Sejarah/Arsip`;
+        btn.className = "bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-2.5 py-1 rounded-lg text-[10px] transition-all";
+      }
+      renderAdminOrdersList();
+    }
+
+    function renderAdminOrdersList() {
       const container = document.getElementById('admin-orders-list-container');
       if (!container) return;
       container.innerHTML = '';
 
-      const searchVal = (document.getElementById('admin-order-search')?.value || '').toLowerCase().trim();
-      const filterVal = document.getElementById('admin-order-status-filter')?.value || 'active';
+      allOrdersList = getUniqueOrdersList(allOrdersList);
+      const activeOrders = allOrdersList.filter(o => o.status !== 'delivered' && o.status !== 'cancelled');
+      const displayOrders = showArchivedOrders ? allOrdersList : activeOrders;
 
-      let filtered = window.allOrdersList.filter(o => {
-        if (filterVal === 'active' && (o.status === 'delivered' || o.status === 'cancelled')) return false;
-        if (filterVal !== 'active' && filterVal !== 'all' && o.status !== filterVal) return false;
+      document.getElementById('admin-active-orders-count').innerText = `${activeOrders.length} Active`;
 
-        if (searchVal) {
-          const matchId = (o.orderId || '').toLowerCase().includes(searchVal);
-          const matchName = (o.customerName || '').toLowerCase().includes(searchVal);
-          const matchPhone = (o.customerPhone || '').toLowerCase().includes(searchVal);
-          const matchLoc = (o.location || '').toLowerCase().includes(searchVal);
-          if (!matchId && !matchName && !matchPhone && !matchLoc) return false;
-        }
-        return true;
-      });
-
-      const activeCount = window.allOrdersList.filter(o => o.status !== 'delivered' && o.status !== 'cancelled').length;
-      document.getElementById('admin-active-orders-count').innerText = `${activeCount} Active`;
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<p class="text-zinc-500 italic text-center py-6">Tiada pesanan ditemui mengikut tapisan / carian ini.</p>`;
+      if (displayOrders.length === 0) {
+        container.innerHTML = `<p class="text-zinc-500 italic text-center py-6">${showArchivedOrders ? 'Tiada sejarah pesanan.' : 'Tiada pesanan aktif berjalan.'}</p>`;
         return;
       }
 
-      filtered.forEach(order => {
+      displayOrders.forEach(order => {
         const card = document.createElement('div');
         const isCompleted = order.status === 'delivered' || order.status === 'cancelled';
         
@@ -1996,7 +2079,7 @@
                     <span class="text-[9px] font-extrabold text-emerald-400 uppercase flex items-center gap-1">
                       <i class="fa-solid fa-circle-check"></i> Resit Dimuat Naik
                     </span>
-                    <button type="button" onclick="window.viewReceiptImage('${order.orderId}')" class="w-full bg-joss-yellow text-black hover:bg-yellow-400 font-extrabold py-1.5 px-2 rounded-lg text-[10px] transition-all flex items-center justify-center gap-1 shadow">
+                    <button type="button" onclick="viewReceiptImage('${order.orderId}')" class="w-full bg-joss-yellow text-black hover:bg-yellow-400 font-extrabold py-1.5 px-2 rounded-lg text-[10px] transition-all flex items-center justify-center gap-1 shadow">
                       <i class="fa-solid fa-file-invoice-dollar"></i>
                       <span>SAHKAN & LIHAT RESIT</span>
                     </button>
@@ -2025,7 +2108,7 @@
 
           <div class="flex items-center gap-2 pt-1 border-t border-zinc-800/80 flex-wrap">
             <span class="text-[10px] text-zinc-400 uppercase font-extrabold">Kemaskini Status:</span>
-            <select onchange="window.updateOrderStatus('${order.orderId}', this.value)" class="bg-zinc-900 border border-zinc-700 rounded-xl text-xs px-2.5 py-1.5 text-white focus:outline-none focus:border-joss-yellow font-bold">
+            <select onchange="updateOrderStatus('${order.orderId}', this.value)" class="bg-zinc-900 border border-zinc-700 rounded-xl text-xs px-2.5 py-1.5 text-white focus:outline-none focus:border-joss-yellow font-bold">
               <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>🟡 Pending</option>
               <option value="preparing" ${order.status === 'preparing' ? 'selected' : ''}>🥤 Preparing</option>
               <option value="ready" ${order.status === 'ready' ? 'selected' : ''}>⚡ Ready / Delivering</option>
@@ -2036,72 +2119,84 @@
         `;
         container.appendChild(card);
       });
-    };
+    }
 
-    window.updateOrderStatus = async function(orderId, newStatus) {
-      if (db && currentUser) {
-        try {
-          await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'orders', orderId), { status: newStatus });
-          window.showToast(`Status #${orderId} dikemaskini!`);
-        } catch (e) {
-          console.warn("Update status error:", e);
-        }
+    function updateOrderStatus(orderId, newStatus) {
+      const order = allOrdersList.find(o => o.orderId === orderId);
+      if (order) order.status = newStatus;
+
+      if (db) {
+        db.collection("orders").doc(orderId).update({ status: newStatus });
       }
-    };
 
-    window.calculateAdminAnalytics = function() {
-      const totalSales = window.allOrdersList
+      localStorage.setItem('joss_store_orders', JSON.stringify(allOrdersList));
+      showToast(`Status #${orderId} dikemaskini!`);
+      renderAdminOrdersList();
+      calculateAdminAnalytics();
+      updateCustomerActiveOrderList();
+    }
+
+    function calculateAdminAnalytics() {
+      const totalSales = allOrdersList
         .filter(o => o.status === 'delivered')
         .reduce((sum, o) => sum + (o.totals?.grandTotal || 0), 0);
 
       document.getElementById('stat-total-sales').innerText = `RM ${totalSales.toFixed(2)}`;
-      document.getElementById('stat-total-orders').innerText = window.allOrdersList.length;
-      document.getElementById('stat-pending-orders').innerText = window.allOrdersList.filter(o => o.status === 'pending' || o.status === 'preparing').length;
-      document.getElementById('stat-completed-orders').innerText = window.allOrdersList.filter(o => o.status === 'delivered').length;
-    };
+      document.getElementById('stat-total-orders').innerText = allOrdersList.length;
+      document.getElementById('stat-pending-orders').innerText = allOrdersList.filter(o => o.status === 'pending' || o.status === 'preparing').length;
+      document.getElementById('stat-completed-orders').innerText = allOrdersList.filter(o => o.status === 'delivered').length;
+    }
 
-    window.clearSalesAnalytics = async function() {
+    async function clearSalesAnalytics() {
       if (confirm('Adakah anda pasti untuk memadam/reset semua sejarah jualan & rekod pesanan?')) {
-        if (db && currentUser) {
+        allOrdersList = [];
+        localStorage.removeItem('joss_store_orders');
+
+        if (db) {
           try {
-            const snapshot = await getDocs(getOrdersCollectionRef());
-            snapshot.docs.forEach(async (docSnap) => {
-              await deleteDoc(docSnap.ref);
-            });
-            window.showToast('Rekod jualan & pesanan berjaya diclear/reset!');
+            const snapshot = await db.collection("orders").get();
+            const batch = db.batch();
+            snapshot.docs.forEach(doc => batch.delete(doc.ref));
+            await batch.commit();
           } catch (e) {
             console.warn("Firebase delete order error:", e);
           }
         }
-      }
-    };
 
-    window.clearAdminReviews = async function() {
+        calculateAdminAnalytics();
+        renderAdminOrdersList();
+        showToast('Rekod jualan & pesanan berjaya diclear/reset!');
+      }
+    }
+
+    async function clearAdminReviews() {
       if (confirm('Adakah anda pasti untuk memadam semua ulasan & rating pelanggan?')) {
-        if (db && currentUser) {
+        allReviewsList = [];
+        if (db) {
           try {
-            const snapshot = await getDocs(getReviewsCollectionRef());
-            snapshot.docs.forEach(async (docSnap) => {
-              await deleteDoc(docSnap.ref);
-            });
-            window.showToast('Semua ulasan pelanggan berjaya dipadam!');
+            const snapshot = await db.collection("reviews").get();
+            const batch = db.batch();
+            snapshot.docs.forEach(doc => batch.delete(doc.ref));
+            await batch.commit();
           } catch (e) {
             console.warn("Firebase delete review error:", e);
           }
         }
+        renderAdminReviews();
+        showToast('Semua ulasan pelanggan berjaya dipadam!');
       }
-    };
+    }
 
-    window.renderAdminReviews = function() {
+    function renderAdminReviews() {
       const container = document.getElementById('admin-reviews-list');
       if (!container) return;
 
-      if (window.allReviewsList.length === 0) {
+      if (allReviewsList.length === 0) {
         container.innerHTML = `<p class="text-zinc-500 italic">Belum ada ulasan lagi.</p>`;
         return;
       }
 
-      container.innerHTML = window.allReviewsList.map(r => `
+      container.innerHTML = allReviewsList.map(r => `
         <div class="bg-zinc-900 p-2.5 rounded-xl border border-zinc-800">
           <div class="flex justify-between text-joss-yellow text-xs">
             <span>${'★'.repeat(r.rating || 5)}</span>
@@ -2110,14 +2205,14 @@
           <p class="text-white mt-1">${r.comment || 'Tiada komen.'}</p>
         </div>
       `).join('');
-    };
+    }
 
-    window.renderAdminStockList = function() {
+    function renderAdminStockList() {
       const container = document.getElementById('admin-stock-list');
       if (!container) return;
       container.innerHTML = '';
 
-      window.products.forEach((p, pIdx) => {
+      products.forEach((p, pIdx) => {
         const div = document.createElement('div');
         div.className = "bg-zinc-950 border border-zinc-800 p-3 rounded-xl space-y-3";
         
@@ -2137,18 +2232,14 @@
         }
 
         const categoryDisplay = CATEGORY_MAP[p.category] || p.category;
-        const imgDisplayHtml = p.image ? `<img src="${p.image}" class="w-12 h-12 object-cover rounded-lg border border-zinc-800">` : '';
 
         div.innerHTML = `
           <div class="flex justify-between items-center font-bold text-white text-xs border-b border-zinc-800 pb-2">
-            <div class="flex items-center gap-2">
-              ${imgDisplayHtml}
-              <div>
-                <span>${p.name} (RM ${p.price.toFixed(2)})</span>
-                <span class="text-[9px] block text-joss-yellow font-normal uppercase">Kategori: ${categoryDisplay}</span>
-              </div>
+            <div>
+              <span>${p.name} (RM ${p.price.toFixed(2)})</span>
+              <span class="text-[9px] block text-joss-yellow font-normal uppercase">Kategori: ${categoryDisplay}</span>
             </div>
-            <button onclick="window.deleteProduct('${p.id}')" class="text-red-400 hover:text-red-300 p-1">
+            <button onclick="deleteProduct('${p.id}')" class="text-red-400 hover:text-red-300 p-1">
               <i class="fa-solid fa-trash-can text-xs"></i>
             </button>
           </div>
@@ -2162,13 +2253,13 @@
         `;
         container.appendChild(div);
       });
-    };
+    }
 
-    window.toggleAddProductForm = function() {
+    function toggleAddProductForm() {
       document.getElementById('add-product-form').classList.toggle('hidden');
-    };
+    }
 
-    window.handleCategorySelectChange = function() {
+    function handleCategorySelectChange() {
       const selectElem = document.getElementById('new-prod-category-select');
       const customContainer = document.getElementById('custom-category-input-container');
       if (selectElem.value === '__custom__') {
@@ -2176,19 +2267,18 @@
       } else {
         customContainer.classList.add('hidden');
       }
-    };
+    }
 
-    window.addNewProduct = async function() {
+    function addNewProduct() {
       const name = document.getElementById('new-prod-name').value.trim();
       const price = parseFloat(document.getElementById('new-prod-price').value);
       const categorySelect = document.getElementById('new-prod-category-select').value;
       const customCategoryInput = document.getElementById('new-prod-custom-category').value.trim();
-      const prodImgFileInput = document.getElementById('new-prod-image-file');
-
+      
       let category = categorySelect;
       if (categorySelect === '__custom__') {
         if (!customCategoryInput) {
-          window.showToast('Sila taip nama kategori kustom baharu anda!');
+          showToast('Sila taip nama kategori kustom baharu anda!');
           return;
         }
         category = customCategoryInput.toLowerCase();
@@ -2199,13 +2289,8 @@
       const flavorsInput = document.getElementById('new-prod-flavors').value.trim();
 
       if (!name || isNaN(price)) {
-        window.showToast('Sila masukkan Nama & Harga produk yang sah!');
+        showToast('Sila masukkan Nama & Harga produk yang sah!');
         return;
-      }
-
-      let prodImgBase64 = "";
-      if (prodImgFileInput && prodImgFileInput.files && prodImgFileInput.files[0]) {
-        prodImgBase64 = await window.readFileAsDataURL(prodImgFileInput.files[0], 500);
       }
 
       const flavorsArray = flavorsInput 
@@ -2222,10 +2307,10 @@
         flavors: flavorsArray,
         isExtraJoss: category === 'extrajoss',
         stockStatus: 'available',
-        image: prodImgBase64
+        image: ''
       };
 
-      window.products.push(newProd);
+      products.push(newProd);
 
       document.getElementById('new-prod-name').value = '';
       document.getElementById('new-prod-price').value = '';
@@ -2233,65 +2318,57 @@
       document.getElementById('new-prod-badge').value = '';
       document.getElementById('new-prod-desc').value = '';
       document.getElementById('new-prod-flavors').value = '';
-      if (prodImgFileInput) prodImgFileInput.value = '';
       document.getElementById('new-prod-category-select').value = 'extrajoss';
-      window.handleCategorySelectChange();
+      handleCategorySelectChange();
 
-      window.toggleAddProductForm();
-      window.renderAdminStockList();
-      window.renderCategoryFilters();
-      window.renderProducts(window.currentFilterCategory);
-      
-      if (db && currentUser) {
-        await setDoc(getSettingsDocRef(), { customProducts: window.products }, { merge: true });
-      }
+      toggleAddProductForm();
+      renderAdminStockList();
+      renderCategoryFilters();
+      renderProducts(currentFilterCategory);
+      showToast('Menu Baru & Kategori Berjaya Ditambah!');
+    }
 
-      window.showToast('Menu Baru & Kategori Berjaya Ditambah!');
-    };
-
-    window.deleteProduct = async function(productId) {
+    function deleteProduct(productId) {
       if (confirm('Adakah anda pasti untuk memadam menu ini?')) {
-        window.products = window.products.filter(p => p.id !== productId);
-        window.renderAdminStockList();
-        window.renderCategoryFilters();
-        window.renderProducts(window.currentFilterCategory);
-        if (db && currentUser) {
-          await setDoc(getSettingsDocRef(), { customProducts: window.products }, { merge: true });
-        }
-        window.showToast('Menu telah dipadam.');
+        products = products.filter(p => p.id !== productId);
+        renderAdminStockList();
+        renderCategoryFilters();
+        renderProducts(currentFilterCategory);
+        showToast('Menu telah dipadam.');
       }
-    };
+    }
 
-    window.closeAdminPanelModal = function() {
+    function closeAdminPanelModal() {
       document.getElementById('admin-panel-modal').classList.add('hidden');
-    };
+    }
 
-    window.viewReceiptImage = function(orderId) {
-      const order = window.allOrdersList.find(o => o.orderId === orderId);
+    function viewReceiptImage(orderId) {
+      const order = allOrdersList.find(o => o.orderId === orderId);
       if (!order || !order.receiptImage) {
-        window.showToast('Resit tidak ditemui untuk pesanan ini.');
+        showToast('Resit tidak ditemui untuk pesanan ini.');
         return;
       }
       document.getElementById('modal-receipt-order-id').innerText = '#' + order.orderId;
       document.getElementById('modal-receipt-img').src = order.receiptImage;
       document.getElementById('receipt-view-modal').classList.remove('hidden');
-    };
+    }
 
-    window.closeReceiptModal = function() {
-      document.getElementById('receipt-view-modal').classList.remove('hidden');
+    function closeReceiptModal() {
       document.getElementById('receipt-view-modal').classList.add('hidden');
-    };
+    }
 
-    window.saveAdminSettings = async function() {
-      window.showToast('Sedang menyimpan tetapan ke Cloud...');
+    async function saveAdminSettings() {
+      showToast('Sedang menyimpan tetapan...');
       
-      window.storeSettings.name = document.getElementById('admin-store-name').value.trim() || "BRO JOSSS";
-      window.storeSettings.status = document.getElementById('admin-store-status').value;
-      window.storeSettings.adminPhone1 = document.getElementById('admin-phone-1').value.trim() || "601139550544";
-      window.storeSettings.adminPhone2 = document.getElementById('admin-phone-2').value.trim() || "601112247018";
-      window.storeSettings.duitnowId = document.getElementById('admin-duitnow-id').value.trim() || "01139550544";
+      storeSettings.name = document.getElementById('admin-store-name').value.trim() || "Extra Joss KK";
+      storeSettings.status = document.getElementById('admin-store-status').value;
+      storeSettings.adminPhone1 = document.getElementById('admin-phone-1').value.trim() || "601139550544";
+      storeSettings.adminPhone2 = document.getElementById('admin-phone-2').value.trim() || "60123456789";
+      storeSettings.duitnowId = document.getElementById('admin-duitnow-id').value.trim() || "60 11-3955 0544";
+      storeSettings.telegramToken = document.getElementById('admin-telegram-token').value.trim();
+      storeSettings.telegramChatId = document.getElementById('admin-telegram-chatid').value.trim();
 
-      window.products.forEach((p, pIdx) => {
+      products.forEach((p, pIdx) => {
         if (Array.isArray(p.flavors)) {
           p.flavors = p.flavors.map((f, fIdx) => {
             const flavorName = typeof f === 'object' ? f.name : f;
@@ -2304,29 +2381,32 @@
 
       const bannerInput = document.getElementById('admin-banner-file-input');
       if (bannerInput?.files?.[0]) {
-        window.storeSettings.bannerImage = await window.readFileAsDataURL(bannerInput.files[0], 800);
+        storeSettings.bannerImage = await readFileAsDataURL(bannerInput.files[0], 800);
       }
 
       const qrInput = document.getElementById('admin-qr-file-input');
       if (qrInput?.files?.[0]) {
-        window.storeSettings.qrImage = await window.readFileAsDataURL(qrInput.files[0], 500);
+        storeSettings.qrImage = await readFileAsDataURL(qrInput.files[0], 500);
       }
 
-      if (db && currentUser) {
-        await setDoc(getSettingsDocRef(), {
-          ...window.storeSettings,
-          customProducts: window.products
+      localStorage.setItem('joss_store_settings', JSON.stringify(storeSettings));
+      localStorage.setItem('joss_store_products', JSON.stringify(products));
+
+      if (db) {
+        db.collection("settings").doc("store_config").set({
+          ...storeSettings,
+          customProducts: products
         }, { merge: true });
       }
 
-      window.updateHeaderAndQRDisplay();
-      window.renderCategoryFilters();
-      window.renderProducts(window.currentFilterCategory);
-      window.closeAdminPanelModal();
-      window.showToast('Tetapan & Stok Berjaya Disimpan ke Cloud!');
-    };
+      updateHeaderAndQRDisplay();
+      renderCategoryFilters();
+      renderProducts(currentFilterCategory);
+      closeAdminPanelModal();
+      showToast('Tetapan & Stok Berjaya Dikemaskini!');
+    }
 
-    window.readFileAsDataURL = function(file, maxWidth = 600) {
+    function readFileAsDataURL(file, maxWidth = 600) {
       return new Promise((resolve) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -2349,9 +2429,9 @@
         };
         reader.readAsDataURL(file);
       });
-    };
+    }
 
-    window.showToast = function(msg) {
+    function showToast(msg) {
       const toast = document.getElementById('toast');
       document.getElementById('toast-message').innerText = msg;
       toast.classList.remove('opacity-0', 'pointer-events-none');
@@ -2360,11 +2440,12 @@
         toast.classList.remove('opacity-100');
         toast.classList.add('opacity-0', 'pointer-events-none');
       }, 3000);
-    };
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
-      initAppAndDatabase();
+      initRealtimeSync();
     });
   </script>
 </body>
 </html>
+```eofs
